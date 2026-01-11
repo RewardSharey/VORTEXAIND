@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Saya - VORTEXA ID</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS Variables */
+        :root {
+            --primary: #00e5ff;
+            --primary-dark: #00b8d4;
+            --secondary-bg: #0a1931;
+            --card-bg: rgba(26, 35, 126, 0.6);
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --error: #f44336;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --vip-gold: #ffd700;
+            --newbie-blue: #00e5ff;
+            --investor-silver: #c0c0c0;
+            --elite-gold: #ffd700;
+            --master-diamond: #4fc3f7;
+        }
+
+        /* Base Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, sans-serif;
+        }
+
+        body {
+            background: #000000;
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding-bottom: 80px; /* Safe area for bottom nav */
+        }
+
+        /* Animated Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(0, 229, 255, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(123, 31, 162, 0.05) 0%, transparent 50%);
+            z-index: -2;
+            animation: pulse 20s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.7; }
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            background: rgba(10, 25, 49, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 229, 255, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(0, 229, 255, 0.1);
+        }
+
+        .page-title {
+            flex: 1;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            background: linear-gradient(90deg, #00e5ff, #2979ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
+        }
+
+        /* Logo Text */
+        .logo-text {
+            font-weight: 900;
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, #00e5ff, #2979ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(0, 229, 255, 0.5);
+            letter-spacing: 1px;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 16px;
+        }
+
+        /* Profile Section */
+        .profile-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary);
+            box-shadow: 0 0 25px rgba(0, 229, 255, 0.5);
+            margin-bottom: 15px;
+            background: #0a1931;
+        }
+
+        .username {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .badge-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-level {
+            background: var(--newbie-blue);
+            color: #000;
+        }
+
+        .badge-vip {
+            background: linear-gradient(135deg, #ffd700, #ffab00);
+            color: #000;
+        }
+
+        /* Card */
+        .card {
+            background: rgba(10, 25, 49, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 229, 255, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title i {
+            font-size: 1.1rem;
+        }
+
+        /* Info Grid */
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .info-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .info-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .info-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* Account Info */
+        .account-info {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .account-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .account-label {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .account-value {
+            font-weight: 500;
+            text-align: right;
+            max-width: 60%;
+            word-break: break-word;
+        }
+
+        .email-verify {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 152, 0, 0.1);
+            color: var(--warning);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            margin-left: 10px;
+        }
+
+        .email-verify-btn {
+            background: var(--warning);
+            color: #000;
+            border: none;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .email-verify-btn:hover {
+            background: #ff8c00;
+        }
+
+        .verified-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(76, 175, 80, 0.1);
+            color: var(--success);
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            margin-left: 10px;
+        }
+
+        /* Action Buttons */
+        .action-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .action-btn {
+            background: linear-gradient(135deg, var(--primary), #2979ff);
+            color: #000;
+            border: none;
+            padding: 14px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .action-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(0, 229, 255, 0.9);
+        }
+
+        .action-btn.secondary {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .action-btn.secondary:hover {
+            background: rgba(0, 229, 255, 0.1);
+        }
+
+        .action-btn.danger {
+            background: linear-gradient(135deg, #f44336, #d32f2f);
+            color: #fff;
+        }
+
+        .action-btn.danger:hover {
+            box-shadow: 0 0 25px rgba(244, 67, 54, 0.7);
+        }
+
+        /* Full Width Button */
+        .full-width-btn {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: rgba(10, 25, 49, 0.95);
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            border-radius: 16px;
+            padding: 30px;
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: scaleUp 0.3s ease;
+        }
+
+        @keyframes scaleUp {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+            text-align: center;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .modal-actions .action-btn {
+            flex: 1;
+        }
+
+        /* Form */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .form-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 12px 16px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(0, 229, 255, 0.2);
+        }
+
+        .form-input.error {
+            border-color: var(--error);
+            background: rgba(244, 67, 54, 0.1);
+        }
+
+        .form-input.success {
+            border-color: var(--success);
+            background: rgba(76, 175, 80, 0.1);
+        }
+
+        .error-message {
+            color: var(--error);
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 25, 49, 0.95);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(0, 229, 255, 0.2);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            transition: all 0.2s ease;
+            padding: 5px 10px;
+            border-radius: 8px;
+            min-width: 60px;
+        }
+
+        .nav-item i {
+            font-size: 1.2rem;
+            margin-bottom: 4px;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+            background: rgba(0, 229, 255, 0.1);
+        }
+
+        .nav-item:hover:not(.active) {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 25px 20px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 30px;
+        }
+
+        /* Loading */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(0, 229, 255, 0.3);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Notification Toast */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(10, 25, 49, 0.95);
+            border: 1px solid var(--primary);
+            border-radius: 10px;
+            padding: 15px 20px;
+            color: var(--text-primary);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+            transform: translateY(-100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            max-width: 350px;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            border-color: var(--success);
+            background: rgba(10, 25, 49, 0.95);
+        }
+
+        .toast.error {
+            border-color: var(--error);
+            background: rgba(10, 25, 49, 0.95);
+        }
+
+        .toast.warning {
+            border-color: var(--warning);
+            background: rgba(10, 25, 49, 0.95);
+        }
+
+        /* Responsive */
+        @media (min-width: 768px) {
+            .container {
+                padding: 30px 24px;
+            }
+            
+            .info-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .action-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .bottom-nav {
+                display: none;
+            }
+            
+            body {
+                padding-bottom: 0;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .container {
+                padding: 40px 32px;
+                max-width: 1000px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <button class="back-btn" id="backBtn">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+  
+        <div class="logo-text">VORTEXA ID</div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Profile Section -->
+        <section class="profile-section">
+            <img id="profileAvatar" class="avatar" alt="Profile Picture">
+            <h1 class="username" id="username">Loading...</h1>
+            <div class="badge-container" id="badgeContainer">
+                <!-- Badges will be inserted here -->
+            </div>
+        </section>
+
+        <!-- Balance Stats -->
+        <div class="card">
+            <h2 class="card-title"><i class="fas fa-chart-line"></i> Statistik Keuangan</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">Saldo</div>
+                    <div class="info-value" id="balance">Rp 0</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Total Deposit</div>
+                    <div class="info-value" id="totalDeposit">Rp 0</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Total Withdraw</div>
+                    <div class="info-value" id="totalWithdraw">Rp 0</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Total Profit</div>
+                    <div class="info-value" id="totalProfit">Rp 0</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Account Info -->
+        <div class="card">
+            <h2 class="card-title"><i class="fas fa-user-circle"></i> Informasi Akun</h2>
+            <div class="account-info">
+                <div class="account-row">
+                    <span class="account-label">Nama Lengkap</span>
+                    <span class="account-value" id="fullName">Loading...</span>
+                </div>
+                <div class="account-row">
+                    <span class="account-label">Email</span>
+                    <span class="account-value">
+                        <span id="email">Loading...</span>
+                        <span id="emailStatus"></span>
+                    </span>
+                </div>
+                <div class="account-row">
+                    <span class="account-label">Nomor HP</span>
+                    <span class="account-value" id="phone">Loading...</span>
+                </div>
+                <div class="account-row">
+                    <span class="account-label">Member Sejak</span>
+                    <span class="account-value" id="memberSince">Loading...</span>
+                </div>
+                <div class="account-row">
+                    <span class="account-label">Terakhir Login</span>
+                    <span class="account-value" id="lastLogin">Loading...</span>
+                </div>
+                <div class="account-row">
+                    <span class="account-label">Kode Referral</span>
+                    <span class="account-value" id="referralCode">Loading...</span>
+                </div>
+                <div class="account-row">
+                    <span class="account-label">Total Referral</span>
+                    <span class="account-value" id="referralCount">0 orang</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-grid">
+            <button class="action-btn" id="changePasswordBtn">
+                <i class="fas fa-key"></i> Ganti Password
+            </button>
+            <button class="action-btn secondary" id="editProfileBtn">
+                <i class="fas fa-edit"></i> Edit Profil
+            </button>
+            <button class="action-btn" id="depositBtn">
+                <i class="fas fa-plus-circle"></i> Deposit
+            </button>
+            <button class="action-btn secondary" id="withdrawBtn">
+                <i class="fas fa-minus-circle"></i> Withdraw
+            </button>
+        </div>
+
+        <!-- Logout Button -->
+        <button class="action-btn danger full-width-btn" id="logoutBtn">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>© 2026 VORTEXA ID. Semua hak dilindungi undang-undang.</p>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="dashboard.html" class="nav-item">
+            <i class="fas fa-home"></i>
+            <span>HOME</span>
+        </a>
+        <a href="produk.html" class="nav-item">
+            <i class="fas fa-box-open"></i>
+            <span>PRODUCT</span>
+        </a>
+        <a href="produk-saya.html" class="nav-item">
+            <i class="fas fa-shopping-bag"></i>
+            <span>MY PRODUCT</span>
+        </a>
+        <a href="profil.html" class="nav-item active">
+            <i class="fas fa-user"></i>
+            <span>PROFIL</span>
+        </a>
+    </nav>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Modals -->
+    <!-- Change Password Modal -->
+    <div class="modal-overlay" id="changePasswordModal" style="display: none;">
+        <div class="modal-content">
+            <h2 class="modal-title"><i class="fas fa-key"></i> Ganti Password</h2>
+            <form id="changePasswordForm">
+                <div class="form-group">
+                    <label class="form-label">Password Saat Ini</label>
+                    <input type="password" class="form-input" id="currentPassword" required>
+                    <div class="error-message" id="currentPasswordError"></div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password Baru</label>
+                    <input type="password" class="form-input" id="newPassword" required>
+                    <div class="error-message" id="newPasswordError">Minimal 8 karakter, mengandung huruf besar, kecil, dan angka</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Konfirmasi Password Baru</label>
+                    <input type="password" class="form-input" id="confirmPassword" required>
+                    <div class="error-message" id="confirmPasswordError"></div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="action-btn secondary" id="cancelPasswordBtn">Batal</button>
+                    <button type="submit" class="action-btn" id="submitPasswordBtn">Ganti Password</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Profile Modal -->
+    <div class="modal-overlay" id="editProfileModal" style="display: none;">
+        <div class="modal-content">
+            <h2 class="modal-title"><i class="fas fa-edit"></i> Edit Profil</h2>
+            <form id="editProfileForm">
+                <div class="form-group">
+                    <label class="form-label">Nama Lengkap</label>
+                    <input type="text" class="form-input" id="editFullName" required>
+                    <div class="error-message" id="fullNameError">Minimal 2 kata (contoh: John Doe)</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Nomor HP</label>
+                    <input type="tel" class="form-input" id="editPhone" required>
+                    <div class="error-message" id="phoneError">Format: 08xxxxxxxxxx (10-13 digit)</div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="action-btn secondary" id="cancelEditBtn">Batal</button>
+                    <button type="submit" class="action-btn" id="submitEditBtn">Simpan Perubahan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Logout Confirmation Modal -->
+    <div class="modal-overlay" id="logoutModal" style="display: none;">
+        <div class="modal-content">
+            <h2 class="modal-title"><i class="fas fa-sign-out-alt"></i> Konfirmasi Logout</h2>
+            <p style="text-align: center; margin-bottom: 25px; color: var(--text-secondary);">
+                Anda yakin ingin logout dari VORTEXA ID?
+            </p>
+            <div class="modal-actions">
+                <button type="button" class="action-btn secondary" id="cancelLogoutBtn">Batal</button>
+                <button type="button" class="action-btn danger" id="confirmLogoutBtn">Ya, Logout</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK & Script -->
+    <script type="module">
+        // ====================================================
+        // FIREBASE CONFIGURATION
+        // ====================================================
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+        import { 
+            getAuth, 
+            onAuthStateChanged, 
+            signOut, 
+            updatePassword,
+            EmailAuthProvider,
+            reauthenticateWithCredential,
+            sendEmailVerification,
+            reload
+        } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+        import {
+  getFirestore,
+  doc,
+  getDoc,
+  updateDoc,
+  runTransaction,
+  increment,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAEM8RddVyDgzeveu4ZV_5mnXpOf52EoP4",
+            authDomain: "vortexaind.firebaseapp.com",
+            projectId: "vortexaind",
+            storageBucket: "vortexaind.firebasestorage.app",
+            messagingSenderId: "94487454118",
+            appId: "1:94487454118:web:2469612cf7082fb8ce2f67"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // ====================================================
+        // GLOBAL VARIABLES
+        // ====================================================
+        let currentUser = null;
+        let userData = null;
+
+        // ====================================================
+        // DOM ELEMENTS
+        // ====================================================
+        const backBtn = document.getElementById('backBtn');
+        const profileAvatar = document.getElementById('profileAvatar');
+        const usernameEl = document.getElementById('username');
+        const badgeContainer = document.getElementById('badgeContainer');
+        const balanceEl = document.getElementById('balance');
+        const totalDepositEl = document.getElementById('totalDeposit');
+        const totalWithdrawEl = document.getElementById('totalWithdraw');
+        const totalProfitEl = document.getElementById('totalProfit');
+        const fullNameEl = document.getElementById('fullName');
+        const emailEl = document.getElementById('email');
+        const emailStatusEl = document.getElementById('emailStatus');
+        const phoneEl = document.getElementById('phone');
+        const memberSinceEl = document.getElementById('memberSince');
+        const lastLoginEl = document.getElementById('lastLogin');
+        const referralCodeEl = document.getElementById('referralCode');
+        const referralCountEl = document.getElementById('referralCount');
+
+        // Buttons
+        const changePasswordBtn = document.getElementById('changePasswordBtn');
+        const editProfileBtn = document.getElementById('editProfileBtn');
+        const depositBtn = document.getElementById('depositBtn');
+        const withdrawBtn = document.getElementById('withdrawBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
+
+        // Modals
+        const changePasswordModal = document.getElementById('changePasswordModal');
+        const editProfileModal = document.getElementById('editProfileModal');
+        const logoutModal = document.getElementById('logoutModal');
+
+        // Toast
+        const toast = document.getElementById('toast');
+
+        // ====================================================
+        // UTILITY FUNCTIONS
+        // ====================================================
+        function formatRupiah(amount) {
+            if (typeof amount !== 'number') amount = parseFloat(amount) || 0;
+            return 'Rp ' + amount.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        }
+
+        function formatDate(timestamp) {
+            if (!timestamp) return '-';
+            const date = timestamp.toDate();
+            return date.toLocaleDateString('id-ID', {
+                day: '2-digit',
+                month: 'long',
+                year: 'numeric'
+            });
+        }
+
+        function formatDateTime(timestamp) {
+            if (!timestamp) return '-';
+            const date = timestamp.toDate();
+            return date.toLocaleDateString('id-ID', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        function showToast(message, type = 'info', duration = 5000) {
+            toast.textContent = message;
+            toast.className = 'toast';
+            toast.classList.add(type);
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, duration);
+        }
+
+        function getBadgeColor(badge) {
+            switch(badge) {
+                case 'newbie': return 'var(--newbie-blue)';
+                case 'investor': return 'var(--investor-silver)';
+                case 'elite': return 'var(--elite-gold)';
+                case 'master': return 'var(--master-diamond)';
+                default: return 'var(--text-secondary)';
+            }
+        }
+
+        function getBadgeLabel(badge) {
+            switch(badge) {
+                case 'newbie': return 'Pemula';
+                case 'investor': return 'Investor';
+                case 'elite': return 'Elite';
+                case 'master': return 'Master';
+                default: return 'Pengguna';
+            }
+        }
+
+        // ====================================================
+        // AUTH & MAINTENANCE CHECK
+        // ====================================================
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            currentUser = user;
+            
+            // Check maintenance mode
+            try {
+                const configRef = doc(db, 'config', 'system');
+                const configSnap = await getDoc(configRef);
+                
+                if (configSnap.exists() && configSnap.data().maintenance === true) {
+                    window.location.href = 'maintenance.html';
+                    return;
+                }
+            } catch (error) {
+                console.error('Maintenance check error:', error);
+            }
+            
+            // Load user data
+            await loadUserData(user.uid);
+            setupRealTimeListeners(user.uid);
+            
+            // Check email verification status directly from auth
+            checkEmailVerificationStatus(user);
+        });
+
+        // ====================================================
+        // LOAD USER DATA
+        // ====================================================
+        async function loadUserData(uid) {
+            try {
+                const userRef = doc(db, 'users', uid);
+                const userSnap = await getDoc(userRef);
+                
+                if (!userSnap.exists()) {
+                    showToast('Data pengguna tidak ditemukan', 'error');
+                    return;
+                }
+                
+                userData = userSnap.data();
+                
+                // Check account status
+                if (userData.account_status === 'suspended' || userData.account_status === 'banned') {
+                    window.location.href = 'banned.html';
+                    return;
+                }
+                
+                // Update UI
+                updateUserProfile();
+                
+            } catch (error) {
+                console.error('Error loading user data:', error);
+                showToast('Gagal memuat data profil', 'error');
+            }
+        }
+
+        function updateUserProfile() {
+            if (!userData) return;
+            
+            // Avatar
+            const avatarUrl = userData.profile_picture || 'pp1.jpg';
+            profileAvatar.src = avatarUrl;
+            profileAvatar.onerror = function() {
+                this.src = 'icon7.jpg';
+            };
+            
+            // Username
+            usernameEl.textContent = userData.username || '-';
+            
+            // Badges
+            badgeContainer.innerHTML = '';
+            
+            // Level badge
+            if (userData.badge) {
+                const levelBadge = document.createElement('div');
+                levelBadge.className = 'badge badge-level';
+                levelBadge.textContent = getBadgeLabel(userData.badge);
+                levelBadge.style.background = getBadgeColor(userData.badge);
+                badgeContainer.appendChild(levelBadge);
+            }
+            
+            // VIP badge
+            if (userData.vip_level && userData.vip_level !== 'none') {
+                const vipBadge = document.createElement('div');
+                vipBadge.className = 'badge badge-vip';
+                vipBadge.innerHTML = `<i class="fas fa-crown"></i> VIP`;
+                badgeContainer.appendChild(vipBadge);
+            }
+            
+            // Financial stats
+            balanceEl.textContent = formatRupiah(userData.balance || 0);
+            totalDepositEl.textContent = formatRupiah(userData.total_deposit || 0);
+            totalWithdrawEl.textContent = formatRupiah(userData.total_withdraw || 0);
+            totalProfitEl.textContent = formatRupiah(userData.total_profit || 0);
+            
+            // Account info
+            fullNameEl.textContent = userData.full_name || '-';
+            emailEl.textContent = userData.email || '-';
+            
+            // Phone
+            phoneEl.textContent = userData.phone || '-';
+            memberSinceEl.textContent = formatDate(userData.created_at);
+            lastLoginEl.textContent = formatDateTime(userData.last_login);
+            referralCodeEl.textContent = userData.referral_code || '-';
+            referralCountEl.textContent = `${userData.referral_count || 0} orang`;
+        }
+
+        // ====================================================
+        // CHECK EMAIL VERIFICATION STATUS
+        // ====================================================
+        function checkEmailVerificationStatus(user) {
+            // Check from Firebase Auth directly
+            const isEmailVerified = user.emailVerified;
+            
+            // Update UI based on actual verification status
+            updateEmailVerificationUI(isEmailVerified);
+            
+            // If Firestore says unverified but auth says verified, update Firestore
+            if (userData && !userData.email_verified && isEmailVerified) {
+                updateFirestoreEmailVerification(user.uid);
+            }
+        }
+
+        function updateEmailVerificationUI(isVerified) {
+            emailStatusEl.innerHTML = '';
+            
+            if (isVerified) {
+                const verifiedSpan = document.createElement('span');
+                verifiedSpan.className = 'verified-badge';
+                verifiedSpan.innerHTML = '<i class="fas fa-check-circle"></i> Terverifikasi';
+                emailStatusEl.appendChild(verifiedSpan);
+            } else {
+                const verifySpan = document.createElement('span');
+                verifySpan.className = 'email-verify';
+                verifySpan.innerHTML = `
+                    <i class="fas fa-exclamation-circle"></i> Belum verifikasi
+                    <button class="email-verify-btn" id="verifyEmailBtn">Verifikasi</button>
+                `;
+                emailStatusEl.appendChild(verifySpan);
+                
+                // Add event listener to new button
+                setTimeout(() => {
+                    const verifyBtn = document.getElementById('verifyEmailBtn');
+                    if (verifyBtn) {
+                        verifyBtn.addEventListener('click', sendVerificationEmail);
+                    }
+                }, 100);
+            }
+        }
+
+        async function updateFirestoreEmailVerification(uid) {
+    try {
+        const userRef = doc(db, 'users', uid);
+        const userSnap = await getDoc(userRef);
+        const userData = userSnap.data();
+
+        // Update status email verified
+        await updateDoc(userRef, {
+            email_verified: true
+        });
+
+        // Referral reward (email verified)
+        if (userData.referred_by && !userData.email_verified_rewarded) {
+            const referrerRef = doc(db, 'users', userData.referred_by);
+
+            await runTransaction(db, async (tx) => {
+                tx.update(referrerRef, {
+                    balance: increment(3000),
+                    referral_reward_total: increment(3000)
+                });
+
+                tx.update(userRef, {
+                    email_verified_rewarded: true
+                });
+            });
+        }
+
+        await loadUserData(uid);
+        showToast('Status verifikasi email telah diperbarui', 'success');
+
+    } catch (error) {
+        console.error('Email verification reward error:', error);
+        showToast('Gagal memproses verifikasi email', 'error');
+    }
+}
+
+        // ====================================================
+        // REAL-TIME LISTENERS
+        // ====================================================
+        function setupRealTimeListeners(uid) {
+            // Listen for user data changes
+            const userRef = doc(db, 'users', uid);
+            onSnapshot(userRef, (snapshot) => {
+                if (snapshot.exists()) {
+                    userData = snapshot.data();
+                    updateUserProfile();
+                    
+                    // Check email verification status again when data changes
+                    if (currentUser) {
+                        checkEmailVerificationStatus(currentUser);
+                    }
+                }
+            });
+        }
+
+        // ====================================================
+        // EVENT LISTENERS
+        // ====================================================
+        // Navigation
+        backBtn.addEventListener('click', () => {
+            window.location.href = 'dashboard.html';
+        });
+
+        depositBtn.addEventListener('click', () => {
+            window.location.href = 'deposit.html';
+        });
+
+        withdrawBtn.addEventListener('click', () => {
+            window.location.href = 'withdraw.html';
+        });
+
+        // Change Password
+        changePasswordBtn.addEventListener('click', () => {
+            changePasswordModal.style.display = 'flex';
+        });
+
+        document.getElementById('cancelPasswordBtn').addEventListener('click', () => {
+            changePasswordModal.style.display = 'none';
+            document.getElementById('changePasswordForm').reset();
+        });
+
+        document.getElementById('changePasswordForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            // Validations
+            let valid = true;
+            
+            if (newPassword.length < 8) {
+                document.getElementById('newPasswordError').textContent = 'Password minimal 8 karakter';
+                document.getElementById('newPasswordError').style.display = 'block';
+                valid = false;
+            } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(newPassword)) {
+                document.getElementById('newPasswordError').textContent = 'Password harus mengandung huruf besar, kecil, dan angka';
+                document.getElementById('newPasswordError').style.display = 'block';
+                valid = false;
+            } else {
+                document.getElementById('newPasswordError').style.display = 'none';
+            }
+            
+            if (newPassword !== confirmPassword) {
+                document.getElementById('confirmPasswordError').textContent = 'Password tidak cocok';
+                document.getElementById('confirmPasswordError').style.display = 'block';
+                valid = false;
+            } else {
+                document.getElementById('confirmPasswordError').style.display = 'none';
+            }
+            
+            if (!valid) return;
+            
+            // Show loading
+            const submitBtn = document.getElementById('submitPasswordBtn');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<div class="loading"></div>';
+            submitBtn.disabled = true;
+            
+            try {
+                // Reauthenticate user
+                const credential = EmailAuthProvider.credential(
+                    currentUser.email,
+                    currentPassword
+                );
+                
+                await reauthenticateWithCredential(currentUser, credential);
+                
+                // Update password
+                await updatePassword(currentUser, newPassword);
+                
+                // Update Firestore
+                await updateDoc(doc(db, 'users', currentUser.uid), {
+                    'security.last_password_change': serverTimestamp()
+                });
+                
+                showToast('Password berhasil diperbarui', 'success');
+                changePasswordModal.style.display = 'none';
+                document.getElementById('changePasswordForm').reset();
+                
+            } catch (error) {
+                console.error('Password change error:', error);
+                
+                if (error.code === 'auth/wrong-password') {
+                    showToast('Password saat ini salah', 'error');
+                } else if (error.code === 'auth/weak-password') {
+                    showToast('Password terlalu lemah', 'error');
+                } else {
+                    showToast('Gagal mengganti password', 'error');
+                }
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+
+        // Edit Profile
+        editProfileBtn.addEventListener('click', () => {
+            document.getElementById('editFullName').value = userData.full_name || '';
+            document.getElementById('editPhone').value = userData.phone || '';
+            editProfileModal.style.display = 'flex';
+        });
+
+        document.getElementById('cancelEditBtn').addEventListener('click', () => {
+            editProfileModal.style.display = 'none';
+        });
+
+        document.getElementById('editProfileForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const fullName = document.getElementById('editFullName').value.trim();
+            const phone = document.getElementById('editPhone').value.trim();
+            
+            // Validations
+            let valid = true;
+            
+            if (!fullName || fullName.split(' ').length < 2) {
+                document.getElementById('fullNameError').style.display = 'block';
+                valid = false;
+            } else {
+                document.getElementById('fullNameError').style.display = 'none';
+            }
+            
+            const phoneRegex = /^08[0-9]{8,11}$/;
+            if (!phoneRegex.test(phone)) {
+                document.getElementById('phoneError').style.display = 'block';
+                valid = false;
+            } else {
+                document.getElementById('phoneError').style.display = 'none';
+            }
+            
+            if (!valid) return;
+            
+            // Show loading
+            const submitBtn = document.getElementById('submitEditBtn');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<div class="loading"></div>';
+            submitBtn.disabled = true;
+            
+            try {
+                await updateDoc(doc(db, 'users', currentUser.uid), {
+                    full_name: fullName,
+                    phone: phone,
+                    last_activity: serverTimestamp()
+                });
+                
+                showToast('Profil berhasil diperbarui', 'success');
+                editProfileModal.style.display = 'none';
+                
+            } catch (error) {
+                console.error('Update profile error:', error);
+                showToast('Gagal memperbarui profil', 'error');
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+
+        async function sendVerificationEmail() {
+    const btn = document.getElementById('verifyEmailBtn');
+    if (!btn) return;
+
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<div class="loading"></div>';
+    btn.disabled = true;
+
+    try {
+        // 🔥 WAJIB reload user dulu
+        await reload(auth.currentUser);
+
+        await sendEmailVerification(auth.currentUser, {
+            url: window.location.origin + '/dashboard.html'
+        });
+
+        showToast(
+            'Email verifikasi telah dikirim. Periksa inbox atau spam.',
+            'success'
+        );
+
+    } catch (error) {
+        console.error('Verification email error:', error);
+
+        if (error.code === 'auth/too-many-requests') {
+            showToast('Terlalu sering meminta verifikasi. Coba lagi nanti.', 'warning');
+        } else if (error.code === 'auth/requires-recent-login') {
+            showToast('Silakan login ulang untuk verifikasi email.', 'warning');
+        } else {
+            showToast('Gagal mengirim email verifikasi.', 'error');
+        }
+    } finally {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+    }
+}
+
+        // Logout
+        logoutBtn.addEventListener('click', () => {
+            logoutModal.style.display = 'flex';
+        });
+
+        document.getElementById('cancelLogoutBtn').addEventListener('click', () => {
+            logoutModal.style.display = 'none';
+        });
+
+        document.getElementById('confirmLogoutBtn').addEventListener('click', async () => {
+            try {
+                // Update last activity before logout
+                if (currentUser) {
+                    await updateDoc(doc(db, 'users', currentUser.uid), {
+                        last_activity: serverTimestamp()
+                    });
+                }
+                
+                // Sign out
+                await signOut(auth);
+                
+                // Clear local storage
+                localStorage.clear();
+                
+                // Redirect to login
+                window.location.href = 'login.html';
+                
+            } catch (error) {
+                console.error('Logout error:', error);
+                showToast('Gagal logout', 'error');
+                logoutModal.style.display = 'none';
+            }
+        });
+
+        // Refresh email verification status button
+        function addRefreshEmailStatus() {
+            const refreshBtn = document.createElement('button');
+            refreshBtn.className = 'email-verify-btn';
+            refreshBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Refresh';
+            refreshBtn.style.marginLeft = '8px';
+            refreshBtn.addEventListener('click', async () => {
+                try {
+                    await reload(currentUser);
+                    checkEmailVerificationStatus(currentUser);
+                    showToast('Status email telah diperbarui', 'success');
+                } catch (error) {
+                    console.error('Refresh error:', error);
+                    showToast('Gagal memperbarui status', 'error');
+                }
+            });
+            
+            // Add to verified badge if exists
+            const verifiedBadge = emailStatusEl.querySelector('.verified-badge');
+            if (verifiedBadge) {
+                verifiedBadge.appendChild(refreshBtn);
+            }
+        }
+
+        // Close modals when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === changePasswordModal) {
+                changePasswordModal.style.display = 'none';
+                document.getElementById('changePasswordForm').reset();
+            }
+            if (e.target === editProfileModal) {
+                editProfileModal.style.display = 'none';
+            }
+            if (e.target === logoutModal) {
+                logoutModal.style.display = 'none';
+            }
+        });
+
+        // ====================================================
+        // INITIALIZE
+        // ====================================================
+        console.log('VORTEXA ID Profile Page Loaded');
+        
+        // Add refresh button after page loads
+        setTimeout(addRefreshEmailStatus, 1000);
+    </script>
+</body>
+</html>

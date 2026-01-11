@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIP Membership - VORTEXA ID</title>
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        /* Reset dan Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, sans-serif;
+        }
+        
+        body {
+            background: #000000;
+            color: #ffffff;
+            min-height: 100vh;
+            padding-bottom: 80px;
+        }
+        
+        /* Header */
+        .header {
+            background: #0a1931;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(0, 229, 255, 0.2);
+        }
+        
+        .back-btn {
+            background: none;
+            border: none;
+            color: #00e5ff;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .header-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #ffffff;
+        }
+        
+        /* Container */
+        .container {
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* Hero Section */
+        .hero-section {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(26, 35, 126, 0.3);
+            border-radius: 16px;
+            border: 1px solid rgba(0, 229, 255, 0.1);
+        }
+        
+        .crown-icon {
+            font-size: 48px;
+            color: #ffd700;
+            margin-bottom: 16px;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 50%;
+            margin: 0 auto 16px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .hero-title {
+            font-size: 1.75rem;
+            color: #ffd700;
+            margin-bottom: 8px;
+        }
+        
+        .hero-subtitle {
+            color: #b0b0b0;
+            font-size: 0.9rem;
+        }
+        
+        /* Current VIP Status */
+        .vip-status-card {
+            background: rgba(10, 25, 49, 0.7);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            text-align: center;
+        }
+        
+        .vip-status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(135deg, #ffd700, #ffab00);
+            color: #000000;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+        }
+        
+        .vip-status-badge i {
+            font-size: 16px;
+        }
+        
+        .status-text {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .expiry-text {
+            color: #00e5ff;
+            font-size: 0.95rem;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        
+        .active-status {
+            color: #4caf50;
+            font-weight: 600;
+        }
+        
+        .inactive-status {
+            color: #ff9800;
+            font-weight: 600;
+        }
+        
+        /* Benefits Section */
+        .benefits-section {
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            font-size: 1.25rem;
+            margin-bottom: 16px;
+            color: #ffffff;
+            padding-bottom: 8px;
+            border-bottom: 2px solid rgba(0, 229, 255, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .benefits-grid {
+            display: grid;
+            gap: 12px;
+        }
+        
+        .benefit-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            border-left: 4px solid #ffd700;
+            transition: all 0.3s ease;
+        }
+        
+        .benefit-card:hover {
+            transform: translateX(4px);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .benefit-icon {
+            color: #ffd700;
+            font-size: 24px;
+            min-width: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 8px;
+        }
+        
+        .benefit-text {
+            color: #ffffff;
+            font-size: 0.95rem;
+            flex: 1;
+        }
+        
+        /* VIP Package Card */
+        .package-card {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(123, 31, 162, 0.1));
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .package-name {
+            font-size: 1.5rem;
+            color: #ffd700;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .package-price {
+            font-size: 2rem;
+            color: #ffffff;
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+        
+        .package-duration {
+            color: #b0b0b0;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        
+        /* Purchase Button */
+        .purchase-btn {
+            background: linear-gradient(135deg, #ffd700, #ffab00);
+            color: #000000;
+            border: none;
+            border-radius: 8px;
+            padding: 16px 32px;
+            font-size: 1rem;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .purchase-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+        }
+        
+        .purchase-btn:disabled {
+            background: #424242;
+            color: #757575;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        /* Balance Info */
+        .balance-info {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .balance-label {
+            color: #b0b0b0;
+            font-size: 0.9rem;
+        }
+        
+        .balance-amount {
+            color: #00e5ff;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        /* Info Section */
+        .info-section {
+            background: rgba(26, 35, 126, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 24px;
+            border-left: 4px solid #ff9800;
+        }
+        
+        .info-title {
+            color: #ff9800;
+            margin-bottom: 12px;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .info-text {
+            color: #b0b0b0;
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+        
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .modal-content {
+            background: rgba(10, 25, 49, 0.95);
+            border-radius: 16px;
+            padding: 24px;
+            max-width: 400px;
+            width: 90%;
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            animation: scaleUp 0.3s ease;
+        }
+        
+        @keyframes scaleUp {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        
+        .modal-title {
+            font-size: 1.25rem;
+            margin-bottom: 16px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .modal-text {
+            color: #b0b0b0;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+        
+        .modal-details {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .modal-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+        
+        .confirm-btn {
+            background: #00e5ff;
+            color: #000000;
+        }
+        
+        .confirm-btn:hover {
+            background: #00b8d4;
+        }
+        
+        .cancel-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+        }
+        
+        .cancel-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: rgba(26, 35, 126, 0.95);
+            color: white;
+            padding: 16px 24px;
+            border-radius: 8px;
+            display: none;
+            z-index: 1001;
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            backdrop-filter: blur(10px);
+            min-width: 300px;
+            text-align: center;
+            animation: slideUp 0.3s ease forwards;
+        }
+        
+        @keyframes slideUp {
+            to { transform: translateX(-50%) translateY(0); }
+        }
+        
+        .toast.success {
+            border-left: 4px solid #4caf50;
+        }
+        
+        .toast.error {
+            border-left: 4px solid #f44336;
+        }
+        
+        .toast.info {
+            border-left: 4px solid #2196f3;
+        }
+        
+        .toast-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        /* Loading Spinner */
+        .loading-spinner {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1002;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(0, 229, 255, 0.3);
+            border-top-color: #00e5ff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 767px) {
+            .container {
+                padding: 16px;
+            }
+            
+            .hero-title {
+                font-size: 1.5rem;
+            }
+            
+            .package-price {
+                font-size: 1.75rem;
+            }
+            
+            .benefit-card {
+                padding: 14px;
+            }
+            
+            .modal-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <button class="back-btn" onclick="goBack()">
+            <i class="material-icons">arrow_back</i>
+        </button>
+        <h1 class="header-title">VIP Membership</h1>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <div class="crown-icon">
+                <i class="material-icons" style="font-size: 40px;">workspace_premium</i>
+            </div>
+            <h1 class="hero-title">VORTEXA ELITE</h1>
+            <p class="hero-subtitle">Tingkatkan pengalaman investasi Anda</p>
+        </div>
+        
+        <!-- Current VIP Status -->
+        <div class="vip-status-card" id="vipStatusCard">
+            <!-- Status akan diisi oleh JavaScript -->
+        </div>
+        
+        <!-- Balance Info -->
+        <div class="balance-info">
+            <span class="balance-label">Saldo Anda:</span>
+            <span class="balance-amount" id="currentBalance">Rp 0</span>
+        </div>
+        
+        <!-- VIP Benefits -->
+        <div class="benefits-section">
+            <h2 class="section-title">
+                <i class="material-icons">stars</i>
+                Manfaat VIP
+            </h2>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="material-icons">verified</i>
+                    </div>
+                    <div class="benefit-text">Badge VIP eksklusif di profil Anda</div>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="material-icons">support_agent</i>
+                    </div>
+                    <div class="benefit-text">Prioritas Customer Service</div>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="material-icons">confirmation_number</i>
+                    </div>
+                    <div class="benefit-text">Akses promo & event khusus VIP</div>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="material-icons">diamond</i>
+                    </div>
+                    <div class="benefit-text">Pengalaman akun lebih eksklusif</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- VIP Package -->
+        <div class="package-card">
+            <h2 class="package-name">
+                <i class="material-icons">workspace_premium</i>
+                VORTEXA ELITE
+            </h2>
+            <div class="package-price">Rp 50.000</div>
+            <div class="package-duration">
+                <i class="material-icons">calendar_today</i>
+                30 hari akses VIP
+            </div>
+            <button class="purchase-btn" onclick="openPurchaseModal()" id="purchaseBtn">
+                <i class="material-icons">shopping_cart</i>
+                Beli VIP Sekarang
+            </button>
+        </div>
+        
+        <!-- Info Section -->
+        <div class="info-section">
+            <div class="info-title">
+                <i class="material-icons">info</i>
+                Informasi Penting
+            </div>
+            <div class="info-text">
+                • VIP memberikan status khusus dan benefit tambahan untuk pengalaman investasi yang lebih baik.<br>
+                • Pembelian VIP tidak mempengaruhi perhitungan profit investasi Anda.<br>
+                • Setelah 30 hari, status VIP akan kembali ke reguler secara otomatis.
+            </div>
+        </div>
+    </div>
+    
+    <!-- Purchase Confirmation Modal -->
+    <div class="modal-overlay" id="purchaseModal">
+        <div class="modal-content">
+            <h3 class="modal-title">
+                <i class="material-icons">shopping_cart</i>
+                Konfirmasi Pembelian
+            </h3>
+            <div class="modal-text">
+                Anda akan membeli paket VIP VORTEXA ELITE.
+            </div>
+            <div class="modal-details">
+                <div class="detail-row">
+                    <span>Paket:</span>
+                    <span>VORTEXA ELITE</span>
+                </div>
+                <div class="detail-row">
+                    <span>Harga:</span>
+                    <span style="color: #ffd700; font-weight: 600;">Rp 50.000</span>
+                </div>
+                <div class="detail-row">
+                    <span>Durasi:</span>
+                    <span>30 hari</span>
+                </div>
+                <div class="detail-row">
+                    <span>Saldo Anda:</span>
+                    <span id="userBalance">Rp 0</span>
+                </div>
+                <div class="detail-row">
+                    <span>Sisa Saldo:</span>
+                    <span id="remainingBalance">Rp 0</span>
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-btn cancel-btn" onclick="closeModal()">
+                    <i class="material-icons">close</i>
+                    Batal
+                </button>
+                <button class="modal-btn confirm-btn" onclick="purchaseVIP()">
+                    <i class="material-icons">check</i>
+                    Konfirmasi
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+    
+    <!-- Loading Spinner -->
+    <div class="loading-spinner" id="loadingSpinner">
+        <div class="spinner"></div>
+    </div>
+    
+    <!-- Firebase SDK -->
+    <script type="module">
+        // Import Firebase SDK
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+        import { 
+            getAuth, 
+            onAuthStateChanged 
+        } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+        import { 
+            getFirestore, 
+            doc, 
+            getDoc, 
+            updateDoc,
+            addDoc,
+            collection,
+            Timestamp,
+            serverTimestamp
+        } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+
+        // Firebase Configuration dari VORTEXAID.txt
+        const firebaseConfig = {
+            apiKey: "AIzaSyAEM8RddVyDgzeveu4ZV_5mnXpOf52EoP4",
+            authDomain: "vortexaind.firebaseapp.com",
+            projectId: "vortexaind",
+            storageBucket: "vortexaind.firebasestorage.app",
+            messagingSenderId: "94487454118",
+            appId: "1:94487454118:web:2469612cf7082fb8ce2f67"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Global variables
+        let currentUser = null;
+        let userData = null;
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuthStatus();
+        });
+
+        // Check authentication status
+        function checkAuthStatus() {
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    currentUser = user;
+                    await loadUserData();
+                    updateVIPStatus();
+                    updateBalanceDisplay();
+                } else {
+                    // Redirect to login if not authenticated
+                    showToast('Silakan login terlebih dahulu', 'error');
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 2000);
+                }
+            });
+        }
+
+        // Load user data from Firestore
+        async function loadUserData() {
+            try {
+                if (!currentUser) return;
+                
+                const userDoc = doc(db, 'users', currentUser.uid);
+                const userSnapshot = await getDoc(userDoc);
+                
+                if (userSnapshot.exists()) {
+                    userData = userSnapshot.data();
+                    updateBalanceDisplay();
+                } else {
+                    showToast('Data pengguna tidak ditemukan', 'error');
+                }
+            } catch (error) {
+                console.error('Error loading user data:', error);
+                showToast('Gagal memuat data pengguna', 'error');
+            }
+        }
+
+        // Update VIP status display
+        function updateVIPStatus() {
+            const vipStatusCard = document.getElementById('vipStatusCard');
+            const purchaseBtn = document.getElementById('purchaseBtn');
+            
+            if (!userData) return;
+
+            let html = '';
+            
+            if (userData.vip_level === 'elite' && userData.vip_expired_at) {
+                const expiryDate = userData.vip_expired_at.toDate();
+                const now = new Date();
+                const isExpired = expiryDate < now;
+                
+                if (!isExpired) {
+                    // VIP is active
+                    const daysLeft = Math.ceil((expiryDate - now) / (1000 * 60 * 60 * 24));
+                    
+                    html = `
+                        <div class="vip-status-badge">
+                            <i class="material-icons">workspace_premium</i>
+                            VIP Aktif
+                        </div>
+                        <div class="status-text">
+                            <i class="material-icons" style="color: #4caf50;">check_circle</i>
+                            <span class="active-status">Status: VIP Aktif</span>
+                        </div>
+                        <div class="expiry-text">
+                            <i class="material-icons">schedule</i>
+                            <span>Berlaku hingga: ${formatDate(expiryDate)}</span>
+                        </div>
+                        <div style="color: #b0b0b0; font-size: 0.9rem;">
+                            ${daysLeft} hari tersisa
+                        </div>
+                    `;
+                    
+                    purchaseBtn.disabled = true;
+                    purchaseBtn.innerHTML = '<i class="material-icons">check_circle</i> VIP Aktif';
+                    purchaseBtn.style.background = 'linear-gradient(135deg, #4caf50, #2e7d32)';
+                } else {
+                    // VIP expired
+                    html = `
+                        <div class="vip-status-badge" style="background: linear-gradient(135deg, #757575, #424242);">
+                            <i class="material-icons">workspace_premium</i>
+                            VIP Kedaluwarsa
+                        </div>
+                        <div class="status-text">
+                            <i class="material-icons" style="color: #ff9800;">info</i>
+                            <span class="inactive-status">Status: VIP Kedaluwarsa</span>
+                        </div>
+                        <div class="expiry-text">
+                            <i class="material-icons">schedule</i>
+                            <span>Kedaluwarsa: ${formatDate(expiryDate)}</span>
+                        </div>
+                    `;
+                }
+            } else {
+                // Not VIP
+                html = `
+                    <div class="vip-status-badge" style="background: linear-gradient(135deg, #00e5ff, #2979ff);">
+                        <i class="material-icons">person</i>
+                        Regular Member
+                    </div>
+                    <div class="status-text">
+                        <i class="material-icons" style="color: #b0b0b0;">person</i>
+                        <span class="inactive-status">Status: Regular Member</span>
+                    </div>
+                    <div class="expiry-text">
+                        <i class="material-icons">info</i>
+                        <span>Upgrade ke VIP untuk manfaat eksklusif</span>
+                    </div>
+                `;
+            }
+            
+            vipStatusCard.innerHTML = html;
+        }
+
+        // Update balance display
+        function updateBalanceDisplay() {
+            if (userData) {
+                const balance = userData.balance || 0;
+                document.getElementById('currentBalance').textContent = formatCurrency(balance);
+            }
+        }
+
+        // Open purchase modal
+        window.openPurchaseModal = function() {
+            if (!userData || !currentUser) {
+                showToast('Silakan login terlebih dahulu', 'error');
+                return;
+            }
+            
+            // Check if already VIP
+            if (userData.vip_level === 'elite' && userData.vip_expired_at) {
+                const expiryDate = userData.vip_expired_at.toDate();
+                const now = new Date();
+                
+                if (expiryDate > now) {
+                    showToast(`VIP Anda masih aktif hingga ${formatDate(expiryDate)}`, 'info');
+                    return;
+                }
+            }
+            
+            // Check balance
+            const currentBalance = userData.balance || 0;
+            if (currentBalance < 50000) {
+                showToast(`Saldo tidak cukup! Saldo Anda: ${formatCurrency(currentBalance)}`, 'error');
+                return;
+            }
+            
+            // Update modal details
+            const remainingBalance = currentBalance - 50000;
+            document.getElementById('userBalance').textContent = formatCurrency(currentBalance);
+            document.getElementById('remainingBalance').textContent = formatCurrency(remainingBalance);
+            
+            // Color coding for remaining balance
+            const remainingElement = document.getElementById('remainingBalance');
+            if (remainingBalance < 0) {
+                remainingElement.style.color = '#f44336';
+            } else if (remainingBalance < 10000) {
+                remainingElement.style.color = '#ff9800';
+            } else {
+                remainingElement.style.color = '#4caf50';
+            }
+            
+            // Show modal
+            document.getElementById('purchaseModal').style.display = 'flex';
+        }
+
+        // Close modal
+        window.closeModal = function() {
+            document.getElementById('purchaseModal').style.display = 'none';
+        }
+
+        // Purchase VIP function - INI YANG PENTING!
+        window.purchaseVIP = async function() {
+            try {
+                // Show loading
+                document.getElementById('loadingSpinner').style.display = 'flex';
+                
+                // Get current user
+                const user = auth.currentUser;
+                if (!user) {
+                    throw new Error('User tidak ditemukan. Silakan login ulang.');
+                }
+                
+                // Load fresh user data
+                const userDoc = doc(db, 'users', user.uid);
+                const userSnapshot = await getDoc(userDoc);
+                
+                if (!userSnapshot.exists()) {
+                    throw new Error('Data pengguna tidak ditemukan.');
+                }
+                
+                const freshUserData = userSnapshot.data();
+                
+                // VALIDASI 1: Cek saldo
+                const currentBalance = freshUserData.balance || 0;
+                if (currentBalance < 50000) {
+                    throw new Error(`Saldo tidak mencukupi. Saldo Anda: ${formatCurrency(currentBalance)}`);
+                }
+                
+                // VALIDASI 2: Cek apakah sudah VIP aktif
+                if (freshUserData.vip_level === 'elite' && freshUserData.vip_expired_at) {
+                    const expiryDate = freshUserData.vip_expired_at.toDate();
+                    const now = new Date();
+                    if (expiryDate > now) {
+                        throw new Error(`VIP Anda masih aktif hingga ${formatDate(expiryDate)}`);
+                    }
+                }
+                
+                // Calculate expiry date (30 days from now)
+                const now = new Date();
+                const expiryDate = new Date(now);
+                expiryDate.setDate(expiryDate.getDate() + 30);
+                
+                // Calculate new balance
+                const newBalance = currentBalance - 50000;
+                
+                // Update user data di Firestore
+                await updateDoc(userDoc, {
+                    vip_level: 'elite',
+                    vip_expired_at: Timestamp.fromDate(expiryDate),
+                    balance: newBalance,
+                    last_activity: serverTimestamp()
+                });
+                
+                // Create transaction history
+                await addDoc(collection(db, 'history'), {
+                    uid: user.uid,
+                    type: 'vip_purchase',
+                    amount: 50000,
+                    description: 'Pembelian VIP Membership - VORTEXA ELITE',
+                    created_at: serverTimestamp(),
+                    balance_before: currentBalance,
+                    balance_after: newBalance
+                });
+                
+                // Close modal
+                closeModal();
+                
+                // Show success message
+                showToast('🎉 Berhasil membeli VIP Membership! Status VIP Anda sekarang aktif.', 'success');
+                
+                // Update local data
+                userData = {
+                    ...freshUserData,
+                    vip_level: 'elite',
+                    vip_expired_at: Timestamp.fromDate(expiryDate),
+                    balance: newBalance
+                };
+                
+                // Update UI
+                updateVIPStatus();
+                updateBalanceDisplay();
+                
+            } catch (error) {
+                console.error('Error purchasing VIP:', error);
+                showToast(`❌ Gagal membeli VIP: ${error.message}`, 'error');
+            } finally {
+                // Hide loading
+                document.getElementById('loadingSpinner').style.display = 'none';
+            }
+        }
+
+        // Back button function
+        window.goBack = function() {
+            window.history.back();
+        }
+
+        // Show toast notification
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            toast.className = 'toast ' + type;
+            toast.innerHTML = `
+                <div class="toast-content">
+                    <i class="material-icons">
+                        ${type === 'success' ? 'check_circle' : 
+                          type === 'error' ? 'error' : 'info'}
+                    </i>
+                    <span>${message}</span>
+                </div>
+            `;
+            toast.style.display = 'block';
+            
+            // Auto hide after 3 seconds
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 3000);
+        }
+
+        // Format date to Indonesian format
+        function formatDate(date) {
+            return date.toLocaleDateString('id-ID', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        // Format currency to Indonesian Rupiah
+        function formatCurrency(amount) {
+            return 'Rp ' + amount.toLocaleString('id-ID');
+        }
+    </script>
+</body>
+</html>
