@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar - VORTEXA ID</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Reset dan Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #00e5ff;
+            --primary-dark: #00b8d4;
+            --background-dark: #000000;
+            --background-secondary: #0a1931;
+            --background-card: rgba(10, 25, 49, 0.7);
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --text-gray: #757575;
+            --success-color: #4caf50;
+            --error-color: #f44336;
+            --warning-color: #ff9800;
+            --border-color: rgba(0, 229, 255, 0.2);
+            --border-radius: 8px;
+            --border-radius-lg: 12px;
+            --spacing-xs: 8px;
+            --spacing-sm: 16px;
+            --spacing-md: 24px;
+            --spacing-lg: 32px;
+            --font-primary: 'Inter', -apple-system, sans-serif;
+            --font-secondary: 'Space Grotesk', monospace;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            background-color: var(--background-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            line-height: 1.5;
+        }
+
+        /* Background Animasi */
+        .background-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(1px 1px at 20px 30px, rgba(255, 255, 255, 0.5) 1%, transparent 50%),
+                radial-gradient(1px 1px at 40px 70px, rgba(224, 247, 250, 0.6) 1%, transparent 50%),
+                radial-gradient(2px 2px at 60px 120px, rgba(255, 255, 255, 0.7) 1%, transparent 50%),
+                radial-gradient(3px 3px at 80px 90px, rgba(255, 255, 255, 0.4) 1%, transparent 50%);
+            animation: stars-pulse 4s infinite alternate;
+        }
+
+        @keyframes stars-pulse {
+            0% { opacity: 0.5; }
+            100% { opacity: 0.8; }
+        }
+
+        .cosmic-grid {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background-image: 
+                linear-gradient(rgba(0, 229, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 229, 255, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            animation: grid-move 120s linear infinite;
+            transform: rotate(15deg);
+            top: -50%;
+            left: -50%;
+        }
+
+        @keyframes grid-move {
+            0% { transform: rotate(15deg) translate(0, 0); }
+            100% { transform: rotate(15deg) translate(40px, 40px); }
+        }
+
+        /* Layout Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--spacing-md);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: center;
+            padding: var(--spacing-md) 0;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .logo-img {
+            height: 40px;
+            width: auto;
+            filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.5));
+        }
+
+        .logo-text {
+            font-size: 1.75rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00e5ff, #2979ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-family: var(--font-secondary);
+            letter-spacing: 1px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-md) 0;
+        }
+
+        /* Form Card */
+        .form-card {
+            background: var(--background-card);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-lg);
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            animation: card-entrance 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes card-entrance {
+            0% {
+                transform: scale(0.95);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .form-header h1 {
+            font-size: 2rem;
+            margin-bottom: var(--spacing-xs);
+            background: linear-gradient(135deg, #00e5ff, #2979ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .form-header p {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: var(--spacing-md);
+        }
+
+        .form-label {
+            display: block;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+
+        .form-label.required::after {
+            content: " *";
+            color: var(--error-color);
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--border-radius);
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-family: var(--font-primary);
+            transition: all 0.2s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(0, 229, 255, 0.2);
+        }
+
+        .form-input.valid {
+            border-color: var(--success-color);
+            background: rgba(76, 175, 80, 0.1);
+        }
+
+        .form-input.invalid {
+            border-color: var(--error-color);
+            background: rgba(244, 67, 54, 0.1);
+        }
+
+        .form-input:disabled {
+            background: #424242;
+            border-color: #616161;
+            color: var(--text-gray);
+            cursor: not-allowed;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 4px;
+        }
+
+        .password-toggle:hover {
+            color: var(--primary-color);
+        }
+
+        .validation-message {
+            font-size: 0.75rem;
+            margin-top: 4px;
+            min-height: 18px;
+            display: block;
+        }
+
+        .validation-message.valid {
+            color: var(--success-color);
+        }
+
+        .validation-message.invalid {
+            color: var(--error-color);
+        }
+
+        .validation-message.info {
+            color: var(--text-secondary);
+        }
+
+        /* Checkbox */
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-lg);
+            padding: var(--spacing-sm);
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: var(--border-radius);
+        }
+
+        .checkbox-input {
+            margin-top: 4px;
+            accent-color: var(--primary-color);
+        }
+
+        .checkbox-label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            line-height: 1.4;
+        }
+
+        .checkbox-label a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .checkbox-label a:hover {
+            text-decoration: underline;
+        }
+
+        /* Buttons */
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: var(--font-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #00e5ff, #2979ff);
+            color: #000000;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(0, 229, 255, 0.9);
+        }
+
+        .btn-primary:active:not(:disabled) {
+            transform: scale(0.98);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: rgba(0, 229, 255, 0.1);
+        }
+
+        .btn-secondary:active:not(:disabled) {
+            background: rgba(0, 229, 255, 0.2);
+        }
+
+        .btn:disabled {
+            background: #424242;
+            color: var(--text-gray);
+            border-color: #616161;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        /* Login Link */
+        .login-link {
+            text-align: center;
+            margin-top: var(--spacing-lg);
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .login-link a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: var(--spacing-md) 0;
+            margin-top: var(--spacing-lg);
+            color: var(--text-gray);
+            font-size: 0.75rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(0, 229, 255, 0.3);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .form-input.locked {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(0, 229, 255, 0.4);
+    cursor: not-allowed;
+}
+
+        /* Alert */
+        .alert {
+            padding: var(--spacing-sm);
+            border-radius: var(--border-radius);
+            margin-bottom: var(--spacing-md);
+            font-size: 0.875rem;
+            display: none;
+        }
+
+        .alert.show {
+            display: block;
+        }
+
+        .alert-success {
+            background: rgba(76, 175, 80, 0.1);
+            border: 1px solid var(--success-color);
+            color: var(--success-color);
+        }
+
+        .alert-error {
+            background: rgba(244, 67, 54, 0.1);
+            border: 1px solid var(--error-color);
+            color: var(--error-color);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 767px) {
+            .container {
+                padding: var(--spacing-sm);
+            }
+
+            .form-card {
+                padding: var(--spacing-md);
+            }
+
+            .form-header h1 {
+                font-size: 1.75rem;
+            }
+
+            .form-input {
+                font-size: 0.9375rem;
+            }
+
+            .btn {
+                padding: 14px 20px;
+            }
+        }
+
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .container {
+                padding: var(--spacing-md);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .button-group {
+                flex-direction: row;
+            }
+
+            .btn {
+                flex: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Animation -->
+    <div class="background-animation">
+        <div class="stars"></div>
+        <div class="cosmic-grid"></div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <a href="index.html" class="logo">
+                <img src="logo.jpg" alt="VORTEXA ID" class="logo-img">
+                <span class="logo-text">VORTEXA ID</span>
+            </a>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Alert Messages -->
+            <div id="alert-message" class="alert"></div>
+
+            <!-- Form Card -->
+            <div class="form-card">
+                <div class="form-header">
+                    <h1>Buat Akun Baru</h1>
+                    <p>Bergabung dengan komunitas investor masa depan</p>
+                </div>
+
+                <form id="registrationForm">
+                    <!-- Full Name -->
+                    <div class="form-group">
+                        <label for="fullName" class="form-label required">Nama Lengkap</label>
+                        <div class="input-wrapper">
+                            <input 
+                                type="text" 
+                                id="fullName" 
+                                class="form-input" 
+                                placeholder="Masukkan nama lengkap" 
+                                autocomplete="name"
+                                required>
+                        </div>
+                        <span id="fullName-validation" class="validation-message"></span>
+                    </div>
+
+                    <!-- Username -->
+                    <div class="form-group">
+                        <label for="username" class="form-label required">Username</label>
+                        <div class="input-wrapper">
+                            <input 
+                                type="text" 
+                                id="username" 
+                                class="form-input" 
+                                placeholder="Pilih username unik" 
+                                autocomplete="username"
+                                required>
+                        </div>
+                        <span id="username-validation" class="validation-message"></span>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="form-group">
+                        <label for="email" class="form-label required">Email</label>
+                        <div class="input-wrapper">
+                            <input 
+                                type="email" 
+                                id="email" 
+                                class="form-input" 
+                                placeholder="email@contoh.com" 
+                                autocomplete="email"
+                                required>
+                        </div>
+                        <span id="email-validation" class="validation-message"></span>
+                    </div>
+
+                    <!-- Phone -->
+                    <div class="form-group">
+                        <label for="phone" class="form-label required">Nomor Telepon</label>
+                        <div class="input-wrapper">
+                            <input 
+                                type="tel" 
+                                id="phone" 
+                                class="form-input" 
+                                placeholder="08xxxxxxxxxx" 
+                                autocomplete="tel"
+                                required>
+                        </div>
+                        <span id="phone-validation" class="validation-message"></span>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="form-group">
+                        <label for="password" class="form-label required">Password</label>
+                        <div class="input-wrapper">
+                            <input 
+                                type="password" 
+                                id="password" 
+                                class="form-input" 
+                                placeholder="Minimal 6 karakter" 
+                                autocomplete="new-password"
+                                required>
+                            <button type="button" class="password-toggle" id="togglePassword">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <span id="password-validation" class="validation-message"></span>
+                    </div>
+
+                    <!-- Confirm Password -->
+                    <div class="form-group">
+                        <label for="confirmPassword" class="form-label required">Konfirmasi Password</label>
+                        <div class="input-wrapper">
+                            <input 
+                                type="password" 
+                                id="confirmPassword" 
+                                class="form-input" 
+                                placeholder="Ulangi password" 
+                                autocomplete="new-password"
+                                required>
+                            <button type="button" class="password-toggle" id="toggleConfirmPassword">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <span id="confirmPassword-validation" class="validation-message"></span>
+                    </div>
+
+                    <!-- Referral Code -->
+                    <div class="form-group">
+                        <label for="referralCode" class="form-label">Kode Referral (Opsional)</label>
+                        <div class="input-wrapper">
+                            <input 
+                                type="text" 
+                                id="referralCode" 
+                                class="form-input" 
+                                placeholder="VX-ABCDEF"
+                                autocomplete="off">
+                        </div>
+                        <span id="referralCode-validation" class="validation-message info">
+                            Format: VX-XXXXXX (6 karakter huruf/angka)
+                        </span>
+                    </div>
+
+                    <!-- Terms & Conditions -->
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="terms" class="checkbox-input" required>
+                        <label for="terms" class="checkbox-label">
+                            Saya setuju dengan <a href="terms.html" target="_blank">Syarat & Ketentuan</a> 
+                            dan <a href="privacy.html" target="_blank">Kebijakan Privasi</a> VORTEXA ID
+                        </label>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="button-group">
+                        <button type="submit" id="submitBtn" class="btn btn-primary">
+                            <span id="submitText">Daftar Sekarang</span>
+                            <div id="submitSpinner" class="spinner" style="display: none;"></div>
+                        </button>
+                        <a href="login.html" class="btn btn-secondary">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Sudah Punya Akun?
+                        </a>
+                    </div>
+                </form>
+
+                <!-- Login Link -->
+                <div class="login-link">
+                    Sudah punya akun? <a href="login.html">Masuk di sini</a>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2026 VORTEXA ID. Semua hak dilindungi undang-undang.</p>
+        </footer>
+    </div>
+
+    <!-- JavaScript -->
+    <script type="module">
+        // Import Firebase SDKs dengan SEMUA function yang diperlukan
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+        import { 
+            getAuth, 
+            createUserWithEmailAndPassword,
+            sendEmailVerification 
+        } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+        import { 
+            getFirestore, 
+            doc, 
+            setDoc, 
+            getDoc,
+            collection,
+            query,
+            where,
+            getDocs,
+            serverTimestamp,
+            increment,
+            runTransaction 
+        } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAEM8RddVyDgzeveu4ZV_5mnXpOf52EoP4",
+            authDomain: "vortexaind.firebaseapp.com",
+            projectId: "vortexaind",
+            storageBucket: "vortexaind.firebasestorage.app",
+            messagingSenderId: "94487454118",
+            appId: "1:94487454118:web:2469612cf7082fb8ce2f67"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // DOM Elements - Semua null-safe
+        const form = document.getElementById('registrationForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const submitText = document.getElementById('submitText');
+        const submitSpinner = document.getElementById('submitSpinner');
+        const alertMessage = document.getElementById('alert-message');
+
+        // Input Elements
+        const fullNameInput = document.getElementById('fullName');
+        const usernameInput = document.getElementById('username');
+        const emailInput = document.getElementById('email');
+        const phoneInput = document.getElementById('phone');
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+        const referralCodeInput = document.getElementById('referralCode');
+        const termsCheckbox = document.getElementById('terms');
+
+        // Validation Elements
+        const fullNameValidation = document.getElementById('fullName-validation');
+        const usernameValidation = document.getElementById('username-validation');
+        const emailValidation = document.getElementById('email-validation');
+        const phoneValidation = document.getElementById('phone-validation');
+        const passwordValidation = document.getElementById('password-validation');
+        const confirmPasswordValidation = document.getElementById('confirmPassword-validation');
+        const referralCodeValidation = document.getElementById('referralCode-validation');
+// === AUTO ISI & KUNCI REFERRAL DARI LINK ===
+const urlParams = new URLSearchParams(window.location.search);
+const refFromLink = urlParams.get("ref");
+
+if (refFromLink && referralCodeInput) {
+    const cleanRef = refFromLink.toUpperCase();
+
+    referralCodeInput.value = cleanRef;
+    referralCodeInput.setAttribute("readonly", true);
+    referralCodeInput.classList.add("locked");
+
+    if (referralCodeValidation) {
+        referralCodeValidation.textContent = "Kode referral otomatis dari link";
+        referralCodeValidation.className = "validation-message info";
+    }
+}
+        // Toggle Password Visibility
+        const togglePasswordBtn = document.getElementById('togglePassword');
+        const toggleConfirmPasswordBtn = document.getElementById('toggleConfirmPassword');
+
+        // Helper Functions
+        function showAlert(message, type = 'error') {
+            if (!alertMessage) return;
+            
+            alertMessage.textContent = message;
+            alertMessage.className = `alert alert-${type} show`;
+            
+            if (type === 'success') {
+                setTimeout(() => {
+                    alertMessage.classList.remove('show');
+                }, 5000);
+            }
+        }
+
+        function setLoading(isLoading) {
+            if (!submitBtn || !submitText || !submitSpinner) return;
+            
+            if (isLoading) {
+                submitBtn.disabled = true;
+                submitText.style.display = 'none';
+                submitSpinner.style.display = 'inline-block';
+            } else {
+                submitBtn.disabled = false;
+                submitText.style.display = 'inline';
+                submitSpinner.style.display = 'none';
+            }
+        }
+
+        function setValidation(element, validationElement, isValid, message = '') {
+            if (!element || !validationElement) return;
+            
+            if (element.classList) {
+                element.classList.remove('valid', 'invalid');
+            }
+            if (validationElement.classList) {
+                validationElement.classList.remove('valid', 'invalid', 'info');
+            }
+            
+            if (isValid === true) {
+                if (element.classList) element.classList.add('valid');
+                if (validationElement.classList) validationElement.classList.add('valid');
+                validationElement.textContent = message || '✓ Valid';
+            } else if (isValid === false) {
+                if (element.classList) element.classList.add('invalid');
+                if (validationElement.classList) validationElement.classList.add('invalid');
+                validationElement.textContent = message || '✗ Tidak valid';
+            } else {
+                if (validationElement.classList) validationElement.classList.add('info');
+                validationElement.textContent = message || '';
+            }
+        }
+
+        // Validation Functions
+        function validateFullName() {
+            if (!fullNameInput || !fullNameValidation) return false;
+            
+            const value = fullNameInput.value.trim();
+            if (!value) {
+                setValidation(fullNameInput, fullNameValidation, false, 'Nama lengkap harus diisi');
+                return false;
+            }
+            if (value.length < 3) {
+                setValidation(fullNameInput, fullNameValidation, false, 'Minimal 3 karakter');
+                return false;
+            }
+            setValidation(fullNameInput, fullNameValidation, true, '✓ Valid');
+            return true;
+        }
+
+        function validateUsername() {
+            if (!usernameInput || !usernameValidation) return false;
+            
+            const value = usernameInput.value.trim();
+            const usernameRegex = /^[a-zA-Z0-9_]+$/;
+            
+            if (!value) {
+                setValidation(usernameInput, usernameValidation, false, 'Username harus diisi');
+                return false;
+            }
+            if (value.length < 4) {
+                setValidation(usernameInput, usernameValidation, false, 'Minimal 4 karakter');
+                return false;
+            }
+            if (!usernameRegex.test(value)) {
+                setValidation(usernameInput, usernameValidation, false, 'Hanya boleh huruf, angka, dan underscore');
+                return false;
+            }
+            setValidation(usernameInput, usernameValidation, null, 'Memeriksa ketersediaan...');
+            return value;
+        }
+
+        async function checkUsernameAvailability(username) {
+            if (!usernameInput || !usernameValidation) return false;
+            
+            try {
+                // Cek di document dengan ID username
+                const userDoc = await getDoc(doc(db, 'users', username.toLowerCase()));
+                if (userDoc.exists()) {
+                    setValidation(usernameInput, usernameValidation, false, 'Username sudah digunakan');
+                    return false;
+                } else {
+                    setValidation(usernameInput, usernameValidation, true, '✓ Username tersedia');
+                    return true;
+                }
+            } catch (error) {
+                console.error('Error checking username:', error);
+                setValidation(usernameInput, usernameValidation, null, 'Gagal memeriksa username');
+                return false;
+            }
+        }
+
+        function validateEmail() {
+            if (!emailInput || !emailValidation) return false;
+            
+            const value = emailInput.value.trim().toLowerCase();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+            if (!value) {
+                setValidation(emailInput, emailValidation, false, 'Email harus diisi');
+                return false;
+            }
+            if (!emailRegex.test(value)) {
+                setValidation(emailInput, emailValidation, false, 'Format email tidak valid');
+                return false;
+            }
+            setValidation(emailInput, emailValidation, null, 'Memeriksa ketersediaan...');
+            return value;
+        }
+
+        async function checkEmailAvailability(email) {
+            if (!emailInput || !emailValidation) return false;
+            
+            try {
+                // Cek email di collection users dengan query
+                const usersRef = collection(db, 'users');
+                const q = query(usersRef, where('email', '==', email));
+                const querySnapshot = await getDocs(q);
+                
+                if (!querySnapshot.empty) {
+                    setValidation(emailInput, emailValidation, false, 'Email sudah terdaftar');
+                    return false;
+                } else {
+                    setValidation(emailInput, emailValidation, true, '✓ Email tersedia');
+                    return true;
+                }
+            } catch (error) {
+                console.error('Error checking email:', error);
+                setValidation(emailInput, emailValidation, null, 'Gagal memeriksa email');
+                return false;
+            }
+        }
+
+        function validatePhone() {
+            if (!phoneInput || !phoneValidation) return false;
+            
+            const value = phoneInput.value.trim().replace(/\D/g, '');
+            
+            if (!value) {
+                setValidation(phoneInput, phoneValidation, false, 'Nomor telepon harus diisi');
+                return false;
+            }
+            if (value.length < 9 || value.length > 15) {
+                setValidation(phoneInput, phoneValidation, false, 'Panjang harus 9-15 digit');
+                return false;
+            }
+            if (!value.startsWith('08')) {
+                setValidation(phoneInput, phoneValidation, false, 'Harus diawali dengan 08');
+                return false;
+            }
+            setValidation(phoneInput, phoneValidation, true, '✓ Valid');
+            return value;
+        }
+
+        function validatePassword() {
+            if (!passwordInput || !passwordValidation) return false;
+            
+            const value = passwordInput.value;
+            
+            if (!value) {
+                setValidation(passwordInput, passwordValidation, false, 'Password harus diisi');
+                return false;
+            }
+            if (value.length < 6) {
+                setValidation(passwordInput, passwordValidation, false, 'Minimal 6 karakter');
+                return false;
+            }
+            setValidation(passwordInput, passwordValidation, true, '✓ Password valid');
+            return true;
+        }
+
+        function validateConfirmPassword() {
+            if (!confirmPasswordInput || !confirmPasswordValidation || !passwordInput) return false;
+            
+            const password = passwordInput.value;
+            const confirmPassword = confirmPasswordInput.value;
+            
+            if (!confirmPassword) {
+                setValidation(confirmPasswordInput, confirmPasswordValidation, false, 'Konfirmasi password harus diisi');
+                return false;
+            }
+            if (password !== confirmPassword) {
+                setValidation(confirmPasswordInput, confirmPasswordValidation, false, 'Password tidak cocok');
+                return false;
+            }
+            setValidation(confirmPasswordInput, confirmPasswordValidation, true, '✓ Password cocok');
+            return true;
+        }
+
+        function validateReferralCode() {
+            if (!referralCodeInput || !referralCodeValidation) return null;
+            
+            const value = referralCodeInput.value.trim().toUpperCase();
+            
+            if (!value) {
+                // Opsional field, kosong berarti tidak pakai referral
+                setValidation(referralCodeInput, referralCodeValidation, null, 'Format: VX-XXXXXX (6 karakter huruf/angka)');
+                return null;
+            }
+            
+            // Format harus VX-XXXXXX (6 karakter setelah VX-)
+            const referralRegex = /^VX-[A-Z0-9]{6}$/;
+            
+            if (!referralRegex.test(value)) {
+                setValidation(referralCodeInput, referralCodeValidation, false, 'Format: VX-XXXXXX (6 karakter huruf/angka)');
+                return false;
+            }
+            
+            setValidation(referralCodeInput, referralCodeValidation, null, 'Memeriksa kode referral...');
+            return value;
+        }
+
+        async function validateReferralCodeExists(code) {
+            if (!referralCodeInput || !referralCodeValidation) return false;
+            
+            try {
+                // Cari user yang memiliki referral_code = code
+                const usersRef = collection(db, 'users');
+                const q = query(usersRef, where('referral_code', '==', code));
+                const querySnapshot = await getDocs(q);
+                
+                if (querySnapshot.empty) {
+                    setValidation(referralCodeInput, referralCodeValidation, false, 'Kode referral tidak ditemukan');
+                    return false;
+                } else {
+                    // Ambil UID dari user yang punya kode referral ini
+                    const referrerDoc = querySnapshot.docs[0];
+                    setValidation(referralCodeInput, referralCodeValidation, true, '✓ Kode referral valid');
+                    return referrerDoc.id; // Return referrer UID
+                }
+            } catch (error) {
+                console.error('Error checking referral code:', error);
+                setValidation(referralCodeInput, referralCodeValidation, false, 'Gagal memeriksa kode referral');
+                return false;
+            }
+        }
+
+        // Generate Random Referral Code untuk user baru
+        function generateReferralCode() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let code = 'VX-';
+            for (let i = 0; i < 6; i++) {
+                code += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return code;
+        }
+
+        // Generate Random Profile Picture
+        function getRandomProfilePicture() {
+            const randomNum = Math.floor(Math.random() * 30) + 1;
+            return `pp${randomNum}.jpg`;
+        }
+
+        // Get Device ID
+        function getDeviceId() {
+            let deviceId = localStorage.getItem('vortexaid_device_id');
+            if (!deviceId) {
+                deviceId = 'device_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+                localStorage.setItem('vortexaid_device_id', deviceId);
+            }
+            return deviceId;
+        }
+
+        // Event Listeners
+        if (fullNameInput && fullNameValidation) {
+            fullNameInput.addEventListener('input', validateFullName);
+            fullNameInput.addEventListener('blur', validateFullName);
+        }
+
+        if (usernameInput && usernameValidation) {
+            let usernameTimeout;
+            usernameInput.addEventListener('input', () => {
+                clearTimeout(usernameTimeout);
+                const username = validateUsername();
+                if (username) {
+                    usernameTimeout = setTimeout(async () => {
+                        await checkUsernameAvailability(username);
+                    }, 500);
+                }
+            });
+            usernameInput.addEventListener('blur', async () => {
+                const username = validateUsername();
+                if (username) {
+                    await checkUsernameAvailability(username);
+                }
+            });
+        }
+
+        if (emailInput && emailValidation) {
+            let emailTimeout;
+            emailInput.addEventListener('input', () => {
+                clearTimeout(emailTimeout);
+                const email = validateEmail();
+                if (email) {
+                    emailTimeout = setTimeout(async () => {
+                        await checkEmailAvailability(email);
+                    }, 500);
+                }
+            });
+            emailInput.addEventListener('blur', async () => {
+                const email = validateEmail();
+                if (email) {
+                    await checkEmailAvailability(email);
+                }
+            });
+        }
+
+        if (phoneInput && phoneValidation) {
+            phoneInput.addEventListener('input', validatePhone);
+            phoneInput.addEventListener('blur', validatePhone);
+        }
+
+        if (passwordInput && passwordValidation) {
+            passwordInput.addEventListener('input', () => {
+                validatePassword();
+                validateConfirmPassword();
+            });
+            passwordInput.addEventListener('blur', validatePassword);
+        }
+
+        if (confirmPasswordInput && confirmPasswordValidation) {
+            confirmPasswordInput.addEventListener('input', validateConfirmPassword);
+            confirmPasswordInput.addEventListener('blur', validateConfirmPassword);
+        }
+
+        if (referralCodeInput && referralCodeValidation) {
+            let referralTimeout;
+            referralCodeInput.addEventListener('input', () => {
+                clearTimeout(referralTimeout);
+                const code = validateReferralCode();
+                if (code) {
+                    referralTimeout = setTimeout(async () => {
+                        await validateReferralCodeExists(code);
+                    }, 500);
+                }
+            });
+            referralCodeInput.addEventListener('blur', async () => {
+                const code = validateReferralCode();
+                if (code) {
+                    await validateReferralCodeExists(code);
+                }
+            });
+        }
+
+        if (togglePasswordBtn && passwordInput) {
+            togglePasswordBtn.addEventListener('click', () => {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                togglePasswordBtn.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+            });
+        }
+
+        if (toggleConfirmPasswordBtn && confirmPasswordInput) {
+            toggleConfirmPasswordBtn.addEventListener('click', () => {
+                const type = confirmPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                confirmPasswordInput.setAttribute('type', type);
+                toggleConfirmPasswordBtn.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+            });
+        }
+
+        // Form Submission
+        if (form) {
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                // Validasi semua field
+                const fullNameValid = validateFullName();
+                const username = validateUsername();
+                const email = validateEmail();
+                const phoneValid = validatePhone();
+                const passwordValid = validatePassword();
+                const confirmPasswordValid = validateConfirmPassword();
+                const referralCode = validateReferralCode();
+                
+                // Cek username dan email availability
+                let usernameAvailable = false;
+                let emailAvailable = false;
+                let referralValid = null;
+                
+                if (username) {
+                    usernameAvailable = await checkUsernameAvailability(username);
+                }
+                
+                if (email) {
+                    emailAvailable = await checkEmailAvailability(email);
+                }
+                
+                if (referralCode && referralCode !== false) {
+                    referralValid = await validateReferralCodeExists(referralCode);
+                    if (referralValid === false) {
+                        showAlert('Kode referral tidak valid', 'error');
+                        return;
+                    }
+                }
+                
+                // Cek terms and conditions
+                if (termsCheckbox && !termsCheckbox.checked) {
+                    showAlert('Anda harus menyetujui Syarat & Ketentuan', 'error');
+                    return;
+                }
+                
+                // Validasi final
+                if (!fullNameValid || !username || !usernameAvailable || !email || !emailAvailable || 
+                    !phoneValid || !passwordValid || !confirmPasswordValid) {
+                    showAlert('Harap perbaiki data yang masih salah', 'error');
+                    return;
+                }
+                
+                // Mulai proses registrasi
+                setLoading(true);
+                
+                try {
+                    // 1. Buat user di Firebase Auth
+                    const userCredential = await createUserWithEmailAndPassword(auth, email, passwordInput.value);
+                    const user = userCredential.user;
+                    
+                    // 2. Generate referral code untuk user baru
+                    const newReferralCode = generateReferralCode();
+                    
+                    // 3. Format data untuk Firestore
+                    const userData = {
+                        uid: user.uid,
+                        username: username.toLowerCase(),
+                        email: email,
+                        email_verified: false,
+                        email_verified_rewarded: false,
+                        full_name: fullNameInput.value.trim(),
+                        phone: phoneInput.value.trim().replace(/\D/g, ''),
+                        balance: 10000, // Bonus pendaftaran Rp 10.000
+                        locked_balance: 0,
+                        total_deposit: 0,
+                        total_withdraw: 0,
+                        total_profit: 0,
+                        referral_code: newReferralCode,
+                        referred_by: referralValid || null,
+                        referral_reward_total: 0,
+                        referral_count: 0,
+                        has_deposit: false,
+                        has_purchase: false,
+                        vip_level: "none",
+                        vip_expired_at: null,
+                        badge: "newbie",
+                        title: "Newbie Investor",
+                        profile_picture: getRandomProfilePicture(),
+                        role: "user",
+                        account_status: "active",
+                        created_at: serverTimestamp(),
+                        last_login: serverTimestamp(),
+                        last_activity: serverTimestamp(),
+                        device_id: getDeviceId(),
+                        settings: {
+                            notifications: true,
+                            auto_claim: false,
+                            language: "id",
+                            theme: "dark"
+                        },
+                        security: {
+                            last_password_change: serverTimestamp(),
+                            two_factor_enabled: false,
+                            trusted_devices: [getDeviceId()]
+                        }
+                    };
+                    
+                    // 4. Simpan ke Firestore dengan UID sebagai document ID
+                    await setDoc(doc(db, 'users', user.uid), userData);
+                    
+                    // 5. Buat juga document dengan username sebagai ID untuk uniqueness checking
+                    await setDoc(doc(db, 'usernames', username.toLowerCase()), {
+                        uid: user.uid,
+                        created_at: serverTimestamp()
+                    });
+                    
+                    // 6. Proses referral jika ada
+                    if (referralValid) {
+                        try {
+                            // Update referrer's data
+                            await runTransaction(db, async (transaction) => {
+                                const referrerRef = doc(db, 'users', referralValid);
+                                const referrerDoc = await transaction.get(referrerRef);
+                                
+                                if (referrerDoc.exists()) {
+                                    // Tambah referral count dan referral reward
+                                    transaction.update(referrerRef, {
+                                        referral_count: increment(1),
+                                        referral_reward_total: increment(2000), // Bonus Rp 2.000
+                                        balance: increment(2000) // Tambah ke balance
+                                    });
+                                    
+                                    // Catat transaction history untuk referrer
+                                    const referralTransactionRef = doc(collection(db, 'transactions'));
+                                    transaction.set(referralTransactionRef, {
+                                        uid: referralValid,
+                                        type: 'referral_bonus',
+                                        amount: 2000,
+                                        description: `Bonus referral dari ${username}`,
+                                        status: 'completed',
+                                        created_at: serverTimestamp(),
+                                        reference_id: user.uid
+                                    });
+                                }
+                            });
+                        } catch (error) {
+                            console.error('Error processing referral:', error);
+                            // Tetap lanjut meski referral gagal
+                        }
+                    }
+                    
+                    // 7. Catat bonus pendaftaran sebagai transaction
+                    const bonusTransactionRef = doc(collection(db, 'transactions'));
+                    await setDoc(bonusTransactionRef, {
+                        uid: user.uid,
+                        type: 'registration_bonus',
+                        amount: 10000,
+                        description: 'Bonus pendaftaran',
+                        status: 'completed',
+                        created_at: serverTimestamp(),
+                        reference_id: 'registration'
+                    });
+                    
+                    // 8. Kirim email verifikasi
+                    await sendEmailVerification(user);
+                    
+                    // 9. Tampilkan sukses dan redirect
+                    showAlert('Registrasi berhasil! Silakan cek email untuk verifikasi.', 'success');
+                    
+                    // 10. Redirect ke login setelah 3 detik
+                    setTimeout(() => {
+                        window.location.href = 'login.html?registered=true';
+                    }, 3000);
+                    
+                } catch (error) {
+                    console.error('Registration error:', error);
+                    
+                    let errorMessage = 'Terjadi kesalahan saat registrasi';
+                    switch (error.code) {
+                        case 'auth/email-already-in-use':
+                            errorMessage = 'Email sudah terdaftar';
+                            break;
+                        case 'auth/invalid-email':
+                            errorMessage = 'Format email tidak valid';
+                            break;
+                        case 'auth/operation-not-allowed':
+                            errorMessage = 'Operasi tidak diizinkan';
+                            break;
+                        case 'auth/weak-password':
+                            errorMessage = 'Password terlalu lemah';
+                            break;
+                        case 'auth/network-request-failed':
+                            errorMessage = 'Koneksi jaringan bermasalah';
+                            break;
+                    }
+                    
+                    showAlert(errorMessage, 'error');
+                    setLoading(false);
+                }
+            });
+        }
+
+        // Initialize validation on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set initial validation messages
+            if (fullNameValidation) fullNameValidation.textContent = '';
+            if (usernameValidation) usernameValidation.textContent = '';
+            if (emailValidation) emailValidation.textContent = '';
+            if (phoneValidation) phoneValidation.textContent = '';
+            if (passwordValidation) passwordValidation.textContent = '';
+            if (confirmPasswordValidation) confirmPasswordValidation.textContent = '';
+            if (referralCodeValidation) referralCodeValidation.textContent = 'Format: VX-XXXXXX (6 karakter huruf/angka)';
+            
+            // Auto-focus on first input
+            if (fullNameInput) {
+                setTimeout(() => {
+                    fullNameInput.focus();
+                }, 100);
+            }
+        });
+    </script>
+</body>
+</html>

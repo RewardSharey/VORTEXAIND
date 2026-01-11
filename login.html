@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masuk Akun - VORTEXA ID</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <div class="vortexa-container">
+        <!-- Particle Background -->
+        <div id="particle-background"></div>
+        
+        <!-- Sticky Header -->
+        <header class="login-header">
+            <button class="back-button" onclick="window.location.href='index.html'">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h1 class="header-title">Masuk Akun</h1>
+            <div class="header-spacer"></div>
+        </header>
+        
+        <!-- Main Content -->
+        <main class="login-content">
+            <div class="login-hero">
+                <h2 class="hero-title">Masuk ke VORTEXA ID</h2>
+                <p class="hero-subtitle">Akses dashboard investasi Anda dengan aman. Data Anda terlindungi dengan enkripsi bank-level.</p>
+            </div>
+            
+            <!-- Login Form Card -->
+            <div class="login-card">
+                <form id="loginForm" class="login-form">
+                    <!-- Email Field -->
+                    <div class="form-group">
+                        <label for="email" class="form-label">
+                            <i class="fas fa-envelope"></i> Alamat Email
+                        </label>
+                        <div class="input-wrapper">
+                            <input 
+                                type="email" 
+                                id="email" 
+                                name="email" 
+                                required 
+                                autocomplete="email"
+                                placeholder="nama@email.com"
+                                class="form-input"
+                            >
+                        </div>
+                        <div class="validation-message" id="email-error"></div>
+                    </div>
+                    
+                    <!-- Password Field -->
+                    <div class="form-group">
+                        <label for="password" class="form-label">
+                            <i class="fas fa-lock"></i> Kata Sandi
+                        </label>
+                        <div class="input-wrapper">
+                            <input 
+                                type="password" 
+                                id="password" 
+                                name="password" 
+                                required 
+                                autocomplete="current-password"
+                                placeholder="Minimal 8 karakter"
+                                class="form-input"
+                            >
+                            <button type="button" id="togglePassword" class="password-toggle">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="validation-message" id="password-error"></div>
+                    </div>
+                    
+                    <!-- Remember Me Checkbox -->
+                    <div class="form-group checkbox-group">
+                        <input type="checkbox" id="rememberMe" name="rememberMe">
+                        <label for="rememberMe" class="checkbox-label">
+                            <i class="fas fa-check-square"></i> Ingat Saya
+                        </label>
+                    </div>
+                    
+                    <!-- Login Button -->
+                    <button type="submit" id="loginButton" class="primary-button">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span id="buttonText">Masuk ke Akun</span>
+                        <div id="buttonLoader" class="button-loader">
+                            <div class="loading-spinner"></div>
+                        </div>
+                    </button>
+                    
+                    <!-- Forgot Password Link -->
+                    <div class="forgot-password">
+                        <a href="#" id="forgotPasswordLink">
+                            <i class="fas fa-key"></i> Lupa Password?
+                        </a>
+                    </div>
+                    
+                    <!-- Register Link -->
+                    <div class="register-link">
+                        <p>Belum punya akun? <a href="daftar.html">Daftar Sekarang</a></p>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Security Info -->
+            <div class="security-info">
+                <div class="security-item">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Login Aman dengan Enkripsi</span>
+                </div>
+                <div class="security-item">
+                    <i class="fas fa-clock"></i>
+                    <span>Monitor Login 24/7</span>
+                </div>
+                <div class="security-item">
+                    <i class="fas fa-user-check"></i>
+                    <span>Verifikasi 2 Lapis</span>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Reset Password Modal -->
+        <div id="resetPasswordModal" class="modal-overlay">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">
+                        <i class="fas fa-key"></i> Reset Password
+                    </h3>
+                    <button type="button" class="modal-close" id="closeModal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Masukkan alamat email Anda. Kami akan mengirimkan link untuk mereset password Anda.</p>
+                    
+                    <div class="form-group">
+                        <label for="resetEmail" class="form-label">
+                            <i class="fas fa-envelope"></i> Email Terdaftar
+                        </label>
+                        <input 
+                            type="email" 
+                            id="resetEmail" 
+                            placeholder="nama@email.com"
+                            class="form-input"
+                        >
+                        <div class="validation-message" id="reset-email-error"></div>
+                    </div>
+                    
+                    <div class="modal-result" id="resetResult"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="secondary-button" id="cancelReset">
+                        Batal
+                    </button>
+                    <button type="button" class="primary-button" id="sendResetLink">
+                        <i class="fas fa-paper-plane"></i> Kirim Link Reset
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* CSS Variables from Project Specification */
+        :root {
+            /* Primary Colors */
+            --deep-space-black: #000000;
+            --dark-space-blue: #0a1931;
+            --cosmic-blue: #1a237e;
+            --electric-cyan: #00e5ff;
+            --dark-cyan: #00b8d4;
+            --nebula-purple: #7b1fa2;
+            --stellar-gold: #ffd700;
+            --dark-gold: #ffab00;
+            
+            /* Text Colors */
+            --pure-white: #ffffff;
+            --light-gray: #b0b0b0;
+            --medium-gray: #757575;
+            --success-green: #4caf50;
+            --warning-orange: #ff9800;
+            --error-red: #f44336;
+            
+            /* Typography */
+            --primary-font: 'Inter', -apple-system, sans-serif;
+            --secondary-font: 'Space Grotesk', monospace;
+            
+            /* Spacing */
+            --mobile-padding: 16px;
+            --tablet-padding: 24px;
+            --desktop-padding: 32px;
+            
+            /* Effects */
+            --glass-bg: rgba(10, 25, 49, 0.7);
+            --glass-border: rgba(0, 229, 255, 0.2);
+            --glow-shadow: 0 0 25px rgba(0, 229, 255, 0.9);
+        }
+        
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--primary-font);
+            background-color: var(--deep-space-black);
+            color: var(--pure-white);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        .vortexa-container {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Particle Background */
+        #particle-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #000000 0%, #0a1931 50%, #1a237e 100%);
+            overflow: hidden;
+        }
+        
+        /* Sticky Header */
+        .login-header {
+            position: sticky;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 16px var(--mobile-padding);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 100;
+        }
+        
+        .back-button {
+            background: transparent;
+            border: none;
+            color: var(--electric-cyan);
+            font-size: 1.25rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+        
+        .back-button:hover {
+            background: rgba(0, 229, 255, 0.1);
+            transform: scale(1.05);
+        }
+        
+        .header-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--pure-white);
+            flex-grow: 1;
+            text-align: center;
+        }
+        
+        .header-spacer {
+            width: 40px;
+        }
+        
+        /* Main Content */
+        .login-content {
+            flex: 1;
+            padding: 24px var(--mobile-padding) 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 500px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        /* Hero Section */
+        .login-hero {
+            text-align: center;
+            margin-bottom: 32px;
+            width: 100%;
+        }
+        
+        .hero-title {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--electric-cyan), var(--dark-cyan));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+        
+        .hero-subtitle {
+            font-size: 0.9375rem;
+            color: var(--light-gray);
+            line-height: 1.5;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        /* Login Card */
+        .login-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 24px;
+            width: 100%;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            margin-bottom: 32px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .login-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 229, 255, 0.3);
+        }
+        
+        /* Form Styles */
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .form-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--light-gray);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .form-label i {
+            font-size: 0.875rem;
+            color: var(--electric-cyan);
+        }
+        
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        
+        .form-input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 12px 16px;
+            color: var(--pure-white);
+            font-size: 1rem;
+            font-family: var(--primary-font);
+            width: 100%;
+            transition: all 0.2s ease;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--electric-cyan);
+            box-shadow: 0 0 0 2px rgba(0, 229, 255, 0.2);
+        }
+        
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            background: transparent;
+            border: none;
+            color: var(--light-gray);
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 4px;
+            transition: color 0.2s ease;
+        }
+        
+        .password-toggle:hover {
+            color: var(--electric-cyan);
+        }
+        
+        .validation-message {
+            font-size: 0.75rem;
+            min-height: 18px;
+            margin-top: 4px;
+        }
+        
+        /* Checkbox */
+        .checkbox-group {
+            flex-direction: row;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .checkbox-group input[type="checkbox"] {
+            display: none;
+        }
+        
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            color: var(--light-gray);
+            user-select: none;
+        }
+        
+        .checkbox-label i {
+            color: var(--medium-gray);
+            transition: all 0.2s ease;
+        }
+        
+        .checkbox-group input[type="checkbox"]:checked + .checkbox-label i {
+            color: var(--electric-cyan);
+        }
+        
+        /* Primary Button */
+        .primary-button {
+            background: linear-gradient(135deg, var(--electric-cyan), #2979ff);
+            color: var(--deep-space-black);
+            border: none;
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            font-family: var(--primary-font);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            height: 48px;
+        }
+        
+        .primary-button:hover:not(:disabled) {
+            transform: scale(1.05);
+            box-shadow: var(--glow-shadow);
+        }
+        
+        .primary-button:active:not(:disabled) {
+            transform: scale(0.98);
+        }
+        
+        .primary-button:disabled {
+            background: #424242;
+            color: var(--medium-gray);
+            border: 2px solid #616161;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        
+        .button-loader {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--electric-cyan), #2979ff);
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .loading-spinner {
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(0, 0, 0, 0.3);
+            border-top-color: var(--deep-space-black);
+            border-radius: 50%;
+            animation: rotate 1s linear infinite;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Links */
+        .forgot-password {
+            text-align: center;
+            margin-top: 8px;
+        }
+        
+        .forgot-password a {
+            color: var(--electric-cyan);
+            text-decoration: none;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: color 0.2s ease;
+        }
+        
+        .forgot-password a:hover {
+            color: var(--dark-cyan);
+        }
+        
+        .register-link {
+            text-align: center;
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .register-link p {
+            color: var(--light-gray);
+            font-size: 0.875rem;
+        }
+        
+        .register-link a {
+            color: var(--electric-cyan);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s ease;
+        }
+        
+        .register-link a:hover {
+            color: var(--dark-cyan);
+        }
+        
+        /* Security Info */
+        .security-info {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        .security-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--light-gray);
+            font-size: 0.75rem;
+        }
+        
+        .security-item i {
+            color: var(--electric-cyan);
+            font-size: 0.875rem;
+        }
+        
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: var(--mobile-padding);
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease;
+            display: none;
+        }
+        
+        .modal-content {
+            background: rgba(10, 25, 49, 0.95);
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            border-radius: 16px;
+            padding: 24px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: scaleUp 0.3s ease;
+        }
+        
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--electric-cyan);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .modal-close {
+            background: transparent;
+            border: none;
+            color: var(--light-gray);
+            font-size: 1.25rem;
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+        
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--electric-cyan);
+        }
+        
+        .modal-body {
+            margin-bottom: 24px;
+        }
+        
+        .modal-body p {
+            color: var(--light-gray);
+            font-size: 0.875rem;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+        
+        .modal-result {
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 16px;
+            font-size: 0.875rem;
+            display: none;
+        }
+        
+        .modal-result.success {
+            background: rgba(76, 175, 80, 0.1);
+            border: 1px solid var(--success-green);
+            color: var(--success-green);
+            display: block;
+        }
+        
+        .modal-result.error {
+            background: rgba(244, 67, 54, 0.1);
+            border: 1px solid var(--error-red);
+            color: var(--error-red);
+            display: block;
+        }
+        
+        .modal-footer {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+        
+        .secondary-button {
+            background: transparent;
+            color: var(--electric-cyan);
+            border: 2px solid var(--electric-cyan);
+            border-radius: 8px;
+            padding: 10px 22px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .secondary-button:hover {
+            background: rgba(0, 229, 255, 0.1);
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes scaleUp {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        
+        /* Tablet Styles */
+        @media (min-width: 768px) {
+            .login-header {
+                padding: 16px var(--tablet-padding);
+            }
+            
+            .login-content {
+                padding: 40px var(--tablet-padding) 60px;
+            }
+            
+            .hero-title {
+                font-size: 2.25rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+            
+            .login-card {
+                padding: 32px;
+            }
+            
+            .security-info {
+                gap: 30px;
+            }
+            
+            .security-item {
+                font-size: 0.875rem;
+            }
+            
+            .security-item i {
+                font-size: 1rem;
+            }
+        }
+        
+        /* Desktop Styles */
+        @media (min-width: 1024px) {
+            .login-header {
+                padding: 16px var(--desktop-padding);
+            }
+            
+            .login-content {
+                padding: 60px var(--desktop-padding) 80px;
+            }
+            
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .modal-content {
+                padding: 32px;
+            }
+        }
+        
+        /* 4K Styles */
+        @media (min-width: 1920px) {
+            .login-content {
+                max-width: 600px;
+            }
+        }
+        
+        /* Input Validation States */
+        .form-input.valid {
+            border-color: var(--success-green);
+            background: rgba(76, 175, 80, 0.1);
+        }
+        
+        .form-input.invalid {
+            border-color: var(--error-red);
+            background: rgba(244, 67, 54, 0.1);
+        }
+        
+        .form-input.pending {
+            border-color: var(--warning-orange);
+            background: rgba(255, 152, 0, 0.1);
+        }
+        
+        .validation-message.success {
+            color: var(--success-green);
+        }
+        
+        .validation-message.error {
+            color: var(--error-red);
+        }
+        
+        .validation-message.warning {
+            color: var(--warning-orange);
+        }
+    </style>
+
+    <script type="module">
+        // Import Firebase SDKs v12.7.0 from project specification
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+        import { 
+            getAuth, 
+            signInWithEmailAndPassword,
+            sendPasswordResetEmail,
+            setPersistence,
+            browserSessionPersistence,
+            browserLocalPersistence,
+            onAuthStateChanged,
+            signOut
+        } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+        
+        import { 
+            getFirestore,
+            doc,
+            getDoc,
+            serverTimestamp,
+            updateDoc
+        } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+
+        // Firebase Configuration from project specification
+        const firebaseConfig = {
+            apiKey: "AIzaSyAEM8RddVyDgzeveu4ZV_5mnXpOf52EoP4",
+            authDomain: "vortexaind.firebaseapp.com",
+            projectId: "vortexaind",
+            storageBucket: "vortexaind.firebasestorage.app",
+            messagingSenderId: "94487454118",
+            appId: "1:94487454118:web:2469612cf7082fb8ce2f67"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Global variables
+        let loginAttempts = 0;
+        const MAX_LOGIN_ATTEMPTS = 5; // From project specification
+        const LOCKOUT_DURATION = 30 * 60 * 1000; // 30 minutes in milliseconds
+
+        // DOM Elements
+        const loginForm = document.getElementById('loginForm');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const togglePasswordBtn = document.getElementById('togglePassword');
+        const rememberMeCheckbox = document.getElementById('rememberMe');
+        const loginButton = document.getElementById('loginButton');
+        const buttonText = document.getElementById('buttonText');
+        const buttonLoader = document.getElementById('buttonLoader');
+        const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+        const resetPasswordModal = document.getElementById('resetPasswordModal');
+        const closeModalBtn = document.getElementById('closeModal');
+        const cancelResetBtn = document.getElementById('cancelReset');
+        const sendResetLinkBtn = document.getElementById('sendResetLink');
+        const resetEmailInput = document.getElementById('resetEmail');
+        const resetResult = document.getElementById('resetResult');
+
+        // Initialize particles
+        function initParticles() {
+            const container = document.getElementById('particle-background');
+            const starCount = 120; // 100-150 stars from spec
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.classList.add('particle-star');
+                
+                // Random size (1-5px from spec)
+                const size = Math.floor(Math.random() * 5) + 1;
+                
+                // Random position
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                
+                // Random color from spec
+                const colors = ['#ffffff', '#e0f7fa', '#fff9c4'];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                
+                // Random opacity (0.3-1.0 from spec)
+                const opacity = Math.random() * 0.7 + 0.3;
+                
+                // Random animation delay
+                const delay = Math.random() * 3;
+                
+                star.style.cssText = `
+                    position: absolute;
+                    width: ${size}px;
+                    height: ${size}px;
+                    background: ${color};
+                    border-radius: 50%;
+                    left: ${x}%;
+                    top: ${y}%;
+                    opacity: ${opacity};
+                    animation: twinkle ${Math.random() * 3 + 2}s infinite ${delay}s alternate ease-in-out;
+                `;
+                
+                container.appendChild(star);
+            }
+            
+            // Add CSS for twinkle animation
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes twinkle {
+                    0% { opacity: ${Math.random() * 0.3 + 0.1}; }
+                    100% { opacity: ${Math.random() * 0.7 + 0.3}; }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        // Form validation
+        function validateEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        function validatePassword(password) {
+            return password.length >= 8;
+        }
+
+        function updateValidationState(input, isValid, message = '') {
+            const errorElement = document.getElementById(`${input.id}-error`);
+            
+            input.classList.remove('valid', 'invalid', 'pending');
+            
+            if (isValid === true) {
+                input.classList.add('valid');
+                errorElement.textContent = '';
+                errorElement.className = 'validation-message success';
+            } else if (isValid === false) {
+                input.classList.add('invalid');
+                errorElement.textContent = message;
+                errorElement.className = 'validation-message error';
+            } else {
+                input.classList.add('pending');
+                errorElement.textContent = message;
+                errorElement.className = 'validation-message warning';
+            }
+        }
+
+        // Toggle password visibility
+        togglePasswordBtn.addEventListener('click', function() {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            
+            const icon = this.querySelector('i');
+            if (type === 'text') {
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+
+        // Real-time validation
+        emailInput.addEventListener('blur', function() {
+            const email = this.value.trim();
+            
+            if (!email) {
+                updateValidationState(this, false, 'Email harus diisi');
+                return;
+            }
+            
+            if (!validateEmail(email)) {
+                updateValidationState(this, false, 'Format email tidak valid');
+                return;
+            }
+            
+            updateValidationState(this, true);
+        });
+
+        passwordInput.addEventListener('blur', function() {
+            const password = this.value;
+            
+            if (!password) {
+                updateValidationState(this, false, 'Password harus diisi');
+                return;
+            }
+            
+            if (!validatePassword(password)) {
+                updateValidationState(this, false, 'Password minimal 8 karakter');
+                return;
+            }
+            
+            updateValidationState(this, true);
+        });
+
+        // Login function
+        async function handleLogin(email, password, rememberMe) {
+            // Check login attempts
+            const storedAttempts = localStorage.getItem('loginAttempts');
+            const lastAttemptTime = localStorage.getItem('lastLoginAttempt');
+            
+            if (storedAttempts && lastAttemptTime) {
+                const attempts = parseInt(storedAttempts);
+                const lastAttempt = parseInt(lastAttemptTime);
+                const now = Date.now();
+                
+                if (attempts >= MAX_LOGIN_ATTEMPTS && (now - lastAttempt) < LOCKOUT_DURATION) {
+                    showError('Terlalu banyak percobaan login gagal. Coba lagi dalam 30 menit.');
+                    disableLoginButton();
+                    return;
+                } else if ((now - lastAttempt) >= LOCKOUT_DURATION) {
+                    // Reset attempts after lockout duration
+                    localStorage.removeItem('loginAttempts');
+                    localStorage.removeItem('lastLoginAttempt');
+                }
+            }
+            
+            // Validate inputs
+            if (!validateEmail(email)) {
+                updateValidationState(emailInput, false, 'Email tidak valid');
+                enableLoginButton();
+                return;
+            }
+            
+            if (!validatePassword(password)) {
+                updateValidationState(passwordInput, false, 'Password tidak valid');
+                enableLoginButton();
+                return;
+            }
+            
+            try {
+                // Set persistence based on remember me
+                const persistence = rememberMe ? browserLocalPersistence : browserSessionPersistence;
+                await setPersistence(auth, persistence);
+                
+                // Sign in with Firebase
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                
+                // Reset login attempts on successful login
+                localStorage.removeItem('loginAttempts');
+                localStorage.removeItem('lastLoginAttempt');
+                
+                // Get user document from Firestore
+                const userDocRef = doc(db, 'users', userCredential.user.uid);
+                const userDoc = await getDoc(userDocRef);
+                
+                if (!userDoc.exists()) {
+                    await signOut(auth);
+                    showError('Akun tidak ditemukan. Silakan hubungi support.');
+                    enableLoginButton();
+                    return;
+                }
+                
+                const userData = userDoc.data();
+                
+                // Check account status
+                if (userData.account_status === 'banned') {
+                    await signOut(auth);
+                    window.location.href = 'banned.html';
+                    return;
+                }
+                
+                if (userData.account_status === 'suspended') {
+                    await signOut(auth);
+                    showError('Akun Anda ditangguhkan. Silakan hubungi customer service.');
+                    enableLoginButton();
+                    return;
+                }
+                
+                // Update last_login and last_activity
+                await updateDoc(userDocRef, {
+                    last_login: serverTimestamp(),
+                    last_activity: serverTimestamp()
+                });
+                
+                // Check maintenance mode (would typically check from a global config)
+                // For now, we'll redirect directly to dashboard
+                // In production, you would check a maintenance flag first
+                
+                // Redirect to dashboard
+                window.location.href = 'dashboard.html';
+                
+            } catch (error) {
+                console.error('Login error:', error);
+                
+                // Handle Firebase errors
+                let errorMessage = 'Eror silahkan cek kembali email atau password';
+                
+                switch (error.code) {
+                    case 'auth/user-not-found':
+                    case 'auth/wrong-password':
+                        errorMessage = 'Email atau password salah.';
+                        incrementLoginAttempts();
+                        break;
+                    case 'auth/too-many-requests':
+                        errorMessage = 'Terlalu banyak percobaan. Coba lagi nanti.';
+                        disableLoginButton();
+                        break;
+                    case 'auth/user-disabled':
+                        errorMessage = 'Akun dinonaktifkan. Hubungi support.';
+                        break;
+                    case 'auth/network-request-failed':
+                        errorMessage = 'Gagal terhubung. Periksa koneksi internet.';
+                        break;
+                }
+                
+                showError(errorMessage);
+                enableLoginButton();
+            }
+        }
+
+        // Login attempts tracking
+        function incrementLoginAttempts() {
+            loginAttempts++;
+            localStorage.setItem('loginAttempts', loginAttempts);
+            localStorage.setItem('lastLoginAttempt', Date.now());
+            
+            const remainingAttempts = MAX_LOGIN_ATTEMPTS - loginAttempts;
+            if (remainingAttempts > 0) {
+                showError(`Password salah. Sisa percobaan: ${remainingAttempts}`);
+            } else {
+                showError('Terlalu banyak percobaan login gagal. Coba lagi dalam 30 menit.');
+                disableLoginButton();
+            }
+        }
+
+        function disableLoginButton() {
+            loginButton.disabled = true;
+            setTimeout(() => {
+                loginButton.disabled = false;
+                loginAttempts = 0;
+                localStorage.removeItem('loginAttempts');
+                localStorage.removeItem('lastLoginAttempt');
+            }, LOCKOUT_DURATION);
+        }
+
+        // Button state management
+        function disableLoginButtonWithLoader() {
+            loginButton.disabled = true;
+            buttonText.style.opacity = '0';
+            buttonLoader.style.display = 'flex';
+        }
+
+        function enableLoginButton() {
+            loginButton.disabled = false;
+            buttonText.style.opacity = '1';
+            buttonLoader.style.display = 'none';
+        }
+
+        function showError(message) {
+            // Create or update error display
+            let errorDisplay = document.querySelector('.form-error');
+            if (!errorDisplay) {
+                errorDisplay = document.createElement('div');
+                errorDisplay.className = 'form-error';
+                loginForm.prepend(errorDisplay);
+            }
+            
+            errorDisplay.textContent = message;
+            errorDisplay.style.cssText = `
+                background: rgba(244, 67, 54, 0.1);
+                border: 1px solid var(--error-red);
+                color: var(--error-red);
+                padding: 12px;
+                border-radius: 8px;
+                font-size: 0.875rem;
+                margin-bottom: 16px;
+                animation: fadeIn 0.3s ease;
+            `;
+            
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                if (errorDisplay.parentNode) {
+                    errorDisplay.style.opacity = '0';
+                    errorDisplay.style.transition = 'opacity 0.3s ease';
+                    setTimeout(() => {
+                        if (errorDisplay.parentNode) {
+                            errorDisplay.parentNode.removeChild(errorDisplay);
+                        }
+                    }, 300);
+                }
+            }, 5000);
+        }
+
+        // Reset password function
+        async function handleResetPassword(email) {
+            if (!validateEmail(email)) {
+                resetResult.textContent = 'Masukkan email yang valid.';
+                resetResult.className = 'modal-result error';
+                resetResult.style.display = 'block';
+                return;
+            }
+            
+            try {
+                sendResetLinkBtn.disabled = true;
+                sendResetLinkBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengirim...';
+                
+                await sendPasswordResetEmail(auth, email);
+                
+                resetResult.innerHTML = `
+                    <i class="fas fa-check-circle"></i> Link reset password telah dikirim ke ${email}. 
+                    <br><small>Periksa folder spam jika tidak ditemukan.</small>
+                `;
+                resetResult.className = 'modal-result success';
+                resetResult.style.display = 'block';
+                
+                // Clear email field
+                resetEmailInput.value = '';
+                
+                // Auto-close modal after 5 seconds
+                setTimeout(() => {
+                    closeResetModal();
+                }, 5000);
+                
+            } catch (error) {
+                console.error('Reset password error:', error);
+                
+                let errorMessage = 'Gagal mengirim link reset. Coba lagi.';
+                if (error.code === 'auth/user-not-found') {
+                    errorMessage = 'Email tidak terdaftar.';
+                } else if (error.code === 'auth/too-many-requests') {
+                    errorMessage = 'Terlalu banyak percobaan. Coba lagi nanti.';
+                }
+                
+                resetResult.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${errorMessage}`;
+                resetResult.className = 'modal-result error';
+                resetResult.style.display = 'block';
+            } finally {
+                sendResetLinkBtn.disabled = false;
+                sendResetLinkBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Kirim Link Reset';
+            }
+        }
+
+        // Modal functions
+        function openResetModal() {
+            resetPasswordModal.style.display = 'flex';
+            resetEmailInput.value = emailInput.value.trim(); // Pre-fill with login email
+            resetResult.style.display = 'none';
+        }
+
+        function closeResetModal() {
+            resetPasswordModal.style.display = 'none';
+            resetEmailInput.value = '';
+            resetResult.style.display = 'none';
+        }
+
+        // Event Listeners
+        loginForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+            const rememberMe = rememberMeCheckbox.checked;
+            
+            // Validate before submission
+            if (!validateEmail(email)) {
+                updateValidationState(emailInput, false, 'Email tidak valid');
+                return;
+            }
+            
+            if (!validatePassword(password)) {
+                updateValidationState(passwordInput, false, 'Password minimal 8 karakter');
+                return;
+            }
+            
+            disableLoginButtonWithLoader();
+            await handleLogin(email, password, rememberMe);
+        });
+
+        forgotPasswordLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            openResetModal();
+        });
+
+        closeModalBtn.addEventListener('click', closeResetModal);
+        cancelResetBtn.addEventListener('click', closeResetModal);
+
+        sendResetLinkBtn.addEventListener('click', function() {
+            const email = resetEmailInput.value.trim();
+            handleResetPassword(email);
+        });
+
+        // Close modal on outside click
+        resetPasswordModal.addEventListener('click', function(e) {
+            if (e.target === resetPasswordModal) {
+                closeResetModal();
+            }
+        });
+
+        // Check if user is already logged in
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // User is already logged in, redirect to dashboard
+                window.location.href = 'dashboard.html';
+            }
+        });
+
+        // Load saved email if exists
+        window.addEventListener('DOMContentLoaded', function() {
+            initParticles();
+            
+            // Check for saved email in localStorage
+            const savedEmail = localStorage.getItem('vortexa_saved_email');
+            if (savedEmail) {
+                emailInput.value = savedEmail;
+                rememberMeCheckbox.checked = true;
+            }
+            
+            // Save email on change if remember me is checked
+            emailInput.addEventListener('input', function() {
+                if (rememberMeCheckbox.checked) {
+                    localStorage.setItem('vortexa_saved_email', this.value.trim());
+                }
+            });
+            
+            // Update localStorage when remember me changes
+            rememberMeCheckbox.addEventListener('change', function() {
+                if (this.checked) {
+                    localStorage.setItem('vortexa_saved_email', emailInput.value.trim());
+                } else {
+                    localStorage.removeItem('vortexa_saved_email');
+                }
+            });
+            
+            // Auto-focus email field
+            emailInput.focus();
+        });
+    </script>
+</body>
+</html>

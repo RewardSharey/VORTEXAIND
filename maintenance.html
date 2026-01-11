@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maintenance - VORTEXA ID</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Particle Background Canvas -->
+    <canvas id="particleCanvas"></canvas>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <a href="login.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <div class="logo">VORTEXA ID</div>
+            
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="maintenance-card">
+                <div class="maintenance-icon">
+                    <i class="fas fa-tools"></i>
+                </div>
+                <h2 class="maintenance-title">Sistem Sedang Maintenance</h2>
+                <p class="maintenance-message" id="maintenanceMessage">
+                    Kami sedang melakukan peningkatan sistem. Silakan coba lagi nanti.
+                </p>
+                <div class="button-group">
+                    <button id="reloadBtn" class="btn primary">
+                        <i class="fas fa-redo"></i> Coba Lagi
+                    </button>
+                    <a href="login.html" class="btn secondary">
+                        <i class="fas fa-sign-in-alt"></i> Kembali ke Login
+                    </a>
+                </div>
+                <div class="status-info">
+                    <div class="status-item">
+                        <i class="fas fa-clock"></i>
+                        <span>Status: <strong id="statusText">Memeriksa...</strong></span>
+                    </div>
+                    <div class="status-item">
+                        <i class="fas fa-database"></i>
+                        <span>Update: <strong id="updateTime">-</strong></span>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <p>&copy; 2026 VORTEXA ID. Semua hak dilindungi.</p>
+                <p class="footer-links">
+                    <a href="about.html">Tentang Kami</a> | 
+                    <a href="terms.html">Syarat & Ketentuan</a> | 
+                    <a href="privacy.html">Kebijakan Privasi</a>
+                </p>
+                <p class="support-contact">
+                    <i class="fas fa-headset"></i> Bantuan: support@vortexaid.com
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <style>
+        /* CSS Variables */
+        :root {
+            --deep-space: #000000;
+            --dark-space-blue: #0a1931;
+            --cosmic-blue: #1a237e;
+            --electric-cyan: #00e5ff;
+            --dark-cyan: #00b8d4;
+            --pure-white: #ffffff;
+            --light-gray: #b0b0b0;
+            --medium-gray: #757575;
+            --warning-orange: #ff9800;
+            --error-red: #f44336;
+            --success-green: #4caf50;
+        }
+
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--deep-space);
+            color: var(--pure-white);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        #particleCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        /* Container */
+        .container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 16px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 40px;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(0, 229, 255, 0.1);
+        }
+
+        .back-btn {
+            color: var(--electric-cyan);
+            font-size: 1.25rem;
+            text-decoration: none;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(0, 229, 255, 0.1);
+            transform: translateX(-2px);
+        }
+
+        .logo {
+            font-family: 'Space Grotesk', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--electric-cyan), #2979ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
+        }
+
+        .page-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--light-gray);
+            margin-left: auto;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 0;
+        }
+
+        .maintenance-card {
+            background: rgba(10, 25, 49, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 229, 255, 0.2);
+            border-radius: 16px;
+            padding: 32px 24px;
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            animation: cardEntrance 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes cardEntrance {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .maintenance-icon {
+            font-size: 4rem;
+            color: var(--warning-orange);
+            margin-bottom: 24px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.8; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+
+        .maintenance-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, var(--warning-orange), #ff5722);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .maintenance-message {
+            color: var(--light-gray);
+            line-height: 1.6;
+            margin-bottom: 32px;
+            font-size: 1rem;
+        }
+
+        /* Buttons */
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .btn {
+            padding: 14px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            outline: none;
+        }
+
+        .btn.primary {
+            background: linear-gradient(135deg, var(--electric-cyan), #2979ff);
+            color: var(--deep-space);
+        }
+
+        .btn.primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(0, 229, 255, 0.9);
+        }
+
+        .btn.secondary {
+            background: transparent;
+            color: var(--electric-cyan);
+            border: 2px solid var(--electric-cyan);
+        }
+
+        .btn.secondary:hover {
+            background: rgba(0, 229, 255, 0.1);
+        }
+
+        /* Status Info */
+        .status-info {
+            background: rgba(26, 35, 126, 0.3);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 20px;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--light-gray);
+            margin-bottom: 8px;
+            font-size: 0.875rem;
+        }
+
+        .status-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .status-item i {
+            color: var(--electric-cyan);
+            width: 16px;
+        }
+
+        .status-item strong {
+            color: var(--pure-white);
+            font-weight: 600;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 40px;
+            padding: 24px 0 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .footer-content {
+            color: var(--medium-gray);
+            font-size: 0.875rem;
+        }
+
+        .footer-links {
+            margin: 12px 0;
+        }
+
+        .footer-links a {
+            color: var(--electric-cyan);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--pure-white);
+            text-decoration: underline;
+        }
+
+        .support-contact {
+            margin-top: 8px;
+            color: var(--light-gray);
+        }
+
+        .support-contact i {
+            color: var(--electric-cyan);
+            margin-right: 6px;
+        }
+
+        /* Responsive */
+        @media (min-width: 768px) {
+            .container {
+                padding: 24px;
+            }
+            
+            .header {
+                margin-bottom: 60px;
+            }
+            
+            .logo {
+                font-size: 1.75rem;
+            }
+            
+            .page-title {
+                font-size: 1.5rem;
+            }
+            
+            .maintenance-title {
+                font-size: 2rem;
+            }
+            
+            .button-group {
+                flex-direction: row;
+                justify-content: center;
+            }
+            
+            .btn {
+                min-width: 180px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .container {
+                padding: 32px;
+            }
+            
+            .maintenance-card {
+                padding: 48px 40px;
+            }
+        }
+    </style>
+
+    <script type="module">
+        // Import Firebase SDKs
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+        import { 
+            getFirestore, 
+            doc, 
+            getDoc,
+            onSnapshot,
+            serverTimestamp 
+        } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+
+        // Firebase Configuration (from VORTEXAID.txt)
+        const firebaseConfig = {
+            apiKey: "AIzaSyAEM8RddVyDgzeveu4ZV_5mnXpOf52EoP4",
+            authDomain: "vortexaind.firebaseapp.com",
+            projectId: "vortexaind",
+            storageBucket: "vortexaind.firebasestorage.app",
+            messagingSenderId: "94487454118",
+            appId: "1:94487454118:web:2469612cf7082fb8ce2f67"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        // DOM Elements
+        const maintenanceMessage = document.getElementById('maintenanceMessage');
+        const statusText = document.getElementById('statusText');
+        const updateTime = document.getElementById('updateTime');
+        const reloadBtn = document.getElementById('reloadBtn');
+
+        // Particle System
+        const canvas = document.getElementById('particleCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let animationId = null;
+
+        function initParticles() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            particles = [];
+            
+            // Create stars
+            const starCount = Math.floor((canvas.width * canvas.height) / 8000);
+            for (let i = 0; i < starCount; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 2 + 1,
+                    speed: Math.random() * 0.3 + 0.1,
+                    opacity: Math.random() * 0.5 + 0.3,
+                    type: 'star'
+                });
+            }
+            
+            // Create cosmic dust
+            const dustCount = Math.floor(starCount / 3);
+            for (let i = 0; i < dustCount; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 3 + 1,
+                    speed: Math.random() * 0.5 + 0.2,
+                    opacity: Math.random() * 0.3 + 0.1,
+                    type: 'dust',
+                    angle: Math.random() * Math.PI * 2
+                });
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            particles.forEach(particle => {
+                // Update position
+                if (particle.type === 'dust') {
+                    particle.x += Math.cos(particle.angle) * particle.speed;
+                    particle.y += Math.sin(particle.angle) * particle.speed;
+                    
+                    // Wrap around edges
+                    if (particle.x > canvas.width) particle.x = 0;
+                    if (particle.x < 0) particle.x = canvas.width;
+                    if (particle.y > canvas.height) particle.y = 0;
+                    if (particle.y < 0) particle.y = canvas.height;
+                } else {
+                    particle.y += particle.speed;
+                    if (particle.y > canvas.height) {
+                        particle.y = 0;
+                        particle.x = Math.random() * canvas.width;
+                    }
+                }
+                
+                // Draw particle
+                ctx.beginPath();
+                ctx.fillStyle = `rgba(255, 255, 255, ${particle.opacity})`;
+                if (particle.type === 'star') {
+                    ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+                } else {
+                    ctx.rect(particle.x, particle.y, particle.size, particle.size);
+                }
+                ctx.fill();
+            });
+            
+            animationId = requestAnimationFrame(animateParticles);
+        }
+
+        // Format timestamp to readable time
+        function formatTime(timestamp) {
+            if (!timestamp) return '-';
+            const date = timestamp.toDate();
+            return date.toLocaleString('id-ID', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        // Check maintenance status
+        async function checkMaintenanceStatus() {
+            try {
+                const configRef = doc(db, 'config', 'system');
+                const configSnap = await getDoc(configRef);
+                
+                if (configSnap.exists()) {
+                    const config = configSnap.data();
+                    const isMaintenance = config.maintenance || false;
+                    const message = config.maintenance_message || 
+                        'Kami sedang melakukan peningkatan sistem. Silakan coba lagi nanti.';
+                    
+                    // Update UI
+                    maintenanceMessage.textContent = message;
+                    statusText.textContent = isMaintenance ? 'Dalam Maintenance' : 'Normal';
+                    statusText.style.color = isMaintenance ? 'var(--warning-orange)' : 'var(--success-green)';
+                    
+                    if (config.updated_at) {
+                        updateTime.textContent = formatTime(config.updated_at);
+                    }
+                    
+                    // Redirect if not in maintenance
+                    if (!isMaintenance) {
+                        statusText.textContent = 'Mengarahkan ke Dashboard...';
+                        
+                        // Check auth state first
+                        onAuthStateChanged(auth, (user) => {
+                            if (user) {
+                                window.location.href = 'dashboard.html';
+                            } else {
+                                window.location.href = 'login.html';
+                            }
+                        });
+                    }
+                } else {
+                    // Config document doesn't exist
+                    statusText.textContent = 'Config tidak ditemukan';
+                    statusText.style.color = 'var(--error-red)';
+                }
+            } catch (error) {
+                console.error('Error checking maintenance:', error);
+                statusText.textContent = 'Error memeriksa status';
+                statusText.style.color = 'var(--error-red)';
+                maintenanceMessage.textContent = 'Terjadi kesalahan saat memeriksa status sistem. Silakan coba lagi nanti.';
+            }
+        }
+
+        // Real-time listener for maintenance updates
+        function setupRealtimeListener() {
+            const configRef = doc(db, 'config', 'system');
+            
+            onSnapshot(configRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    const config = docSnap.data();
+                    const isMaintenance = config.maintenance || false;
+                    const message = config.maintenance_message || 
+                        'Kami sedang melakukan peningkatan sistem. Silakan coba lagi nanti.';
+                    
+                    // Update UI
+                    maintenanceMessage.textContent = message;
+                    statusText.textContent = isMaintenance ? 'Dalam Maintenance' : 'Normal';
+                    statusText.style.color = isMaintenance ? 'var(--warning-orange)' : 'var(--success-green)';
+                    
+                    if (config.updated_at) {
+                        updateTime.textContent = formatTime(config.updated_at);
+                    }
+                    
+                    // Redirect if maintenance ended
+                    if (!isMaintenance) {
+                        statusText.textContent = 'Mengarahkan ke Dashboard...';
+                        setTimeout(() => {
+                            onAuthStateChanged(auth, (user) => {
+                                if (user) {
+                                    window.location.href = 'dashboard.html';
+                                } else {
+                                    window.location.href = 'login.html';
+                                }
+                            });
+                        }, 1500);
+                    }
+                }
+            }, (error) => {
+                console.error('Realtime listener error:', error);
+            });
+        }
+
+        // Event Listeners
+        reloadBtn.addEventListener('click', () => {
+            reloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memuat ulang...';
+            reloadBtn.disabled = true;
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
+        });
+
+        // Initialize
+        window.addEventListener('load', () => {
+            initParticles();
+            animateParticles();
+            checkMaintenanceStatus();
+            setupRealtimeListener();
+        });
+
+        window.addEventListener('resize', () => {
+            initParticles();
+        });
+
+        // Cleanup animation on page unload
+        window.addEventListener('beforeunload', () => {
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+        });
+    </script>
+</body>
+</html>

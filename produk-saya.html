@@ -1,0 +1,1633 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Product - VORTEXA ID</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <style>
+        /* CSS Variables - Sama seperti produk.html */
+        :root {
+            --deep-space-black: #000000;
+            --dark-space-blue: #0a1931;
+            --cosmic-blue: #1a237e;
+            --electric-cyan: #00e5ff;
+            --dark-cyan: #00b8d4;
+            --nebula-purple: #7b1fa2;
+            --stellar-gold: #ffd700;
+            --dark-gold: #ffab00;
+            --pure-white: #ffffff;
+            --light-gray: #b0b0b0;
+            --medium-gray: #757575;
+            --success-green: #4caf50;
+            --warning-orange: #ff9800;
+            --error-red: #f44336;
+            --card-bg: rgba(10, 25, 49, 0.7);
+            --card-border: rgba(0, 229, 255, 0.2);
+            --modal-bg: rgba(10, 25, 49, 0.95);
+            --font-primary: 'Inter', -apple-system, sans-serif;
+            --font-secondary: 'Space Grotesk', monospace;
+        }
+
+        /* Reset & Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            background: var(--deep-space-black);
+            color: var(--pure-white);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            padding-bottom: 80px; /* Space for bottom nav */
+        }
+
+        /* Cosmic Particles */
+        #particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .star {
+            position: absolute;
+            background-color: var(--pure-white);
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* Header - Sama seperti produk.html */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 229, 255, 0.1);
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: var(--electric-cyan);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(0, 229, 255, 0.1);
+            transform: translateX(-2px);
+        }
+
+        .header-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, var(--electric-cyan), #2979ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Main Content */
+        .main-content {
+            position: relative;
+            z-index: 2;
+            padding: 16px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Loading State */
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 60vh;
+            text-align: center;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(0, 229, 255, 0.3);
+            border-top-color: var(--electric-cyan);
+            border-radius: 50%;
+            animation: rotate 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes rotate {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            color: var(--electric-cyan);
+            margin-bottom: 20px;
+            opacity: 0.7;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--pure-white);
+        }
+
+        .empty-state p {
+            color: var(--light-gray);
+            margin-bottom: 30px;
+            line-height: 1.6;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Products Container */
+        .products-container {
+            animation: fadeIn 0.5s ease;
+        }
+
+        .products-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .products-header h2 {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .total-products {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--electric-cyan);
+            font-weight: 500;
+            background: rgba(0, 229, 255, 0.1);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+        }
+
+        /* Products List */
+        .products-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        /* Product Card - Styling baru */
+        .product-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 229, 255, 0.3);
+            border-color: rgba(0, 229, 255, 0.4);
+        }
+
+        .product-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .product-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--electric-cyan);
+        }
+
+        .product-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-active {
+            background: rgba(76, 175, 80, 0.2);
+            color: var(--success-green);
+            border: 1px solid rgba(76, 175, 80, 0.3);
+        }
+
+        .badge-finished {
+            background: rgba(117, 117, 117, 0.2);
+            color: var(--medium-gray);
+            border: 1px solid rgba(117, 117, 117, 0.3);
+        }
+
+        .product-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .detail-label {
+            font-size: 0.75rem;
+            color: var(--light-gray);
+            margin-bottom: 4px;
+        }
+
+        .detail-value {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--pure-white);
+            font-family: var(--font-secondary);
+        }
+
+        .detail-value.amount {
+            color: var(--electric-cyan);
+        }
+
+        .detail-value.profit {
+            color: var(--success-green);
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            margin: 15px 0;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .progress-label {
+            font-size: 0.85rem;
+            color: var(--light-gray);
+        }
+
+        .progress-percentage {
+            font-size: 0.85rem;
+            color: var(--electric-cyan);
+            font-weight: 600;
+            font-family: var(--font-secondary);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--electric-cyan), var(--dark-cyan));
+            border-radius: 4px;
+            width: 0%;
+            transition: width 1s ease;
+        }
+
+        /* Dates Info */
+        .dates-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: var(--light-gray);
+            margin-bottom: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .date-item {
+            text-align: center;
+        }
+
+        .date-value {
+            display: block;
+            color: var(--pure-white);
+            font-weight: 500;
+            margin-top: 4px;
+        }
+
+        /* Claim Section */
+        .claim-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .claimed-info {
+            font-size: 0.85rem;
+        }
+
+        .claimed-label {
+            color: var(--light-gray);
+        }
+
+        .claimed-amount {
+            color: var(--success-green);
+            font-weight: 600;
+            font-family: var(--font-secondary);
+        }
+
+        /* Buttons - Sama seperti produk.html */
+        .primary-button {
+            background: linear-gradient(135deg, var(--electric-cyan), #2979ff);
+            color: var(--deep-space-black);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .primary-button:hover:not(:disabled) {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(0, 229, 255, 0.9);
+        }
+
+        .primary-button:active:not(:disabled) {
+            transform: scale(0.98);
+        }
+
+        .primary-button:disabled {
+            background: #424242;
+            color: var(--medium-gray);
+            border: 2px solid #616161;
+            cursor: not-allowed;
+            opacity: 0.7;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .claim-button {
+            min-width: 120px;
+            justify-content: center;
+        }
+
+        /* Profit Summary */
+        .profit-summary {
+            margin-top: 30px;
+        }
+
+        .summary-card {
+            background: rgba(26, 35, 126, 0.6);
+            border-radius: 16px;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .summary-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .summary-item i {
+            font-size: 1.5rem;
+            color: var(--electric-cyan);
+        }
+
+        .summary-item small {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--light-gray);
+            margin-bottom: 4px;
+        }
+
+        .summary-item h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            font-family: var(--font-secondary);
+        }
+
+        /* Modal - Sama seperti produk.html */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background: var(--modal-bg);
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            border-radius: 16px;
+            padding: 32px;
+            max-width: 400px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: scaleUp 0.3s ease;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .modal-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--pure-white);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--light-gray);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .close-modal:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--pure-white);
+        }
+
+        .modal-body {
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        .modal-icon {
+            font-size: 3rem;
+            color: var(--electric-cyan);
+            margin-bottom: 20px;
+        }
+
+        .modal-body p {
+            color: var(--light-gray);
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        .modal-body h2 {
+            font-size: 2rem;
+            color: var(--success-green);
+            margin: 15px 0;
+            font-family: var(--font-secondary);
+        }
+
+        .modal-info {
+            font-size: 0.85rem;
+            color: var(--light-gray);
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 14px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .cancel-btn {
+            background: transparent;
+            color: var(--electric-cyan);
+            border: 2px solid var(--electric-cyan);
+        }
+
+        .cancel-btn:hover {
+            background: rgba(0, 229, 255, 0.1);
+        }
+
+        .confirm-btn {
+            background: linear-gradient(135deg, var(--electric-cyan), #2979ff);
+            color: var(--deep-space-black);
+            border: none;
+        }
+
+        .confirm-btn:hover:not(:disabled) {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(0, 229, 255, 0.9);
+        }
+
+        .confirm-btn:disabled {
+            background: #424242;
+            color: var(--medium-gray);
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        /* Notification - Sama seperti produk.html */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--modal-bg);
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            border-radius: 12px;
+            padding: 16px 24px;
+            display: none;
+            align-items: center;
+            gap: 12px;
+            z-index: 1001;
+            animation: slideDown 0.3s ease;
+            max-width: 400px;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .notification-icon {
+            font-size: 1.2rem;
+        }
+
+        .notification.success .notification-icon {
+            color: var(--success-green);
+        }
+
+        .notification.error .notification-icon {
+            color: var(--error-red);
+        }
+
+        .notification.warning .notification-icon {
+            color: var(--warning-orange);
+        }
+
+        .notification-message {
+            flex: 1;
+            color: var(--pure-white);
+        }
+
+        /* BOTTOM NAVIGATION - COPY DARI produk.html */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 25, 49, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(0, 229, 255, 0.2);
+            padding: 12px 0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 100;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: var(--light-gray);
+            font-size: 0.7rem;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            min-width: 60px;
+            height: 60px;
+        }
+
+        .nav-item:hover {
+            color: var(--electric-cyan);
+            background: rgba(0, 229, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav-item.active {
+            color: var(--electric-cyan);
+            background: rgba(0, 229, 255, 0.15);
+            position: relative;
+        }
+
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--electric-cyan), #2979ff);
+            border-radius: 0 0 4px 4px;
+        }
+
+        .nav-icon {
+            font-size: 1.3rem;
+            margin-bottom: 4px;
+        }
+
+        .nav-label {
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
+        /* Responsive - Sama seperti produk.html */
+        @media (max-width: 767px) {
+            .header-title { font-size: 1.25rem; }
+            .products-header h2 { font-size: 1.25rem; }
+            .modal-content { padding: 24px; }
+            .bottom-nav { padding: 10px 0; }
+            .nav-item { 
+                padding: 6px 10px; 
+                min-width: 55px;
+                height: 55px;
+            }
+            .nav-icon { font-size: 1.2rem; }
+            .nav-label { font-size: 0.65rem; }
+            .summary-card {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+        }
+
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .header-title { font-size: 1.5rem; }
+            .products-header h2 { font-size: 1.5rem; }
+            .bottom-nav { padding: 14px 0; }
+            .nav-item { 
+                padding: 10px 16px; 
+                min-width: 70px;
+                height: 70px;
+            }
+            .nav-icon { font-size: 1.4rem; }
+            .nav-label { font-size: 0.75rem; }
+            .product-details {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .bottom-nav {
+                max-width: 500px;
+                left: 50%;
+                transform: translateX(-50%);
+                border-radius: 16px 16px 0 0;
+                border: 1px solid rgba(0, 229, 255, 0.2);
+                border-bottom: none;
+            }
+            .products-list {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+        }
+
+        /* Utilities */
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Cosmic Particles -->
+    <div id="particles"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <button class="back-btn" id="backBtn">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+        <h1 class="header-title">My Product</h1>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Loading State -->
+        <div id="loading-state" class="loading-container">
+            <div class="loading-spinner"></div>
+            <p>Memuat data produk...</p>
+        </div>
+
+        <!-- Empty State -->
+        <div id="empty-state" class="empty-state" style="display: none;">
+            <div class="empty-icon">
+                <i class="fas fa-box-open"></i>
+            </div>
+            <h3>Belum ada produk aktif</h3>
+            <p>Anda belum memiliki produk investasi. Mulai investasi pertama Anda sekarang!</p>
+            <a href="produk.html" class="primary-button">
+                <i class="fas fa-shopping-cart"></i>
+                Beli Produk
+            </a>
+        </div>
+
+        <!-- Products Container -->
+        <div id="products-container" class="products-container" style="display: none;">
+            <div class="products-header">
+                <h2>Produk Aktif</h2>
+                <div class="total-products">
+                    <i class="fas fa-cube"></i>
+                    <span id="total-products-count">0</span> Produk
+                </div>
+            </div>
+
+            <!-- Products List -->
+            <div id="products-list" class="products-list"></div>
+
+            <!-- Total Profit Summary -->
+            <div id="profit-summary" class="profit-summary" style="display: none;">
+                <div class="summary-card">
+                    <div class="summary-item">
+                        <i class="fas fa-coins"></i>
+                        <div>
+                            <small>Total Investasi</small>
+                            <h3 id="total-investment">Rp 0</h3>
+                        </div>
+                    </div>
+                    <div class="summary-item">
+                        <i class="fas fa-chart-line"></i>
+                        <div>
+                            <small>Total Profit</small>
+                            <h3 id="total-profit">Rp 0</h3>
+                        </div>
+                    </div>
+                    <div class="summary-item">
+                        <i class="fas fa-hand-holding-usd"></i>
+                        <div>
+                            <small>Sudah Diklaim</small>
+                            <h3 id="total-claimed">Rp 0</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Claim Modal -->
+    <div class="modal-overlay" id="claim-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Klaim Profit Harian</h3>
+                <button class="close-modal" id="closeModalBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-icon">
+                    <i class="fas fa-coins"></i>
+                </div>
+                <p id="claim-message">Anda akan mengklaim profit harian sebesar</p>
+                <h2 id="claim-amount">Rp 0</h2>
+                <p class="modal-info">Profit akan langsung ditambahkan ke saldo utama Anda.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn cancel-btn" id="cancelClaimBtn">
+                    <i class="fas fa-times"></i> Batal
+                </button>
+                <button class="modal-btn confirm-btn" id="confirmClaimBtn">
+                    <i class="fas fa-check"></i> Konfirmasi Klaim
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <i class="fas fa-info-circle notification-icon"></i>
+        <div class="notification-message" id="notification-message"></div>
+    </div>
+
+    <!-- Bottom Navigation - COPY DARI produk.html -->
+    <nav class="bottom-nav">
+        <a href="dashboard.html" class="nav-item">
+            <i class="fas fa-home nav-icon"></i>
+            <span class="nav-label">HOME</span>
+        </a>
+        <a href="produk.html" class="nav-item">
+            <i class="fas fa-shopping-cart nav-icon"></i>
+            <span class="nav-label">PRODUCT</span>
+        </a>
+        <a href="produk-saya.html" class="nav-item active">
+            <i class="fas fa-box nav-icon"></i>
+            <span class="nav-label">MY PRODUCT</span>
+        </a>
+        <a href="profil.html" class="nav-item">
+            <i class="fas fa-user nav-icon"></i>
+            <span class="nav-label">PROFIL</span>
+        </a>
+    </nav>
+
+    <script type="module">
+        // ============================================
+        // FIREBASE IMPORTS & INITIALIZATION
+        // ============================================
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+        import { 
+            getAuth, 
+            onAuthStateChanged,
+            signOut 
+        } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+        
+        import { 
+            getFirestore, 
+            collection, 
+            doc, 
+            getDoc, 
+            getDocs, 
+            updateDoc,
+            addDoc,
+            query,
+            where,
+            Timestamp,
+            onSnapshot,
+            increment,
+            serverTimestamp,
+            writeBatch
+        } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAEM8RddVyDgzeveu4ZV_5mnXpOf52EoP4",
+            authDomain: "vortexaind.firebaseapp.com",
+            projectId: "vortexaind",
+            storageBucket: "vortexaind.firebasestorage.app",
+            messagingSenderId: "94487454118",
+            appId: "1:94487454118:web:2469612cf7082fb8ce2f67"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // ============================================
+        // GLOBAL STATE & VARIABLES
+        // ============================================
+        let currentUser = null;
+        let userData = null;
+        let userProducts = [];
+        let currentClaimProduct = null;
+
+        // ============================================
+        // DOM ELEMENTS
+        // ============================================
+        const backBtn = document.getElementById('backBtn');
+        const loadingState = document.getElementById('loading-state');
+        const emptyState = document.getElementById('empty-state');
+        const productsContainer = document.getElementById('products-container');
+        const productsList = document.getElementById('products-list');
+        const totalProductsCount = document.getElementById('total-products-count');
+        const profitSummary = document.getElementById('profit-summary');
+        const totalInvestment = document.getElementById('total-investment');
+        const totalProfit = document.getElementById('total-profit');
+        const totalClaimed = document.getElementById('total-claimed');
+        
+        // Modal Elements
+        const claimModal = document.getElementById('claim-modal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const cancelClaimBtn = document.getElementById('cancelClaimBtn');
+        const confirmClaimBtn = document.getElementById('confirmClaimBtn');
+        const claimMessage = document.getElementById('claim-message');
+        const claimAmount = document.getElementById('claim-amount');
+        
+        // Notification Elements
+        const notification = document.getElementById('notification');
+        const notificationMessage = document.getElementById('notification-message');
+
+        // ============================================
+        // UTILITY FUNCTIONS
+        // ============================================
+        
+        // Initialize cosmic particles
+        function initParticles() {
+            const particles = document.getElementById('particles');
+            const particleCount = Math.floor(Math.random() * 50) + 100;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                
+                const size = Math.floor(Math.random() * 5) + 1;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                
+                const colors = ['#ffffff', '#e0f7fa', '#fff9c4'];
+                star.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                star.style.animationDelay = `${Math.random() * 5}s`;
+                
+                particles.appendChild(star);
+            }
+        }
+
+        // Format Rupiah
+        function formatRupiah(amount) {
+            if (!amount) amount = 0;
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(amount).replace('Rp', 'Rp ');
+        }
+
+        // Format Date
+        function formatDate(timestamp) {
+            if (!timestamp) return '-';
+            const date = timestamp.toDate();
+            return date.toLocaleDateString('id-ID', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric'
+            });
+        }
+
+        // Calculate Days Difference
+        function calculateDaysRemaining(startDate, endDate) {
+            if (!startDate || !endDate) return 0;
+            
+            const start = startDate.toDate();
+            const end = endDate.toDate();
+            const today = new Date();
+            
+            if (today >= end) return 0;
+            
+            const diffTime = end - today;
+            return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        }
+
+        // Calculate Days Passed
+        function calculateDaysPassed(startDate) {
+            if (!startDate) return 0;
+            
+            const start = startDate.toDate();
+            const today = new Date();
+            const diffTime = today - start;
+            const daysPassed = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            
+            return Math.max(0, daysPassed);
+        }
+
+        // Calculate Progress Percentage
+        function calculateProgressPercentage(startDate, endDate) {
+            if (!startDate || !endDate) return 0;
+            
+            const start = startDate.toDate();
+            const end = endDate.toDate();
+            const today = new Date();
+            
+            const totalDays = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+            const daysPassed = Math.ceil((today - start) / (1000 * 60 * 60 * 24));
+            
+            if (totalDays <= 0) return 100;
+            if (daysPassed <= 0) return 0;
+            if (daysPassed >= totalDays) return 100;
+            
+            return Math.min(100, Math.round((daysPassed / totalDays) * 100));
+        }
+
+        // Check if claimed today - FIXED LOGIC
+        function isClaimedToday(lastClaimDate) {
+            if (!lastClaimDate) return false;
+            
+            try {
+                const lastClaim = lastClaimDate.toDate();
+                const today = new Date();
+                
+                // Compare year, month, and day only
+                return lastClaim.getFullYear() === today.getFullYear() &&
+                       lastClaim.getMonth() === today.getMonth() &&
+                       lastClaim.getDate() === today.getDate();
+            } catch (error) {
+                console.error('Error checking claim date:', error);
+                return false;
+            }
+        }
+
+        // Check if can claim more (not exceed total profit)
+        function canClaimMore(claimedProfit, dailyProfit, totalProfit) {
+            if (!claimedProfit) claimedProfit = 0;
+            if (claimedProfit + dailyProfit > totalProfit) {
+                return false;
+            }
+            return true;
+        }
+
+        // Show notification
+        function showToast(message, type = 'info') {
+            const icon = notification.querySelector('.notification-icon');
+            
+            notification.className = `notification ${type}`;
+            
+            switch(type) {
+                case 'success':
+                    icon.className = 'fas fa-check-circle notification-icon';
+                    break;
+                case 'error':
+                    icon.className = 'fas fa-exclamation-circle notification-icon';
+                    break;
+                case 'warning':
+                    icon.className = 'fas fa-exclamation-triangle notification-icon';
+                    break;
+                default:
+                    icon.className = 'fas fa-info-circle notification-icon';
+            }
+            
+            notificationMessage.textContent = message;
+            notification.style.display = 'flex';
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 5000);
+        }
+
+        // Show loading
+        function showLoading() {
+            loadingState.style.display = 'flex';
+        }
+
+        // Hide loading
+        function hideLoading() {
+            loadingState.style.display = 'none';
+        }
+
+        // ============================================
+        // AUTHENTICATION CHECK
+        // ============================================
+        async function checkAuth() {
+            return new Promise((resolve) => {
+                onAuthStateChanged(auth, async (user) => {
+                    if (!user) {
+                        window.location.href = 'login.html';
+                        resolve(false);
+                        return;
+                    }
+                    
+                    currentUser = user;
+                    await checkUserStatus(user.uid);
+                    resolve(true);
+                });
+            });
+        }
+
+        // ============================================
+        // USER STATUS CHECK
+        // ============================================
+        async function checkUserStatus(uid) {
+            try {
+                // Check maintenance status
+                const configRef = doc(db, 'config', 'system');
+                const configSnap = await getDoc(configRef);
+                
+                if (configSnap.exists() && configSnap.data().maintenance === true) {
+                    window.location.href = 'maintenance.html';
+                    return;
+                }
+                
+                // Check user status
+                const userRef = doc(db, 'users', uid);
+                const userSnap = await getDoc(userRef);
+                
+                if (!userSnap.exists()) {
+                    await signOut(auth);
+                    window.location.href = 'login.html';
+                    return;
+                }
+                
+                userData = userSnap.data();
+                
+                // Check account status
+                if (userData.account_status === 'suspended' || 
+                    userData.account_status === 'banned') {
+                    window.location.href = 'banned.html';
+                    return;
+                }
+                
+                // Listen for real-time user updates
+                onSnapshot(userRef, (doc) => {
+                    if (doc.exists()) {
+                        userData = doc.data();
+                    }
+                });
+                
+                // Load user products
+                await loadUserProducts(uid);
+                
+            } catch (error) {
+                console.error('Error checking user status:', error);
+                showToast('Terjadi kesalahan saat memuat data', 'error');
+            }
+        }
+
+        // ============================================
+        // LOAD USER PRODUCTS - FIXED QUERY
+        // ============================================
+        async function loadUserProducts(uid) {
+            try {
+                // Query user_products collection - SESUAI VORTEXAID.txt
+                const userProductsQuery = query(
+                    collection(db, 'user_products'),
+                    where('uid', '==', uid),
+                    where('status', 'in', ['active', 'completed'])
+                );
+                
+                const querySnapshot = await getDocs(userProductsQuery);
+                
+                userProducts = [];
+                let totalInvestmentAmount = 0;
+                let totalProfitAmount = 0;
+                let totalClaimedAmount = 0;
+                
+                querySnapshot.forEach((docSnap) => {
+                    const productData = docSnap.data();
+                    
+                    userProducts.push({
+                        id: docSnap.id,
+                        ...productData
+                    });
+                    
+                    // Calculate totals
+                    if (productData.purchase_amount) {
+                        totalInvestmentAmount += productData.purchase_amount;
+                    }
+                    
+                    if (productData.total_profit) {
+                        totalProfitAmount += productData.total_profit;
+                    }
+                    
+                    if (productData.claimed_profit) {
+                        totalClaimedAmount += productData.claimed_profit;
+                    }
+                });
+                
+                // Update UI
+                updateProductsUI();
+                
+                // Update summary
+                totalInvestment.textContent = formatRupiah(totalInvestmentAmount);
+                totalProfit.textContent = formatRupiah(totalProfitAmount);
+                totalClaimed.textContent = formatRupiah(totalClaimedAmount);
+                
+                if (userProducts.length > 0) {
+                    profitSummary.style.display = 'block';
+                }
+                
+                // Set up real-time listener
+                const unsubscribe = onSnapshot(userProductsQuery, (snapshot) => {
+                    userProducts = [];
+                    let newTotalInvestment = 0;
+                    let newTotalProfit = 0;
+                    let newTotalClaimed = 0;
+                    
+                    snapshot.forEach((docSnap) => {
+                        const productData = docSnap.data();
+                        userProducts.push({
+                            id: docSnap.id,
+                            ...productData
+                        });
+                        
+                        // Recalculate totals
+                        if (productData.purchase_amount) {
+                            newTotalInvestment += productData.purchase_amount;
+                        }
+                        if (productData.total_profit) {
+                            newTotalProfit += productData.total_profit;
+                        }
+                        if (productData.claimed_profit) {
+                            newTotalClaimed += productData.claimed_profit;
+                        }
+                    });
+                    
+                    // Update summary in real-time
+                    totalInvestment.textContent = formatRupiah(newTotalInvestment);
+                    totalProfit.textContent = formatRupiah(newTotalProfit);
+                    totalClaimed.textContent = formatRupiah(newTotalClaimed);
+                    
+                    updateProductsUI();
+                });
+                
+                // Store for cleanup
+                window.userProductsUnsubscribe = unsubscribe;
+                
+            } catch (error) {
+                console.error('Error loading user products:', error);
+                showToast('Gagal memuat produk', 'error');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // ============================================
+        // UPDATE PRODUCTS UI
+        // ============================================
+        function updateProductsUI() {
+            if (userProducts.length === 0) {
+                emptyState.style.display = 'block';
+                productsContainer.style.display = 'none';
+                return;
+            }
+            
+            emptyState.style.display = 'none';
+            productsContainer.style.display = 'block';
+            productsList.innerHTML = '';
+            
+            totalProductsCount.textContent = userProducts.length;
+            
+            userProducts.forEach((product, index) => {
+                const productCard = createProductCard(product, index);
+                productsList.appendChild(productCard);
+            });
+            
+            // Animate progress bars
+            setTimeout(() => {
+                document.querySelectorAll('.progress-fill').forEach((bar, index) => {
+                    const progress = bar.getAttribute('data-progress');
+                    bar.style.width = progress + '%';
+                });
+            }, 100);
+        }
+
+        // ============================================
+        // CREATE PRODUCT CARD - FIXED DATA ATTRIBUTES
+        // ============================================
+        function createProductCard(product, index) {
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            card.style.animationDelay = `${index * 0.1}s`;
+            
+            const daysPassed = calculateDaysPassed(product.start_date);
+            const daysRemaining = calculateDaysRemaining(product.start_date, product.end_date);
+            const progressPercentage = calculateProgressPercentage(product.start_date, product.end_date);
+            const isFinished = product.status === 'completed' || daysRemaining <= 0;
+            const claimedToday = product.last_claim_at ? isClaimedToday(product.last_claim_at) : false;
+            
+            // Check if can claim more (not exceed total profit)
+            const canClaimMoreCheck = canClaimMore(
+                product.claimed_profit || 0,
+                product.daily_profit || 0,
+                product.total_profit || 0
+            );
+            
+            const canClaim = !isFinished && product.daily_profit > 0 && canClaimMoreCheck && !claimedToday;
+            
+            // Escape quotes in product name for onclick
+            const safeProductName = (product.product_name || 'Unknown Product').replace(/'/g, "\\'");
+            
+            card.innerHTML = `
+                <div class="product-header">
+                    <div class="product-name">${product.product_name || 'Unknown Product'}</div>
+                    <div class="product-badge ${isFinished ? 'badge-finished' : 'badge-active'}">
+                        ${isFinished ? 'FINISHED' : 'ACTIVE'}
+                    </div>
+                </div>
+                
+                <div class="product-details">
+                    <div class="detail-item">
+                        <div class="detail-label">Investasi</div>
+                        <div class="detail-value amount">${formatRupiah(product.purchase_amount || 0)}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Durasi</div>
+                        <div class="detail-value">${product.duration_days || 0} hari</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Profit Harian</div>
+                        <div class="detail-value profit">${formatRupiah(product.daily_profit || 0)}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Total Profit</div>
+                        <div class="detail-value profit">${formatRupiah(product.total_profit || 0)}</div>
+                    </div>
+                </div>
+                
+                <div class="progress-container">
+                    <div class="progress-header">
+                        <div class="progress-label">Progress</div>
+                        <div class="progress-percentage">${progressPercentage}%</div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" data-progress="${progressPercentage}"></div>
+                    </div>
+                </div>
+                
+                <div class="dates-info">
+                    <div class="date-item">
+                        <div>Start Date</div>
+                        <div class="date-value">${formatDate(product.start_date)}</div>
+                    </div>
+                    <div class="date-item">
+                        <div>End Date</div>
+                        <div class="date-value">${formatDate(product.end_date)}</div>
+                    </div>
+                </div>
+                
+                <div class="claim-section">
+                    <div class="claimed-info">
+                        <div class="claimed-label">Sudah Diklaim</div>
+                        <div class="claimed-amount">${formatRupiah(product.claimed_profit || 0)}</div>
+                    </div>
+                    
+                    ${!isFinished ? `
+                        <button class="primary-button claim-button" 
+                                onclick="handleClaimButtonClick('${product.id}', ${product.daily_profit || 0}, '${safeProductName}')"
+                                ${!canClaim ? 'disabled' : ''}>
+                            <i class="fas fa-coins"></i>
+                            ${claimedToday ? 'Sudah Diklaim' : 'Klaim Harian'}
+                        </button>
+                    ` : `
+                        <div class="claimed-info">
+                            <div class="claimed-label">Status</div>
+                            <div class="claimed-amount" style="color: var(--electric-cyan);">Selesai</div>
+                        </div>
+                    `}
+                </div>
+            `;
+            
+            return card;
+        }
+
+        // ============================================
+        // HANDLE CLAIM BUTTON CLICK - GLOBAL FUNCTION
+        // ============================================
+        window.handleClaimButtonClick = function(productId, dailyProfit, productName) {
+            const product = userProducts.find(p => p.id === productId);
+            
+            if (!product) {
+                showToast('Produk tidak ditemukan', 'error');
+                return;
+            }
+            
+            // Check if already claimed today
+            if (product.last_claim_at && isClaimedToday(product.last_claim_at)) {
+                showToast('Anda sudah mengklaim profit hari ini', 'warning');
+                return;
+            }
+            
+            // Check if product is still active
+            if (product.status !== 'active') {
+                showToast('Produk sudah tidak aktif', 'error');
+                return;
+            }
+            
+            // Check if can claim more (not exceed total profit)
+            if (!canClaimMore(product.claimed_profit || 0, dailyProfit, product.total_profit || 0)) {
+                showToast('Tidak bisa klaim melebihi total profit produk', 'error');
+                return;
+            }
+            
+            currentClaimProduct = product;
+            
+            // Update modal content
+            claimMessage.textContent = `Anda akan mengklaim profit harian untuk produk "${productName}" sebesar`;
+            claimAmount.textContent = formatRupiah(dailyProfit);
+            
+            // Show modal
+            claimModal.style.display = 'flex';
+        };
+
+        // ============================================
+        // CONFIRM CLAIM - FIXED TRANSACTION
+        // ============================================
+        async function confirmClaimAction() {
+            if (!currentClaimProduct || !currentUser) {
+                showToast('Data tidak valid', 'error');
+                return;
+            }
+            
+            try {
+                // Disable confirm button
+                confirmClaimBtn.disabled = true;
+                confirmClaimBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
+                
+                const productId = currentClaimProduct.id;
+                const claimAmountValue = currentClaimProduct.daily_profit;
+                
+                // VALIDASI: Check lagi sebelum proses
+                if (!canClaimMore(
+                    currentClaimProduct.claimed_profit || 0, 
+                    claimAmountValue, 
+                    currentClaimProduct.total_profit || 0
+                )) {
+                    throw new Error('Tidak bisa klaim melebihi total profit');
+                }
+                
+                // Use batch for atomic operations
+                const batch = writeBatch(db);
+                
+                // 1. Update user_products document - HANYA TAMBAH daily_profit
+                const productRef = doc(db, 'user_products', productId);
+                batch.update(productRef, {
+                    claimed_profit: increment(claimAmountValue),
+                    last_claim_at: serverTimestamp(),
+                    updated_at: serverTimestamp()
+                });
+                
+                // 2. Update user balance
+                const userRef = doc(db, 'users', currentUser.uid);
+                batch.update(userRef, {
+                    balance: increment(claimAmountValue),
+                    total_profit: increment(claimAmountValue),
+                    last_activity: serverTimestamp()
+                });
+                
+                // 3. Create history record
+                const historyRef = doc(collection(db, 'history'));
+                const historyData = {
+                    uid: currentUser.uid,
+                    type: 'daily_claim',
+                    amount: claimAmountValue,
+                    product_id: currentClaimProduct.product_id,
+                    product_name: currentClaimProduct.product_name,
+                    description: `Klaim profit harian - ${currentClaimProduct.product_name}`,
+                    created_at: serverTimestamp(),
+                    status: 'completed'
+                };
+                batch.set(historyRef, historyData);
+                
+                // Execute batch
+                await batch.commit();
+                
+                // Success
+                showToast(`Berhasil mengklaim ${formatRupiah(claimAmountValue)}`, 'success');
+                
+                // Close modal
+                claimModal.style.display = 'none';
+                
+                // Reset button state
+                setTimeout(() => {
+                    confirmClaimBtn.disabled = false;
+                    confirmClaimBtn.innerHTML = '<i class="fas fa-check"></i> Konfirmasi Klaim';
+                }, 1000);
+                
+                // Reset current claim product
+                currentClaimProduct = null;
+                
+            } catch (error) {
+                console.error('Error confirming claim:', error);
+                
+                if (error.message.includes('melebihi total profit')) {
+                    showToast('Tidak bisa klaim melebihi total profit produk', 'error');
+                } else {
+                    showToast('Gagal mengklaim profit', 'error');
+                }
+                
+                // Reset button state
+                confirmClaimBtn.disabled = false;
+                confirmClaimBtn.innerHTML = '<i class="fas fa-check"></i> Konfirmasi Klaim';
+                
+                // Close modal
+                claimModal.style.display = 'none';
+            }
+        }
+
+        // ============================================
+        // EVENT LISTENERS
+        // ============================================
+        backBtn.addEventListener('click', () => {
+            window.location.href = 'dashboard.html';
+        });
+
+        closeModalBtn.addEventListener('click', () => {
+            claimModal.style.display = 'none';
+            currentClaimProduct = null;
+        });
+
+        cancelClaimBtn.addEventListener('click', () => {
+            claimModal.style.display = 'none';
+            currentClaimProduct = null;
+        });
+
+        confirmClaimBtn.addEventListener('click', confirmClaimAction);
+
+        // Close modal on outside click
+        claimModal.addEventListener('click', (e) => {
+            if (e.target === claimModal) {
+                claimModal.style.display = 'none';
+                currentClaimProduct = null;
+            }
+        });
+
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+        async function init() {
+            try {
+                // Initialize particles
+                initParticles();
+                
+                // Check authentication
+                const isAuthenticated = await checkAuth();
+                if (!isAuthenticated) return;
+                
+            } catch (error) {
+                console.error('Initialization error:', error);
+                showToast('Terjadi kesalahan sistem', 'error');
+                
+                // Show error state
+                loadingState.innerHTML = `
+                    <div style="text-align: center;">
+                        <i class="fas fa-exclamation-triangle" style="font-size: 3rem; color: var(--warning-orange); margin-bottom: 20px;"></i>
+                        <h3>Terjadi Kesalahan</h3>
+                        <p style="margin-bottom: 20px; color: var(--light-gray);">Gagal memuat halaman. Silakan coba lagi.</p>
+                        <button class="primary-button" onclick="location.reload()">
+                            <i class="fas fa-redo"></i>
+                            Muat Ulang
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        // ============================================
+        // CLEANUP ON PAGE UNLOAD
+        // ============================================
+        window.addEventListener('beforeunload', () => {
+            if (window.userProductsUnsubscribe) {
+                window.userProductsUnsubscribe();
+            }
+        });
+
+        // Start the application
+        init();
+    </script>
+</body>
+</html>

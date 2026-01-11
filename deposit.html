@@ -1,0 +1,1756 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deposit Saldo - VORTEXA ID</title>
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header class="main-header">
+            <button id="backButton" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h1>Deposit Saldo</h1>
+            <div class="header-placeholder"></div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="content">
+            <!-- Balance Card -->
+            <div class="card balance-card">
+                <div class="card-header">
+                    <i class="fas fa-wallet"></i>
+                    <h2>Saldo Saat Ini</h2>
+                </div>
+                <div class="balance-amount">
+                    <span id="currentBalance">Rp 0</span>
+                </div>
+                <div class="balance-info">
+                    <p><i class="fas fa-info-circle"></i> Saldo akan bertambah setelah deposit disetujui admin</p>
+                </div>
+            </div>
+
+            <!-- Deposit Form Card -->
+            <div class="card form-card">
+                <div class="card-header">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <h2>Form Deposit</h2>
+                </div>
+
+                <!-- Deposit Amount Input -->
+                <div class="form-group">
+                    <label for="depositAmount">
+                        <i class="fas fa-coins"></i> Jumlah Deposit
+                    </label>
+                    <div class="input-with-prefix">
+                        <span class="input-prefix">Rp</span>
+                        <input 
+                            type="number" 
+                            id="depositAmount" 
+                            placeholder="Masukkan jumlah deposit"
+                            min="30000"
+                            max="10000000"
+                            step="1000"
+                        >
+                    </div>
+                    <div id="amountError" class="error-message"></div>
+                    <div class="form-hint">
+                        <i class="fas fa-exclamation-circle"></i>
+                        Minimal Rp 30.000, maksimal Rp 10.000.000, kelipatan 1.000
+                    </div>
+                </div>
+
+                <!-- Quick Amount Buttons -->
+                <div class="form-group">
+                    <label>
+                        <i class="fas fa-bolt"></i> Nominal Cepat
+                    </label>
+                    <div class="quick-amounts">
+                        <button class="amount-btn" data-amount="30000">Rp 30K</button>
+                        <button class="amount-btn" data-amount="50000">Rp 50K</button>
+                        <button class="amount-btn" data-amount="100000">Rp 100K</button>
+                        <button class="amount-btn" data-amount="250000">Rp 250K</button>
+                        <button class="amount-btn" data-amount="500000">Rp 500K</button>
+                        <button class="amount-btn" data-amount="1000000">Rp 1 JT</button>
+                    </div>
+                </div>
+
+                <!-- Payment Method -->
+                <div class="form-group">
+                    <label>
+                        <i class="fas fa-credit-card"></i> Metode Pembayaran
+                    </label>
+                    <div class="payment-method">
+                        <div class="method-card active">
+                            <div class="method-icon">
+                                <i class="fas fa-qrcode"></i>
+                            </div>
+                            <div class="method-info">
+                                <h3>QRIS</h3>
+                                <p>Bayar dengan QR Code</p>
+                            </div>
+                            <div class="method-check">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="payment-instructions">
+                        <h4><i class="fas fa-list-ol"></i> Instruksi Pembayaran:</h4>
+                        <ol>
+                            <li>Masukkan jumlah deposit</li>
+                            <li>Klik "Lanjutkan Pembayaran"</li>
+                            <li>Scan QR Code yang muncul</li>
+                            <li>Bayar sesuai jumlah</li>
+                            <li>Upload bukti pembayaran</li>
+                            <li>Tunggu konfirmasi admin (1-3 jam kerja)</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <!-- Continue Button -->
+                <button id="continueBtn" class="primary-btn" disabled>
+                    <i class="fas fa-arrow-right"></i> Lanjutkan Pembayaran
+                </button>
+            </div>
+
+            <!-- Deposit History -->
+            <div class="card history-card">
+                <div class="card-header">
+                    <i class="fas fa-history"></i>
+                    <h2>Riwayat Deposit</h2>
+                </div>
+                <div id="depositHistory" class="history-list">
+                    <!-- History items will be loaded here -->
+                </div>
+            </div>
+        </main>
+
+        <!-- Payment Modal -->
+        <div id="paymentModal" class="modal-overlay">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2><i class="fas fa-qrcode"></i> Pembayaran via QRIS</h2>
+                    <button class="close-modal"><i class="fas fa-times"></i></button>
+                </div>
+                
+                <div class="modal-body">
+                    <!-- Payment Summary -->
+                    <div class="summary-card">
+                        <h3><i class="fas fa-receipt"></i> Ringkasan Deposit</h3>
+                        <div class="summary-item">
+                            <span>Jumlah Deposit</span>
+                            <span id="summaryAmount">Rp 0</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Biaya Admin</span>
+                            <span>Rp 0</span>
+                        </div>
+                        <div class="summary-divider"></div>
+                        <div class="summary-total">
+                            <span>Total</span>
+                            <span id="summaryTotal">Rp 0</span>
+                        </div>
+                    </div>
+
+                    <!-- QR Code Display -->
+                    <div class="qris-section">
+                        <h3><i class="fas fa-qrcode"></i> QR Code Pembayaran</h3>
+                        <div class="qris-container">
+                            <img id="qrisImage" src="qris.jpg" alt="QRIS Payment Code">
+                            <div class="qris-expiry">
+                                <i class="fas fa-clock"></i>
+                                <span>Berlaku: 30 menit</span>
+                            </div>
+                        </div>
+                        <p class="qris-note">
+                            <i class="fas fa-lightbulb"></i>
+                            Scan QR Code dengan aplikasi mobile banking atau e-wallet
+                        </p>
+                    </div>
+
+                    <!-- Proof Upload -->
+                    <div class="upload-section">
+                        <h3><i class="fas fa-upload"></i> Bukti Pembayaran</h3>
+                        <div id="uploadArea" class="upload-area">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Klik atau tarik file ke sini</p>
+                            <p class="upload-hint">Format: JPG, PNG (max 5MB)</p>
+                            <input type="file" id="proofUpload" accept=".jpg,.jpeg,.png,.gif" hidden>
+                        </div>
+                        <div id="uploadPreview" class="upload-preview" style="display: none;">
+                            <div class="preview-image">
+                                <img id="proofImage" alt="Proof Preview">
+                                <button class="remove-proof"><i class="fas fa-times"></i></button>
+                            </div>
+                            <div class="upload-success">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Bukti berhasil diupload!</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="modal-actions">
+                        <button id="submitDepositBtn" class="primary-btn" disabled>
+                            <i class="fas fa-paper-plane"></i> Kirim Permintaan Deposit
+                        </button>
+                        <button class="secondary-btn close-modal">
+                            <i class="fas fa-times"></i> Batalkan
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Modal -->
+        <div id="successModal" class="modal-overlay">
+            <div class="modal-content success-modal">
+                <div class="success-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h2>Permintaan Deposit Berhasil!</h2>
+                <p>Deposit Anda sedang diproses oleh admin. Biasanya membutuhkan 1-3 jam kerja untuk dikonfirmasi.</p>
+                <div class="success-details">
+                    <p><i class="fas fa-receipt"></i> ID Deposit: <span id="successId">-</span></p>
+                    <p><i class="fas fa-money-bill-wave"></i> Jumlah: <span id="successAmount">Rp 0</span></p>
+                    <p><i class="fas fa-clock"></i> Waktu: <span id="successTime">-</span></p>
+                </div>
+                <div class="modal-actions">
+                    <button id="goToDashboard" class="primary-btn">
+                        <i class="fas fa-home"></i> Kembali ke Dashboard
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Loading Overlay -->
+        <div id="loadingOverlay" class="loading-overlay">
+            <div class="spinner"></div>
+            <p>Memuat halaman...</p>
+        </div>
+    </div>
+
+    <!-- CSS Styles -->
+    <style>
+        /* Base Styles */
+        :root {
+            --primary-black: #000000;
+            --dark-space-blue: #0a1931;
+            --cosmic-blue: #1a237e;
+            --electric-cyan: #00e5ff;
+            --dark-cyan: #00b8d4;
+            --nebula-purple: #7b1fa2;
+            --stellar-gold: #ffd700;
+            --dark-gold: #ffab00;
+            --pure-white: #ffffff;
+            --light-gray: #b0b0b0;
+            --medium-gray: #757575;
+            --success-green: #4caf50;
+            --warning-orange: #ff9800;
+            --error-red: #f44336;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: var(--primary-black);
+            color: var(--pure-white);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated Space Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(26, 35, 126, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 229, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(123, 31, 162, 0.1) 0%, transparent 50%);
+            z-index: -2;
+        }
+
+        /* Stars Animation */
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        .star {
+            position: fixed;
+            background-color: var(--pure-white);
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+            z-index: -1;
+        }
+
+        /* Layout */
+        #app {
+            min-height: 100vh;
+            padding-bottom: 70px;
+            position: relative;
+        }
+
+        /* Header */
+        .main-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            background: rgba(10, 25, 49, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 229, 255, 0.2);
+        }
+
+        .back-button {
+            background: transparent;
+            border: none;
+            color: var(--electric-cyan);
+            font-size: 1.5rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .back-button:hover {
+            background: rgba(0, 229, 255, 0.1);
+            transform: translateX(-2px);
+        }
+
+        .main-header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--pure-white);
+        }
+
+        .header-placeholder {
+            width: 40px;
+        }
+
+        /* Content */
+        .content {
+            padding: 16px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Cards */
+        .card {
+            background: rgba(10, 25, 49, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 229, 255, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(0, 229, 255, 0.3);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .card-header i {
+            color: var(--electric-cyan);
+            font-size: 1.5rem;
+        }
+
+        .card-header h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--pure-white);
+        }
+
+        /* Balance Card */
+        .balance-amount {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--electric-cyan);
+            text-align: center;
+            margin: 20px 0;
+            font-family: 'Space Grotesk', monospace;
+        }
+
+        .balance-info {
+            background: rgba(0, 229, 255, 0.1);
+            border-radius: 8px;
+            padding: 12px;
+            border-left: 4px solid var(--electric-cyan);
+        }
+
+        .balance-info p {
+            font-size: 0.875rem;
+            color: var(--light-gray);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .balance-info i {
+            color: var(--electric-cyan);
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--pure-white);
+            margin-bottom: 8px;
+        }
+
+        .form-group i {
+            color: var(--electric-cyan);
+        }
+
+        .input-with-prefix {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-prefix {
+            position: absolute;
+            left: 16px;
+            color: var(--light-gray);
+            font-weight: 500;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 14px 16px 14px 50px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--pure-white);
+            font-size: 1.125rem;
+            font-family: 'Space Grotesk', monospace;
+            transition: all 0.2s ease;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: var(--electric-cyan);
+            box-shadow: 0 0 0 2px rgba(0, 229, 255, 0.2);
+        }
+
+        .form-hint {
+            font-size: 0.875rem;
+            color: var(--medium-gray);
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .error-message {
+            color: var(--error-red);
+            font-size: 0.875rem;
+            margin-top: 6px;
+            display: none;
+        }
+
+        /* Quick Amount Buttons */
+        .quick-amounts {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .amount-btn {
+            padding: 14px;
+            background: rgba(0, 229, 255, 0.1);
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            border-radius: 8px;
+            color: var(--electric-cyan);
+            font-weight: 600;
+            font-family: 'Space Grotesk', monospace;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .amount-btn:hover {
+            background: rgba(0, 229, 255, 0.2);
+        }
+
+        .amount-btn.active {
+            background: var(--electric-cyan);
+            color: var(--primary-black);
+            border-color: var(--electric-cyan);
+        }
+
+        /* Payment Method */
+        .payment-method {
+            margin-top: 12px;
+        }
+
+        .method-card {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .method-card.active {
+            border-color: var(--electric-cyan);
+            background: rgba(0, 229, 255, 0.1);
+        }
+
+        .method-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(0, 229, 255, 0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+        }
+
+        .method-icon i {
+            font-size: 1.5rem;
+            color: var(--electric-cyan);
+        }
+
+        .method-info {
+            flex: 1;
+        }
+
+        .method-info h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--pure-white);
+            margin-bottom: 4px;
+        }
+
+        .method-info p {
+            font-size: 0.875rem;
+            color: var(--light-gray);
+        }
+
+        .method-check i {
+            color: var(--electric-cyan);
+            font-size: 1.5rem;
+        }
+
+        .payment-instructions {
+            margin-top: 20px;
+            padding: 16px;
+            background: rgba(0, 229, 255, 0.05);
+            border-radius: 8px;
+            border-left: 4px solid var(--electric-cyan);
+        }
+
+        .payment-instructions h4 {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            color: var(--electric-cyan);
+        }
+
+        .payment-instructions ol {
+            padding-left: 20px;
+            color: var(--light-gray);
+        }
+
+        .payment-instructions li {
+            margin-bottom: 8px;
+        }
+
+        /* Buttons */
+        .primary-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--electric-cyan), #2979ff);
+            border: none;
+            border-radius: 8px;
+            color: var(--primary-black);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .primary-btn:hover:not(:disabled) {
+            transform: scale(1.02);
+            box-shadow: 0 0 25px rgba(0, 229, 255, 0.9);
+        }
+
+        .primary-btn:active:not(:disabled) {
+            transform: scale(0.98);
+        }
+
+        .primary-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .secondary-btn {
+            width: 100%;
+            padding: 14px;
+            background: transparent;
+            border: 2px solid var(--electric-cyan);
+            border-radius: 8px;
+            color: var(--electric-cyan);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .secondary-btn:hover {
+            background: rgba(0, 229, 255, 0.1);
+        }
+
+        /* History */
+        .history-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .history-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        .history-info h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--pure-white);
+            margin-bottom: 4px;
+        }
+
+        .history-date {
+            font-size: 0.875rem;
+            color: var(--light-gray);
+        }
+
+        .history-amount {
+            font-size: 1.125rem;
+            font-weight: 600;
+            font-family: 'Space Grotesk', monospace;
+        }
+
+        .history-status {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-pending {
+            background: rgba(255, 152, 0, 0.2);
+            color: var(--warning-orange);
+        }
+
+        .status-approved {
+            background: rgba(76, 175, 80, 0.2);
+            color: var(--success-green);
+        }
+
+        .status-rejected {
+            background: rgba(244, 67, 54, 0.2);
+            color: var(--error-red);
+        }
+
+        /* Modals */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: rgba(10, 25, 49, 0.95);
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            border-radius: 16px;
+            padding: 24px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: scaleUp 0.3s ease;
+        }
+
+        @keyframes scaleUp {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            font-size: 1.5rem;
+            color: var(--electric-cyan);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .close-modal {
+            background: transparent;
+            border: none;
+            color: var(--light-gray);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .close-modal:hover {
+            color: var(--electric-cyan);
+            transform: rotate(90deg);
+        }
+
+        /* Summary Card */
+        .summary-card {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .summary-card h3 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            color: var(--electric-cyan);
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            color: var(--light-gray);
+        }
+
+        .summary-divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 16px 0;
+        }
+
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--electric-cyan);
+        }
+
+        /* QRIS Section */
+        .qris-section {
+            margin-bottom: 20px;
+        }
+
+        .qris-section h3 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+            color: var(--electric-cyan);
+        }
+
+        .qris-container {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+        }
+
+        #qrisImage {
+            width: 200px;
+            height: 200px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+
+        .qris-expiry {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: var(--warning-orange);
+            font-size: 0.875rem;
+        }
+
+        .qris-note {
+            text-align: center;
+            color: var(--light-gray);
+            font-size: 0.875rem;
+            margin-top: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        /* Upload Section */
+        .upload-section h3 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+            color: var(--electric-cyan);
+        }
+
+        .upload-area {
+            border: 2px dashed rgba(0, 229, 255, 0.3);
+            border-radius: 12px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .upload-area:hover {
+            border-color: var(--electric-cyan);
+            background: rgba(0, 229, 255, 0.05);
+        }
+
+        .upload-area i {
+            font-size: 3rem;
+            color: var(--electric-cyan);
+            margin-bottom: 16px;
+        }
+
+        .upload-area p {
+            color: var(--light-gray);
+            margin-bottom: 8px;
+        }
+
+        .upload-hint {
+            font-size: 0.875rem;
+            color: var(--medium-gray);
+        }
+
+        .upload-preview {
+            margin-top: 20px;
+        }
+
+        .preview-image {
+            position: relative;
+            margin-bottom: 16px;
+        }
+
+        #proofImage {
+            width: 100%;
+            max-height: 300px;
+            object-fit: contain;
+            border-radius: 12px;
+        }
+
+        .remove-proof {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            color: var(--pure-white);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .remove-proof:hover {
+            background: var(--error-red);
+        }
+
+        .upload-success {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            color: var(--success-green);
+            font-weight: 600;
+        }
+
+        /* Modal Actions */
+        .modal-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        /* Success Modal */
+        .success-modal {
+            text-align: center;
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            color: var(--success-green);
+            margin-bottom: 20px;
+        }
+
+        .success-modal h2 {
+            color: var(--electric-cyan);
+            margin-bottom: 16px;
+        }
+
+        .success-modal p {
+            color: var(--light-gray);
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        .success-details {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+            text-align: left;
+        }
+
+        .success-details p {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .success-details span {
+            font-weight: 600;
+            color: var(--electric-cyan);
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            background: rgba(10, 25, 49, 0.95);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(0, 229, 255, 0.2);
+            padding: 12px 0;
+            z-index: 100;
+        }
+
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--light-gray);
+            transition: all 0.2s ease;
+        }
+
+        .nav-item i {
+            font-size: 1.25rem;
+            margin-bottom: 4px;
+        }
+
+        .nav-item span {
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .nav-item:hover {
+            color: var(--electric-cyan);
+        }
+
+        .nav-item.active {
+            color: var(--electric-cyan);
+        }
+
+        /* Loading Overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(0, 229, 255, 0.3);
+            border-top-color: var(--electric-cyan);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-overlay p {
+            color: var(--electric-cyan);
+            font-weight: 500;
+        }
+
+        /* Responsive Design */
+        @media (min-width: 768px) {
+            .main-header {
+                padding: 20px 24px;
+            }
+
+            .main-header h1 {
+                font-size: 1.75rem;
+            }
+
+            .content {
+                padding: 24px;
+            }
+
+            .quick-amounts {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .modal-content {
+                padding: 32px;
+            }
+
+            .bottom-nav {
+                padding: 16px 0;
+            }
+
+            .nav-item i {
+                font-size: 1.5rem;
+            }
+
+            .nav-item span {
+                font-size: 0.875rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .content {
+                padding: 32px;
+                max-width: 800px;
+            }
+
+            .main-header {
+                padding: 24px 32px;
+            }
+
+            .quick-amounts {
+                grid-template-columns: repeat(6, 1fr);
+            }
+
+            .modal-actions {
+                flex-direction: row;
+            }
+
+            .modal-actions .primary-btn,
+            .modal-actions .secondary-btn {
+                flex: 1;
+            }
+        }
+    </style>
+
+    <!-- JavaScript -->
+    <script type="module">
+        // Import Firebase SDKs
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+        import { 
+            getAuth, 
+            onAuthStateChanged,
+            signOut
+        } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+        
+        import { 
+            getFirestore, 
+            collection, 
+            doc, 
+            getDoc, 
+            setDoc, 
+            query, 
+            where, 
+            orderBy, 
+            onSnapshot, 
+            getDocs, 
+            Timestamp, 
+            increment,
+            serverTimestamp
+        } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+
+        // Firebase Configuration from document
+        const firebaseConfig = {
+            apiKey: "AIzaSyAEM8RddVyDgzeveu4ZV_5mnXpOf52EoP4",
+            authDomain: "vortexaind.firebaseapp.com",
+            projectId: "vortexaind",
+            storageBucket: "vortexaind.firebasestorage.app",
+            messagingSenderId: "94487454118",
+            appId: "1:94487454118:web:2469612cf7082fb8ce2f67"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Global state
+        let currentUser = null;
+        let userData = null;
+        let currentAmount = 0;
+        let proofImageUrl = null;
+        let depositListener = null;
+
+        // DOM Elements
+        const backButton = document.getElementById('backButton');
+        const currentBalance = document.getElementById('currentBalance');
+        const depositAmount = document.getElementById('depositAmount');
+        const amountError = document.getElementById('amountError');
+        const continueBtn = document.getElementById('continueBtn');
+        const amountButtons = document.querySelectorAll('.amount-btn');
+        const paymentModal = document.getElementById('paymentModal');
+        const closeModalButtons = document.querySelectorAll('.close-modal');
+        const summaryAmount = document.getElementById('summaryAmount');
+        const summaryTotal = document.getElementById('summaryTotal');
+        const proofUpload = document.getElementById('proofUpload');
+        const uploadArea = document.getElementById('uploadArea');
+        const uploadPreview = document.getElementById('uploadPreview');
+        const proofImage = document.getElementById('proofImage');
+        const removeProofButton = document.querySelector('.remove-proof');
+        const submitDepositBtn = document.getElementById('submitDepositBtn');
+        const successModal = document.getElementById('successModal');
+        const successId = document.getElementById('successId');
+        const successAmount = document.getElementById('successAmount');
+        const successTime = document.getElementById('successTime');
+        const goToDashboard = document.getElementById('goToDashboard');
+        const depositHistory = document.getElementById('depositHistory');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+
+        // ImgBB Upload Function from document
+        async function uploadToImgBB(base64Image, fileName = 'proof.jpg') {
+            const formData = new FormData();
+            formData.append('key', '874a8bf96641caa969ce88e871be13e3');
+            formData.append('image', base64Image.split(',')[1]);
+            formData.append('name', fileName);
+            
+            try {
+                const response = await fetch('https://api.imgbb.com/1/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (!response.ok) throw new Error('Upload failed');
+                
+                const data = await response.json();
+                
+                return {
+                    url: data.data.url,
+                    deleteUrl: data.data.delete_url,
+                    thumbUrl: data.data.thumb.url,
+                    mediumUrl: data.data.medium.url
+                };
+            } catch (error) {
+                console.error('ImgBB Upload Error:', error);
+                throw new Error('Gagal mengunggah gambar. Silakan coba lagi.');
+            }
+        }
+
+        // Format Rupiah
+        function formatRupiah(amount) {
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0
+            }).format(amount);
+        }
+
+        // Format Date
+        function formatDate(timestamp) {
+            if (!timestamp) return '-';
+            const date = timestamp.toDate();
+            return date.toLocaleDateString('id-ID', {
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        // Generate Deposit ID
+        function generateDepositId() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let id = 'DEP-';
+            for (let i = 0; i < 6; i++) {
+                id += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return id;
+        }
+
+        // Validate Deposit Amount
+        function validateAmount(amount) {
+            const minAmount = 30000;
+            const maxAmount = 10000000;
+            
+            if (!amount || amount < minAmount) {
+                showError('Minimal deposit adalah Rp 30.000');
+                return false;
+            }
+            
+            if (amount > maxAmount) {
+                showError('Maksimal deposit adalah Rp 10.000.000');
+                return false;
+            }
+            
+            if (amount % 1000 !== 0) {
+                showError('Jumlah deposit harus kelipatan 1.000');
+                return false;
+            }
+            
+            hideError();
+            return true;
+        }
+
+        // Show error message
+        function showError(message) {
+            amountError.textContent = message;
+            amountError.style.display = 'block';
+            continueBtn.disabled = true;
+        }
+
+        // Hide error message
+        function hideError() {
+            amountError.style.display = 'none';
+            continueBtn.disabled = false;
+        }
+
+        // Update amount display
+        function updateAmount(amount) {
+            currentAmount = parseInt(amount) || 0;
+            depositAmount.value = currentAmount || '';
+            
+            // Update quick buttons state
+            amountButtons.forEach(btn => {
+                const btnAmount = parseInt(btn.dataset.amount);
+                btn.classList.toggle('active', btnAmount === currentAmount);
+            });
+            
+            // Validate amount
+            validateAmount(currentAmount);
+            
+            // Update modal summary
+            summaryAmount.textContent = formatRupiah(currentAmount);
+            summaryTotal.textContent = formatRupiah(currentAmount);
+        }
+
+        // Initialize page
+        async function initPage() {
+            showLoading();
+            
+            // Check authentication state
+            onAuthStateChanged(auth, async (user) => {
+                if (!user) {
+                    // Not logged in, redirect to login
+                    window.location.href = 'login.html';
+                    return;
+                }
+                
+                currentUser = user;
+                
+                try {
+                    // Get user document
+                    const userDocRef = doc(db, 'users', user.uid);
+                    const userDoc = await getDoc(userDocRef);
+                    
+                    if (!userDoc.exists()) {
+                        // User document doesn't exist, logout
+                        await signOut(auth);
+                        window.location.href = 'login.html';
+                        return;
+                    }
+                    
+                    userData = userDoc.data();
+                    
+                    // Check account status
+                    if (userData.account_status === 'banned') {
+                        window.location.href = 'banned.html';
+                        return;
+                    }
+                    
+                    // Check if suspended
+                    if (userData.account_status === 'suspended') {
+                        // Show limited access
+                        alert('Akun Anda sedang ditangguhkan. Tidak dapat melakukan deposit.');
+                        window.location.href = 'dashboard.html';
+                        return;
+                    }
+                    
+                    // Load user balance
+                    loadUserBalance();
+                    
+                    // Load deposit history
+                    loadDepositHistory();
+                    
+                    // Create stars background
+                    createStarsBackground();
+                    
+                    hideLoading();
+                    
+                } catch (error) {
+                    console.error('Error loading user data:', error);
+                    alert('Terjadi kesalahan saat memuat data. Silakan refresh halaman.');
+                    hideLoading();
+                }
+            });
+        }
+
+        // Load user balance
+        function loadUserBalance() {
+            if (!currentUser) return;
+            
+            const userDocRef = doc(db, 'users', currentUser.uid);
+            
+            // Real-time listener for balance updates
+            onSnapshot(userDocRef, (doc) => {
+                if (doc.exists()) {
+                    const data = doc.data();
+                    const balance = data.balance || 0;
+                    
+                    // Animate balance update
+                    animateBalance(currentBalance, balance);
+                }
+            });
+        }
+
+        // Animate balance number
+        function animateBalance(element, target) {
+            const current = parseInt(element.textContent.replace(/[^0-9]/g, '') || 0);
+            const duration = 500;
+            const steps = 20;
+            const increment = (target - current) / steps;
+            let step = 0;
+            
+            const timer = setInterval(() => {
+                step++;
+                const value = current + (increment * step);
+                
+                if (step >= steps) {
+                    element.textContent = formatRupiah(target);
+                    clearInterval(timer);
+                } else {
+                    element.textContent = formatRupiah(Math.round(value));
+                }
+            }, duration / steps);
+        }
+
+        // Load deposit history
+        function loadDepositHistory() {
+            if (!currentUser) return;
+            
+            const depositsRef = collection(db, 'deposit_requests');
+            const q = query(
+                depositsRef, 
+                where('uid', '==', currentUser.uid),
+                orderBy('created_at', 'desc'),
+                where('status', 'in', ['pending', 'approved', 'rejected'])
+            );
+            
+            // Clear existing listener
+            if (depositListener) {
+                depositListener();
+            }
+            
+            // Set up real-time listener
+            depositListener = onSnapshot(q, (snapshot) => {
+                depositHistory.innerHTML = '';
+                
+                if (snapshot.empty) {
+                    depositHistory.innerHTML = `
+                        <div class="history-item">
+                            <div class="history-info">
+                                <h3>Belum ada deposit</h3>
+                                <p class="history-date">Mulai deposit pertama Anda</p>
+                            </div>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const item = document.createElement('div');
+                    item.className = 'history-item';
+                    
+                    let statusClass = 'status-pending';
+                    let statusText = 'Pending';
+                    
+                    if (data.status === 'approved') {
+                        statusClass = 'status-approved';
+                        statusText = 'Disetujui';
+                    } else if (data.status === 'rejected') {
+                        statusClass = 'status-rejected';
+                        statusText = 'Ditolak';
+                    }
+                    
+                    item.innerHTML = `
+                        <div class="history-info">
+                            <h3>${data.deposit_id || 'DEP-XXXXXX'}</h3>
+                            <p class="history-date">${formatDate(data.created_at)}</p>
+                        </div>
+                        <div class="history-right">
+                            <div class="history-amount">${formatRupiah(data.amount || 0)}</div>
+                            <div class="history-status ${statusClass}">${statusText}</div>
+                        </div>
+                    `;
+                    
+                    depositHistory.appendChild(item);
+                });
+            });
+        }
+
+        // Create stars background
+        function createStarsBackground() {
+            const starCount = 100;
+            const body = document.querySelector('body');
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                
+                // Random position
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                
+                // Random size (1-3px)
+                const size = Math.random() * 2 + 1;
+                
+                // Random animation delay
+                const delay = Math.random() * 3;
+                
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.left = `${x}%`;
+                star.style.top = `${y}%`;
+                star.style.animationDelay = `${delay}s`;
+                
+                body.appendChild(star);
+            }
+        }
+
+        // Handle deposit submission
+        async function submitDeposit() {
+            if (!currentUser || !userData || !proofImageUrl || currentAmount <= 0) {
+                alert('Data tidak lengkap. Silakan upload bukti pembayaran.');
+                return;
+            }
+            
+            try {
+                submitDepositBtn.disabled = true;
+                submitDepositBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
+                
+                const depositId = generateDepositId();
+                const depositData = {
+                    deposit_id: depositId,
+                    uid: currentUser.uid,
+                    username: userData.username,
+                    amount: currentAmount,
+                    proof_image: proofImageUrl,
+                    status: 'pending',
+                    admin_note: null,
+                    created_at: serverTimestamp(),
+                    processed_at: null,
+                    processed_by: null,
+                    transaction_id: null
+                };
+                
+                // Add to deposit_requests collection
+                const depositRef = doc(collection(db, 'deposit_requests'));
+                await setDoc(depositRef, depositData);
+                
+                // Update user's total_deposit field
+                const userRef = doc(db, 'users', currentUser.uid);
+                await setDoc(userRef, {
+                    total_deposit: increment(currentAmount)
+                }, { merge: true });
+                
+                // Show success modal
+                successId.textContent = depositId;
+                successAmount.textContent = formatRupiah(currentAmount);
+                successTime.textContent = new Date().toLocaleString('id-ID');
+                
+                paymentModal.style.display = 'none';
+                successModal.style.display = 'flex';
+                
+                // Reset form
+                resetForm();
+                
+            } catch (error) {
+                console.error('Error submitting deposit:', error);
+                alert('Gagal mengirim permintaan deposit. Silakan coba lagi.');
+                submitDepositBtn.disabled = false;
+                submitDepositBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Kirim Permintaan Deposit';
+            }
+        }
+
+        // Reset form
+        function resetForm() {
+            currentAmount = 0;
+            proofImageUrl = null;
+            depositAmount.value = '';
+            amountButtons.forEach(btn => btn.classList.remove('active'));
+            continueBtn.disabled = true;
+            uploadPreview.style.display = 'none';
+            uploadArea.style.display = 'block';
+            proofImage.src = '';
+            submitDepositBtn.disabled = true;
+            submitDepositBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Kirim Permintaan Deposit';
+        }
+
+        // Handle image upload
+        async function handleImageUpload(file) {
+            if (!file) return;
+            
+            // Check file size (max 5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                alert('Ukuran file maksimal 5MB');
+                return;
+            }
+            
+            // Check file type
+            const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+            if (!validTypes.includes(file.type)) {
+                alert('Format file harus JPG, PNG, atau GIF');
+                return;
+            }
+            
+            try {
+                submitDepositBtn.disabled = true;
+                submitDepositBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengupload...';
+                
+                // Convert to base64
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                
+                reader.onload = async () => {
+                    try {
+                        const base64 = reader.result;
+                        
+                        // Upload to ImgBB
+                        const result = await uploadToImgBB(base64, `deposit_proof_${Date.now()}.jpg`);
+                        proofImageUrl = result.url;
+                        
+                        // Show preview
+                        proofImage.src = result.url;
+                        uploadArea.style.display = 'none';
+                        uploadPreview.style.display = 'block';
+                        
+                        submitDepositBtn.disabled = false;
+                        submitDepositBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Kirim Permintaan Deposit';
+                        
+                    } catch (error) {
+                        console.error('Upload error:', error);
+                        alert('Gagal mengupload gambar. Silakan coba lagi.');
+                        submitDepositBtn.disabled = true;
+                        submitDepositBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Kirim Permintaan Deposit';
+                    }
+                };
+                
+            } catch (error) {
+                console.error('Image processing error:', error);
+                alert('Terjadi kesalahan saat memproses gambar.');
+                submitDepositBtn.disabled = true;
+                submitDepositBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Kirim Permintaan Deposit';
+            }
+        }
+
+        // Show loading
+        function showLoading() {
+            loadingOverlay.style.display = 'flex';
+        }
+
+        // Hide loading
+        function hideLoading() {
+            loadingOverlay.style.display = 'none';
+        }
+
+        // Event Listeners
+        backButton.addEventListener('click', () => {
+            window.location.href = 'dashboard.html';
+        });
+
+        depositAmount.addEventListener('input', (e) => {
+            updateAmount(e.target.value);
+        });
+
+        amountButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                updateAmount(button.dataset.amount);
+            });
+        });
+
+        continueBtn.addEventListener('click', () => {
+            if (validateAmount(currentAmount)) {
+                paymentModal.style.display = 'flex';
+            }
+        });
+
+        closeModalButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                paymentModal.style.display = 'none';
+            });
+        });
+
+        // Close modal on overlay click
+        paymentModal.addEventListener('click', (e) => {
+            if (e.target === paymentModal) {
+                paymentModal.style.display = 'none';
+            }
+        });
+
+        successModal.addEventListener('click', (e) => {
+            if (e.target === successModal) {
+                successModal.style.display = 'none';
+            }
+        });
+
+        // File upload handling
+        uploadArea.addEventListener('click', () => {
+            proofUpload.click();
+        });
+
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = 'var(--electric-cyan)';
+            uploadArea.style.background = 'rgba(0, 229, 255, 0.05)';
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.style.borderColor = 'rgba(0, 229, 255, 0.3)';
+            uploadArea.style.background = 'transparent';
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = 'rgba(0, 229, 255, 0.3)';
+            uploadArea.style.background = 'transparent';
+            
+            const file = e.dataTransfer.files[0];
+            if (file) {
+                handleImageUpload(file);
+            }
+        });
+
+        proofUpload.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                handleImageUpload(file);
+            }
+        });
+
+        removeProofButton.addEventListener('click', () => {
+            proofImageUrl = null;
+            proofImage.src = '';
+            uploadPreview.style.display = 'none';
+            uploadArea.style.display = 'block';
+            submitDepositBtn.disabled = true;
+        });
+
+        submitDepositBtn.addEventListener('click', submitDeposit);
+
+        goToDashboard.addEventListener('click', () => {
+            window.location.href = 'dashboard.html';
+        });
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', initPage);
+    </script>
+</body>
+</html>

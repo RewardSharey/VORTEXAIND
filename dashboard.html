@@ -1,0 +1,1755 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - VORTEXA ID</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS RESET & BASE */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, sans-serif;
+        }
+
+        :root {
+            --deep-space-black: #000000;
+            --dark-space-blue: #0a1931;
+            --cosmic-blue: #1a237e;
+            --electric-cyan: #00e5ff;
+            --dark-cyan: #00b8d4;
+            --nebula-purple: #7b1fa2;
+            --stellar-gold: #ffd700;
+            --dark-gold: #ffab00;
+            --pure-white: #ffffff;
+            --light-gray: #b0b0b0;
+            --medium-gray: #757575;
+            --success-green: #4caf50;
+            --warning-orange: #ff9800;
+            --error-red: #f44336;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--deep-space-black) 0%, var(--dark-space-blue) 50%, #000814 100%);
+            color: var(--pure-white);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* PARTICLE BACKGROUND */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* LOADING OVERLAY */
+        #loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--deep-space-black);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(0, 229, 255, 0.3);
+            border-top-color: var(--electric-cyan);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* HEADER */
+        .dashboard-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(10, 25, 49, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 16px;
+            border-bottom: 1px solid rgba(0, 229, 255, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-img {
+            width: 120px;
+            height: 36px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.5));
+        }
+
+        .logo-text {
+            font-size: 1.25rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--electric-cyan), var(--pure-white));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .user-menu {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: background 0.2s ease;
+        }
+
+        .user-menu:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .profile-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--electric-cyan);
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .username {
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .user-badge {
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 12px;
+            background: var(--cosmic-blue);
+            color: var(--electric-cyan);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: rgba(10, 25, 49, 0.95);
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            border-radius: 8px;
+            padding: 8px 0;
+            min-width: 180px;
+            display: none;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        .dropdown-menu.show {
+            display: block;
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            color: var(--pure-white);
+            text-decoration: none;
+            transition: background 0.2s ease;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(0, 229, 255, 0.1);
+        }
+
+        .dropdown-item i {
+            width: 20px;
+            color: var(--electric-cyan);
+        }
+
+        /* MAIN CONTENT */
+        .dashboard-container {
+            padding: 16px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* WELCOME SECTION */
+        .welcome-section {
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .welcome-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(90deg, var(--electric-cyan), var(--pure-white));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .datetime {
+            color: var(--light-gray);
+            font-size: 0.875rem;
+            margin-bottom: 16px;
+        }
+
+        .level-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(26, 35, 126, 0.6);
+            padding: 8px 16px;
+            border-radius: 20px;
+            margin-bottom: 12px;
+        }
+
+        .level-badge i {
+            color: var(--stellar-gold);
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--electric-cyan), var(--dark-cyan));
+            width: 0%;
+            transition: width 1s ease;
+        }
+
+        .progress-text {
+            text-align: right;
+            font-size: 0.75rem;
+            color: var(--light-gray);
+            margin-top: 4px;
+        }
+
+        /* BALANCE CARD */
+        .balance-card {
+            background: rgba(10, 25, 49, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 229, 255, 0.2);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .balance-title {
+            color: var(--light-gray);
+            font-size: 0.875rem;
+            margin-bottom: 8px;
+        }
+
+        .balance-amount {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+            font-family: 'Space Grotesk', monospace;
+        }
+
+        .locked-balance {
+            color: var(--light-gray);
+            font-size: 0.875rem;
+            margin-bottom: 20px;
+        }
+
+        .quick-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .action-btn {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            background: linear-gradient(135deg, rgba(0, 229, 255, 0.1), rgba(41, 121, 255, 0.1));
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            border-radius: 12px;
+            color: var(--pure-white);
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 25px rgba(0, 229, 255, 0.3);
+            background: linear-gradient(135deg, rgba(0, 229, 255, 0.2), rgba(41, 121, 255, 0.2));
+        }
+
+        .action-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .action-btn i {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+            color: var(--electric-cyan);
+        }
+
+        .action-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        /* NAVIGATION GRID */
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .nav-card {
+            background: rgba(26, 35, 126, 0.6);
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--pure-white);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .nav-card:hover {
+            transform: translateY(-5px);
+            background: rgba(26, 35, 126, 0.8);
+            box-shadow: 0 8px 25px rgba(0, 229, 255, 0.2);
+        }
+
+        .nav-icon {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+            color: var(--electric-cyan);
+        }
+
+        .nav-title {
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-align: center;
+            margin-bottom: 4px;
+        }
+
+        .nav-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: var(--error-red);
+            color: var(--pure-white);
+            font-size: 0.625rem;
+            padding: 2px 6px;
+            border-radius: 10px;
+            min-width: 18px;
+            text-align: center;
+        }
+
+        .nav-status {
+            font-size: 0.75rem;
+            color: var(--stellar-gold);
+            font-weight: 500;
+        }
+
+        /* ACTIVITY SECTION */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .view-all {
+            color: var(--electric-cyan);
+            text-decoration: none;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .activity-list {
+            background: rgba(10, 25, 49, 0.7);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 24px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .activity-list::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .activity-list::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .activity-list::-webkit-scrollbar-thumb {
+            background: var(--electric-cyan);
+            border-radius: 2px;
+        }
+
+        .activity-item {
+            display: grid;
+            grid-template-columns: 40px 1fr auto;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+        }
+
+        .icon-deposit {
+            background: rgba(0, 229, 255, 0.1);
+            color: var(--electric-cyan);
+        }
+
+        .icon-withdraw {
+            background: rgba(255, 215, 0, 0.1);
+            color: var(--stellar-gold);
+        }
+
+        .icon-profit {
+            background: rgba(76, 175, 80, 0.1);
+            color: var(--success-green);
+        }
+
+        .icon-purchase {
+            background: rgba(123, 31, 162, 0.1);
+            color: var(--nebula-purple);
+        }
+
+        .icon-referral {
+            background: rgba(33, 150, 243, 0.1);
+            color: #2196f3;
+        }
+
+        .icon-transfer {
+            background: rgba(255, 152, 0, 0.1);
+            color: var(--warning-orange);
+        }
+
+        .activity-details {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .activity-desc {
+            font-size: 0.875rem;
+            margin-bottom: 2px;
+            line-height: 1.3;
+        }
+
+        .activity-id {
+            font-size: 0.7rem;
+            color: var(--medium-gray);
+            font-family: 'Space Grotesk', monospace;
+        }
+
+        .activity-meta {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+            min-width: 100px;
+        }
+
+        .activity-amount {
+            font-size: 0.875rem;
+            font-weight: 600;
+            font-family: 'Space Grotesk', monospace;
+        }
+
+        .activity-time {
+            font-size: 0.75rem;
+            color: var(--medium-gray);
+            text-align: right;
+        }
+
+        .activity-status {
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .status-pending {
+            background: rgba(255, 152, 0, 0.1);
+            color: var(--warning-orange);
+        }
+
+        .status-completed {
+            background: rgba(76, 175, 80, 0.1);
+            color: var(--success-green);
+        }
+
+        .status-rejected {
+            background: rgba(244, 67, 54, 0.1);
+            color: var(--error-red);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 32px 16px;
+            color: var(--medium-gray);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 16px;
+            color: var(--light-gray);
+        }
+
+        .empty-state p {
+            margin-bottom: 12px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, var(--electric-cyan), var(--dark-cyan));
+            color: var(--pure-white);
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.5);
+        }
+
+        /* ACTIVE PRODUCTS */
+        .products-container {
+            margin-bottom: 80px; /* Space for bottom nav */
+        }
+
+        .products-scroll {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding: 8px 0;
+            margin-bottom: 16px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--electric-cyan) transparent;
+        }
+
+        .products-scroll::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        .products-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .products-scroll::-webkit-scrollbar-thumb {
+            background: var(--electric-cyan);
+            border-radius: 2px;
+        }
+
+        .product-card {
+            min-width: 280px;
+            background: rgba(10, 25, 49, 0.7);
+            border: 1px solid rgba(0, 229, 255, 0.2);
+            border-radius: 12px;
+            padding: 16px;
+            flex-shrink: 0;
+        }
+
+        .product-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .product-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .product-name {
+            font-weight: 600;
+            font-size: 1rem;
+            flex: 1;
+        }
+
+        .product-badge {
+            font-size: 0.625rem;
+            padding: 2px 8px;
+            border-radius: 10px;
+            background: var(--cosmic-blue);
+            color: var(--electric-cyan);
+        }
+
+        .countdown {
+            font-family: 'Space Grotesk', monospace;
+            font-size: 1.25rem;
+            text-align: center;
+            color: var(--electric-cyan);
+            margin: 12px 0;
+        }
+
+        .profit-today {
+            text-align: center;
+            color: var(--light-gray);
+            font-size: 0.875rem;
+            margin-bottom: 12px;
+        }
+
+        .profit-amount {
+            color: var(--success-green);
+            font-weight: 600;
+        }
+
+        .claim-btn {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(135deg, var(--success-green), #2e7d32);
+            border: none;
+            border-radius: 8px;
+            color: var(--pure-white);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .claim-btn:hover:not(:disabled) {
+            transform: scale(1.02);
+            box-shadow: 0 0 15px rgba(76, 175, 80, 0.4);
+        }
+
+        .claim-btn:disabled {
+            background: var(--medium-gray);
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        /* BOTTOM NAVIGATION */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(10, 25, 49, 0.95);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(0, 229, 255, 0.2);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            z-index: 99;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--light-gray);
+            transition: all 0.2s ease;
+            flex: 1;
+        }
+
+        .nav-item.active {
+            color: var(--electric-cyan);
+        }
+
+        .nav-item i {
+            font-size: 1.25rem;
+            margin-bottom: 4px;
+        }
+
+        .nav-label {
+            font-size: 0.75rem;
+        }
+
+        /* TABLET */
+        @media (min-width: 768px) {
+            .dashboard-container {
+                padding: 24px;
+            }
+            
+            .welcome-title {
+                font-size: 2rem;
+            }
+            
+            .nav-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 16px;
+            }
+            
+            .quick-actions {
+                justify-content: flex-start;
+            }
+            
+            .action-btn {
+                flex: none;
+                min-width: 100px;
+            }
+            
+            .products-scroll {
+                flex-wrap: wrap;
+                overflow-x: visible;
+                justify-content: flex-start;
+            }
+            
+            .product-card {
+                min-width: calc(50% - 6px);
+            }
+
+            .activity-item {
+                grid-template-columns: 40px 1fr 120px;
+            }
+        }
+
+        /* DESKTOP */
+        @media (min-width: 1024px) {
+            .dashboard-container {
+                padding: 32px;
+            }
+            
+            .balance-amount {
+                font-size: 3rem;
+            }
+            
+            .product-card {
+                min-width: calc(33.333% - 8px);
+            }
+            
+            .bottom-nav {
+                display: none;
+            }
+
+            .activity-item {
+                grid-template-columns: 40px 1fr 140px;
+            }
+        }
+
+        /* UTILITIES */
+        .text-cyan { color: var(--electric-cyan); }
+        .text-green { color: var(--success-green); }
+        .text-gold { color: var(--stellar-gold); }
+        .text-red { color: var(--error-red); }
+        .text-gray { color: var(--light-gray); }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 229, 255, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 229, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 229, 255, 0); }
+        }
+    </style>
+</head>
+<body>
+    <!-- LOADING OVERLAY -->
+    <div id="loading-overlay">
+        <div class="spinner"></div>
+        <p>Memuat dashboard...</p>
+    </div>
+
+    <!-- PARTICLE BACKGROUND -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- DASHBOARD HEADER -->
+    <header class="dashboard-header">
+        <div class="logo-container">
+            <div class="logo-text">VORTEXA ID</div>
+            <div class="logo-text" style="display: none;">VORTEXA ID</div>
+        </div>
+        
+        <div class="user-menu" id="userMenu">
+            <img src="pp1.jpg" alt="Profile" class="profile-pic" id="profilePic" onerror="this.src='icon7.jpg'">
+            <div class="user-info">
+                <span class="username" id="username">Loading...</span>
+                <span class="user-badge" id="userBadge">Loading...</span>
+            </div>
+            <i class="fas fa-chevron-down"></i>
+            
+            <div class="dropdown-menu" id="dropdownMenu">
+                <a href="profil.html" class="dropdown-item">
+                    <i class="fas fa-user"></i>
+                    <span>Profil Saya</span>
+                </a>
+                <a href="#" class="dropdown-item" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="dashboard-container">
+        <!-- WELCOME SECTION -->
+        <section class="welcome-section fade-in">
+            <h1 class="welcome-title" id="welcomeTitle">Welcome back, Investor!</h1>
+            <div class="datetime" id="datetime">Loading...</div>
+            
+            <div class="level-badge">
+                <i class="fas fa-medal"></i>
+                <span id="levelText">Newbie</span>
+            </div>
+            
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            <div class="progress-text" id="progressText">0% menuju level berikutnya</div>
+        </section>
+
+        <!-- BALANCE CARD -->
+        <section class="balance-card fade-in" style="animation-delay: 0.1s">
+            <div class="balance-title">Saldo Utama</div>
+            <div class="balance-amount" id="mainBalance">Rp 0</div>
+            <div class="locked-balance">Saldo terkunci: <span id="lockedBalance">Rp 0</span></div>
+            
+            <div class="quick-actions">
+                <a href="deposit.html" class="action-btn">
+                    <i class="fas fa-wallet"></i>
+                    <span class="action-label">Deposit</span>
+                </a>
+                <a href="withdraw.html" class="action-btn">
+                    <i class="fas fa-arrow-down"></i>
+                    <span class="action-label">Withdraw</span>
+                </a>
+                <div class="action-btn disabled">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span class="action-label">Transfer</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- NAVIGATION GRID -->
+        <section class="nav-grid fade-in" style="animation-delay: 0.2s">
+            <a href="referral.html" class="nav-card">
+                <i class="fas fa-users nav-icon"></i>
+                <div class="nav-title">Referral</div>
+                <div class="nav-badge" id="referralCount">0</div>
+            </a>
+            
+            <a href="histori.html" class="nav-card">
+                <i class="fas fa-history nav-icon"></i>
+                <div class="nav-title">Riwayat</div>
+            </a>
+            
+            <a href="vip.html" class="nav-card">
+                <i class="fas fa-crown nav-icon"></i>
+                <div class="nav-title">VIP</div>
+                <div class="nav-status" id="vipStatus">Upgrade</div>
+            </a>
+            
+            <a href="cs.html" class="nav-card">
+                <i class="fas fa-headset nav-icon"></i>
+                <div class="nav-title">Bantuan</div>
+            </a>
+        </section>
+
+        <!-- RECENT ACTIVITY -->
+        <section class="fade-in" style="animation-delay: 0.3s">
+            <div class="section-header">
+                <h2 class="section-title">Aktivitas Terbaru</h2>
+                <a href="histori.html" class="view-all">
+                    <span>Lihat Semua</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+            
+            <div class="activity-list" id="activityList">
+                <div class="empty-state">
+                    <i class="fas fa-history"></i>
+                    <p>Memuat aktivitas...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ACTIVE PRODUCTS -->
+        <section class="products-container fade-in" style="animation-delay: 0.4s">
+            <div class="section-header">
+                <h2 class="section-title">Produk Aktif</h2>
+            </div>
+            
+            <div class="products-scroll" id="productsScroll">
+                <!-- Product cards will be inserted here by JavaScript -->
+            </div>
+            
+            <div class="empty-state" id="noProductsState" style="display: none;">
+                <i class="fas fa-box-open"></i>
+                <p>Anda belum memiliki produk aktif</p>
+                <a href="products.html" class="cta-button">Lihat Produk</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- BOTTOM NAVIGATION -->
+    <nav class="bottom-nav">
+        <a href="dashboard.html" class="nav-item active">
+            <i class="fas fa-home"></i>
+            <span class="nav-label">HOME</span>
+        </a>
+        <a href="produk.html" class="nav-item">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="nav-label">PRODUCT</span>
+        </a>
+        <a href="produk-saya.html" class="nav-item">
+            <i class="fas fa-box"></i>
+            <span class="nav-label">MY PRODUCT</span>
+        </a>
+        <a href="profil.html" class="nav-item">
+            <i class="fas fa-user"></i>
+            <span class="nav-label">PROFIL</span>
+        </a>
+    </nav>
+
+    <!-- FIREBASE SDK & MAIN SCRIPT -->
+    <script type="module">
+        // ==================== FIREBASE CONFIGURATION ====================
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+        import { 
+            getAuth, 
+            onAuthStateChanged, 
+            signOut 
+        } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+        
+        import { 
+            getFirestore, 
+            collection, 
+            doc, 
+            getDoc, 
+            onSnapshot, 
+            query, 
+            where, 
+            orderBy, 
+            limit,
+            getDocs
+        } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+
+        // Firebase Configuration from VORTEXAID.txt
+        const firebaseConfig = {
+            apiKey: "AIzaSyAEM8RddVyDgzeveu4ZV_5mnXpOf52EoP4",
+            authDomain: "vortexaind.firebaseapp.com",
+            projectId: "vortexaind",
+            storageBucket: "vortexaind.firebasestorage.app",
+            messagingSenderId: "94487454118",
+            appId: "1:94487454118:web:2469612cf7082fb8ce2f67"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Global variables
+        let currentUser = null;
+        let userData = null;
+        let userProductsListener = null;
+        let activitiesListener = null;
+        let countdownIntervals = [];
+
+        // ==================== INITIALIZATION ====================
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeParticles();
+            updateDateTime();
+            setInterval(updateDateTime, 60000); // Update every minute
+            
+            // Check authentication
+            checkAuthState();
+            
+            // Setup event listeners
+            document.getElementById('userMenu').addEventListener('click', toggleDropdown);
+            document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('#userMenu')) {
+                    document.getElementById('dropdownMenu').classList.remove('show');
+                }
+            });
+        });
+
+        // ==================== AUTHENTICATION CHECK ====================
+        async function checkAuthState() {
+            onAuthStateChanged(auth, async (user) => {
+                if (!user) {
+                    // Not logged in, redirect to login
+                    window.location.href = 'login.html';
+                    return;
+                }
+                
+                currentUser = user;
+                
+                // Check maintenance status (simplified - in real app would check from Firestore)
+                // For now, assume no maintenance
+                
+                // Get user document
+                await getUserData(user.uid);
+            });
+        }
+
+        // ==================== GET USER DATA ====================
+        async function getUserData(uid) {
+            try {
+                const userDoc = await getDoc(doc(db, 'users', uid));
+                
+                if (!userDoc.exists()) {
+                    console.error('User document not found');
+                    await auth.signOut();
+                    window.location.href = 'login.html';
+                    return;
+                }
+                
+                userData = userDoc.data();
+                
+                // Check account status
+                if (userData.account_status === 'banned') {
+                    window.location.href = 'banned.html';
+                    return;
+                }
+                
+                if (userData.account_status === 'suspended') {
+                    // Show limited dashboard (simplified for now)
+                    console.warn('Account suspended');
+                }
+                
+                // Render dashboard
+                renderDashboard();
+                
+                // Setup realtime listeners
+                setupRealtimeListeners(uid);
+                
+                // Hide loading overlay
+                setTimeout(() => {
+                    document.getElementById('loading-overlay').style.opacity = '0';
+                    setTimeout(() => {
+                        document.getElementById('loading-overlay').style.display = 'none';
+                    }, 500);
+                }, 500);
+                
+            } catch (error) {
+                console.error('Error getting user data:', error);
+                document.getElementById('loading-overlay').innerHTML = 
+                    '<p style="color: #f44336">Error loading dashboard. Please refresh.</p>';
+            }
+        }
+
+        // ==================== RENDER DASHBOARD ====================
+        function renderDashboard() {
+            // User info
+            document.getElementById('username').textContent = userData.username || 'User';
+            document.getElementById('userBadge').textContent = userData.badge || 'Newbie';
+            document.getElementById('welcomeTitle').textContent = `Welcome back, ${userData.full_name || 'Investor'}!`;
+            
+            // Profile picture
+            const profilePic = document.getElementById('profilePic');
+            if (userData.profile_picture) {
+                profilePic.src = userData.profile_picture;
+            }
+            
+            // Level and progress
+            updateLevelProgress();
+            
+            // VIP status
+            document.getElementById('vipStatus').textContent = 
+                userData.vip_level === 'elite' ? 'Aktif' : 'Upgrade';
+            
+            // Balance with animation
+            animateBalance();
+            
+            // Referral count
+            document.getElementById('referralCount').textContent = userData.referral_count || '0';
+        }
+
+        // ==================== LEVEL PROGRESS ====================
+        function updateLevelProgress() {
+            const totalDeposit = userData.total_deposit || 0;
+            let level = 'Newbie';
+            let progress = 0;
+            let nextLevel = '';
+            
+            // Determine level based on total deposit (from VORTEXAID.txt)
+            if (totalDeposit >= 5000000) {
+                level = 'Master';
+                progress = 100;
+                nextLevel = 'Max Level';
+            } else if (totalDeposit >= 1000000) {
+                level = 'Elite';
+                progress = ((totalDeposit - 1000000) / 4000000) * 100;
+                nextLevel = 'Master (Rp 5jt)';
+            } else if (totalDeposit >= 100000) {
+                level = 'Investor';
+                progress = ((totalDeposit - 100000) / 900000) * 100;
+                nextLevel = 'Elite (Rp 1jt)';
+            } else {
+                level = 'Newbie';
+                progress = (totalDeposit / 100000) * 100;
+                nextLevel = 'Investor (Rp 100k)';
+            }
+            
+            // Update UI
+            document.getElementById('levelText').textContent = level;
+            document.getElementById('progressBar').style.width = `${Math.min(100, progress)}%`;
+            document.getElementById('progressText').textContent = 
+                `${Math.round(progress)}% menuju ${nextLevel}`;
+            
+            // Update badge
+            document.getElementById('userBadge').textContent = level;
+        }
+
+        // ==================== BALANCE ANIMATION ====================
+        function animateBalance() {
+            const balanceElement = document.getElementById('mainBalance');
+            const lockedElement = document.getElementById('lockedBalance');
+            
+            const balance = userData.balance || 0;
+            const locked = userData.locked_balance || 0;
+            
+            // Format currency
+            const formatCurrency = (amount) => {
+                return 'Rp ' + amount.toLocaleString('id-ID');
+            };
+            
+            // Animate main balance
+            let start = 0;
+            const duration = 1500;
+            const startTime = Date.now();
+            
+            function updateBalance() {
+                const elapsed = Date.now() - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                // Easing function
+                const easeOut = 1 - Math.pow(1 - progress, 3);
+                
+                const currentValue = Math.floor(easeOut * balance);
+                balanceElement.textContent = formatCurrency(currentValue);
+                
+                if (progress < 1) {
+                    requestAnimationFrame(updateBalance);
+                } else {
+                    balanceElement.textContent = formatCurrency(balance);
+                }
+            }
+            
+            // Start animation
+            updateBalance();
+            
+            // Update locked balance
+            lockedElement.textContent = formatCurrency(locked);
+        }
+
+        // ==================== REALTIME LISTENERS ====================
+        function setupRealtimeListeners(uid) {
+            // Clean up existing listeners
+            if (userProductsListener) userProductsListener();
+            if (activitiesListener) activitiesListener();
+            
+            // Clear countdown intervals
+            countdownIntervals.forEach(interval => clearInterval(interval));
+            countdownIntervals = [];
+            
+            // Listen to user products
+            const productsQuery = query(
+                collection(db, 'user_products'),
+                where('uid', '==', uid),
+                where('status', '==', 'active'),
+                orderBy('created_at', 'desc')
+            );
+            
+            userProductsListener = onSnapshot(productsQuery, (snapshot) => {
+                renderActiveProducts(snapshot.docs);
+            });
+            
+            // Listen to recent activities from multiple collections
+            loadRecentActivities(uid);
+            
+            // Listen to user document changes
+            onSnapshot(doc(db, 'users', uid), (doc) => {
+                if (doc.exists()) {
+                    const newData = doc.data();
+                    
+                    // Update balance if changed
+                    if (newData.balance !== userData.balance || newData.locked_balance !== userData.locked_balance) {
+                        userData.balance = newData.balance;
+                        userData.locked_balance = newData.locked_balance;
+                        animateBalance();
+                    }
+                    
+                    // Update referral count
+                    if (newData.referral_count !== userData.referral_count) {
+                        userData.referral_count = newData.referral_count;
+                        document.getElementById('referralCount').textContent = newData.referral_count || '0';
+                    }
+                    
+                    // Update level if deposit changed
+                    if (newData.total_deposit !== userData.total_deposit) {
+                        userData.total_deposit = newData.total_deposit;
+                        updateLevelProgress();
+                    }
+                    
+                    userData = newData;
+                }
+            });
+        }
+
+        // ==================== RECENT ACTIVITIES (REAL DATA) ====================
+        async function loadRecentActivities(uid) {
+            const activityList = document.getElementById('activityList');
+            activityList.innerHTML = '<div class="empty-state"><i class="fas fa-spinner fa-spin"></i><p>Memuat aktivitas...</p></div>';
+            
+            try {
+                // Array to store all activities
+                let allActivities = [];
+                
+                // 1. Get deposit requests
+                const depositQuery = query(
+                    collection(db, 'deposit_requests'),
+                    where('uid', '==', uid),
+                    orderBy('created_at', 'desc'),
+                    limit(5)
+                );
+                
+                const depositSnapshot = await getDocs(depositQuery);
+                depositSnapshot.docs.forEach(doc => {
+                    const data = doc.data();
+                    allActivities.push({
+                        id: data.deposit_id || doc.id,
+                        type: 'deposit',
+                        description: 'Deposit',
+                        amount: data.amount || 0,
+                        status: data.status || 'pending',
+                        timestamp: data.created_at?.toDate() || new Date(),
+                        reference: data.deposit_id || 'DEP-XXXXXX'
+                    });
+                });
+                
+                // 2. Get withdraw requests
+                const withdrawQuery = query(
+                    collection(db, 'withdraw_requests'),
+                    where('uid', '==', uid),
+                    orderBy('created_at', 'desc'),
+                    limit(5)
+                );
+                
+                const withdrawSnapshot = await getDocs(withdrawQuery);
+                withdrawSnapshot.docs.forEach(doc => {
+                    const data = doc.data();
+                    allActivities.push({
+                        id: data.withdraw_id || doc.id,
+                        type: 'withdraw',
+                        description: `Withdraw ke ${data.bank_name || 'Bank'}`,
+                        amount: -(data.amount || 0),
+                        status: data.status || 'pending',
+                        timestamp: data.created_at?.toDate() || new Date(),
+                        reference: data.withdraw_id || 'WD-XXXXXX'
+                    });
+                });
+                
+                // 3. Get user products (purchases)
+                const purchaseQuery = query(
+                    collection(db, 'user_products'),
+                    where('uid', '==', uid),
+                    orderBy('created_at', 'desc'),
+                    limit(5)
+                );
+                
+                const purchaseSnapshot = await getDocs(purchaseQuery);
+                purchaseSnapshot.docs.forEach(doc => {
+                    const data = doc.data();
+                    allActivities.push({
+                        id: data.user_product_id || doc.id,
+                        type: 'purchase',
+                        description: `Beli ${data.product_name || 'Produk'}`,
+                        amount: -(data.purchase_amount || 0),
+                        status: data.status || 'active',
+                        timestamp: data.created_at?.toDate() || new Date(),
+                        reference: data.user_product_id || 'UP-XXXXXX'
+                    });
+                });
+                
+                // 4. Get referral bonuses (from user document updates)
+                // This would be tracked via transaction history in real implementation
+                
+                // Sort all activities by timestamp (newest first)
+                allActivities.sort((a, b) => b.timestamp - a.timestamp);
+                
+                // Take only the 10 most recent activities
+                const recentActivities = allActivities.slice(0, 10);
+                
+                // Render activities
+                renderActivities(recentActivities);
+                
+                // Setup realtime listener for new activities
+                setupActivitiesRealtimeListener(uid);
+                
+            } catch (error) {
+                console.error('Error loading activities:', error);
+                activityList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <p>Gagal memuat aktivitas</p>
+                    </div>
+                `;
+            }
+        }
+
+        function setupActivitiesRealtimeListener(uid) {
+            // Listen for new deposit requests
+            const depositQuery = query(
+                collection(db, 'deposit_requests'),
+                where('uid', '==', uid),
+                orderBy('created_at', 'desc'),
+                limit(1)
+            );
+            
+            activitiesListener = onSnapshot(depositQuery, (snapshot) => {
+                // In a full implementation, this would update the activities list
+                // For now, we just note that new data is available
+                console.log('New deposit activity detected');
+            });
+        }
+
+        function renderActivities(activities) {
+            const activityList = document.getElementById('activityList');
+            
+            if (activities.length === 0) {
+                activityList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-history"></i>
+                        <p>Belum ada aktivitas</p>
+                        <p style="font-size: 0.875rem; margin-top: 8px;">Lakukan transaksi pertama Anda</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let activitiesHTML = '';
+            
+            activities.forEach(activity => {
+                const { type, description, amount, status, timestamp, reference } = activity;
+                
+                // Determine icon and color based on type
+                let iconClass = 'fas fa-history';
+                let iconBgClass = 'icon-deposit';
+                
+                switch(type) {
+                    case 'deposit':
+                        iconClass = 'fas fa-plus-circle';
+                        iconBgClass = 'icon-deposit';
+                        break;
+                    case 'withdraw':
+                        iconClass = 'fas fa-minus-circle';
+                        iconBgClass = 'icon-withdraw';
+                        break;
+                    case 'purchase':
+                        iconClass = 'fas fa-shopping-cart';
+                        iconBgClass = 'icon-purchase';
+                        break;
+                    case 'profit':
+                        iconClass = 'fas fa-chart-line';
+                        iconBgClass = 'icon-profit';
+                        break;
+                    case 'referral':
+                        iconClass = 'fas fa-user-plus';
+                        iconBgClass = 'icon-referral';
+                        break;
+                    case 'transfer':
+                        iconClass = 'fas fa-exchange-alt';
+                        iconBgClass = 'icon-transfer';
+                        break;
+                }
+                
+                // Format amount
+                const amountFormatted = amount.toLocaleString('id-ID');
+                const amountSign = amount >= 0 ? '+' : '';
+                const amountClass = amount >= 0 ? 'text-green' : 'text-red';
+                
+                // Format time
+                const timeAgo = getTimeAgo(timestamp);
+                
+                // Status class
+                let statusClass = 'status-completed';
+                let statusText = 'Selesai';
+                
+                if (status === 'pending') {
+                    statusClass = 'status-pending';
+                    statusText = 'Menunggu';
+                } else if (status === 'rejected' || status === 'cancelled') {
+                    statusClass = 'status-rejected';
+                    statusText = 'Ditolak';
+                } else if (status === 'processing') {
+                    statusClass = 'status-pending';
+                    statusText = 'Proses';
+                }
+                
+                activitiesHTML += `
+                    <div class="activity-item">
+                        <div class="activity-icon ${iconBgClass}">
+                            <i class="${iconClass}"></i>
+                        </div>
+                        <div class="activity-details">
+                            <div class="activity-desc">${description}</div>
+                            <div class="activity-id">${reference}</div>
+                        </div>
+                        <div class="activity-meta">
+                            <div class="activity-amount ${amountClass}">
+                                ${amountSign}Rp ${amountFormatted}
+                            </div>
+                            <div class="activity-time">${timeAgo}</div>
+                            <div class="activity-status ${statusClass}">${statusText}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            activityList.innerHTML = activitiesHTML;
+        }
+
+        function getTimeAgo(timestamp) {
+            const now = new Date();
+            const date = timestamp instanceof Date ? timestamp : timestamp.toDate();
+            const diffMs = now - date;
+            const diffMins = Math.floor(diffMs / (1000 * 60));
+            const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+            const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+            
+            if (diffMins < 1) return 'Baru saja';
+            if (diffMins < 60) return `${diffMins} menit lalu`;
+            if (diffHours < 24) return `${diffHours} jam lalu`;
+            if (diffDays === 1) return 'Kemarin';
+            if (diffDays < 7) return `${diffDays} hari lalu`;
+            
+            return date.toLocaleDateString('id-ID', { 
+                day: 'numeric', 
+                month: 'short' 
+            });
+        }
+
+        // ==================== ACTIVE PRODUCTS ====================
+        function renderActiveProducts(productDocs) {
+            const container = document.getElementById('productsScroll');
+            const emptyState = document.getElementById('noProductsState');
+            
+            if (productDocs.length === 0) {
+                container.innerHTML = '';
+                emptyState.style.display = 'block';
+                return;
+            }
+            
+            emptyState.style.display = 'none';
+            container.innerHTML = '';
+            
+            productDocs.forEach((doc, index) => {
+                const data = doc.data();
+                const productCard = createProductCard(data, doc.id);
+                container.appendChild(productCard);
+                
+                // Start countdown
+                startCountdown(data.end_date, `countdown-${doc.id}`);
+            });
+        }
+
+        function createProductCard(data, docId) {
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            
+            // Calculate remaining time
+            const endDate = data.end_date.toDate();
+            const now = new Date();
+            const diffMs = endDate - now;
+            const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+            const diffHours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+            
+            // Determine if profit can be claimed
+            const unclaimedProfit = data.unclaimed_profit || 0;
+            const canClaim = unclaimedProfit > 0;
+            
+            // Product icon (using default if not available)
+            const iconNumber = Math.min(10, Math.max(1, Math.floor(Math.random() * 10) + 1));
+            const iconSrc = `icon${iconNumber}.jpg`;
+            
+            card.innerHTML = `
+                <div class="product-header">
+                    <img src="${iconSrc}" alt="Product" class="product-icon" onerror="this.src='logo.jpg'">
+                    <div class="product-name">${data.product_name || 'Product'}</div>
+                    <div class="product-badge">${data.product_badge || 'Basic'}</div>
+                </div>
+                
+                <div class="countdown" id="countdown-${docId}">
+                    ${diffDays}d ${diffHours}h ${diffMins}m
+                </div>
+                
+                <div class="profit-today">
+                    Profit hari ini: <span class="profit-amount">Rp ${(data.daily_profit || 0).toLocaleString('id-ID')}</span>
+                </div>
+                
+                <button class="claim-btn" ${!canClaim ? 'disabled' : ''} onclick="claimProfit('${docId}')">
+                    <i class="fas fa-coins"></i>
+                    ${canClaim ? `Klaim Rp ${unclaimedProfit.toLocaleString('id-ID')}` : 'Belum ada profit'}
+                </button>
+            `;
+            
+            return card;
+        }
+
+        function startCountdown(endDate, elementId) {
+            const element = document.getElementById(elementId);
+            if (!element) return;
+            
+            const interval = setInterval(() => {
+                const now = new Date();
+                const end = endDate.toDate ? endDate.toDate() : new Date(endDate);
+                const diffMs = end - now;
+                
+                if (diffMs <= 0) {
+                    element.textContent = 'Selesai';
+                    clearInterval(interval);
+                    return;
+                }
+                
+                const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+                const diffHours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+                const diffSecs = Math.floor((diffMs % (1000 * 60)) / 1000);
+                
+                element.textContent = `${diffDays}d ${diffHours}h ${diffMins}m ${diffSecs}s`;
+            }, 1000);
+            
+            countdownIntervals.push(interval);
+        }
+
+        // ==================== UTILITY FUNCTIONS ====================
+        function toggleDropdown() {
+            document.getElementById('dropdownMenu').classList.toggle('show');
+        }
+
+        function updateDateTime() {
+            const now = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            document.getElementById('datetime').textContent = 
+                now.toLocaleDateString('id-ID', options);
+        }
+
+        async function handleLogout() {
+            try {
+                // Clean up listeners
+                if (userProductsListener) userProductsListener();
+                if (activitiesListener) activitiesListener();
+                
+                countdownIntervals.forEach(interval => clearInterval(interval));
+                
+                // Sign out
+                await signOut(auth);
+                
+                // Clear local storage
+                localStorage.clear();
+                
+                // Redirect to login
+                window.location.href = 'login.html';
+            } catch (error) {
+                console.error('Logout error:', error);
+            }
+        }
+
+        // ==================== PARTICLE SYSTEM ====================
+        function initializeParticles() {
+            const canvas = document.getElementById('particle-canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Set canvas size
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+            
+            // Particle system
+            const particles = [];
+            const particleCount = 80;
+            
+            // Create particles
+            for (let i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 2 + 0.5,
+                    speedX: (Math.random() - 0.5) * 0.2,
+                    speedY: (Math.random() - 0.5) * 0.2,
+                    opacity: Math.random() * 0.5 + 0.1
+                });
+            }
+            
+            // Animation loop
+            function animateParticles() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                particles.forEach(particle => {
+                    // Update position
+                    particle.x += particle.speedX;
+                    particle.y += particle.speedY;
+                    
+                    // Wrap around edges
+                    if (particle.x < 0) particle.x = canvas.width;
+                    if (particle.x > canvas.width) particle.x = 0;
+                    if (particle.y < 0) particle.y = canvas.height;
+                    if (particle.y > canvas.height) particle.y = 0;
+                    
+                    // Draw particle
+                    ctx.beginPath();
+                    ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255, 255, 255, ${particle.opacity})`;
+                    ctx.fill();
+                });
+                
+                requestAnimationFrame(animateParticles);
+            }
+            
+            animateParticles();
+            
+            // Occasional shooting star
+            setInterval(() => {
+                if (Math.random() > 0.7) {
+                    createShootingStar(ctx, canvas.width, canvas.height);
+                }
+            }, 30000);
+        }
+        
+        function createShootingStar(ctx, width, height) {
+            const startX = Math.random() * width;
+            const startY = Math.random() * height / 3;
+            const length = 100 + Math.random() * 100;
+            const angle = Math.PI / 4 + Math.random() * Math.PI / 2;
+            
+            let progress = 0;
+            const speed = 0.05;
+            
+            function animate() {
+                progress += speed;
+                
+                if (progress > 1) return;
+                
+                const currentX = startX + Math.cos(angle) * length * progress;
+                const currentY = startY + Math.sin(angle) * length * progress;
+                
+                // Draw trail
+                const gradient = ctx.createLinearGradient(
+                    startX, startY, 
+                    currentX, currentY
+                );
+                gradient.addColorStop(0, 'rgba(0, 229, 255, 0.8)');
+                gradient.addColorStop(1, 'rgba(0, 229, 255, 0)');
+                
+                ctx.beginPath();
+                ctx.moveTo(startX, startY);
+                ctx.lineTo(currentX, currentY);
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = gradient;
+                ctx.stroke();
+                
+                // Draw head
+                ctx.beginPath();
+                ctx.arc(currentX, currentY, 3, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(0, 229, 255, 1)';
+                ctx.fill();
+                
+                requestAnimationFrame(animate);
+            }
+            
+            animate();
+        }
+
+        // ==================== GLOBAL FUNCTIONS ====================
+        window.claimProfit = async function(docId) {
+            // In a real implementation, this would update Firestore
+            alert(`Fitur klaim profit untuk ${docId} akan diimplementasikan lengkap.`);
+        };
+    </script>
+</body>
+</html>
